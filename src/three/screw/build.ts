@@ -14,7 +14,7 @@ import {
   smallTeeth,
   sprocketRadius,
 } from '../dims';
-import { clearGroup, cylinderX, noShadow, v3, waterMaterial } from '../common';
+import { clearGroup, cylinderX, noShadow, v3 } from '../common';
 import type { CutKit } from '../cut';
 import { dynamic, mergeStatic } from '../merge';
 import { PocketBuilder, bladeGeometry, coreGeometry, pocketCount, type BladeGeometry } from './helix';
@@ -41,7 +41,9 @@ import {
   sprocket,
   type Wheel,
 } from './drive';
-import { Prism, SectionCap, buildFish, capWater } from './water';
+import { Nappes } from '../water/nappe';
+import type { WaterKit } from '../water/kit';
+import { Prism, SectionCap, buildFish } from './water';
 
 // Populates the parts of the `screw` world from a layout: each registered part is a group at the origin of the world (so that the explode
 // offset is a world vector), holding a "tilt" group (the screw frame) for what follows the axis and plain world meshes for the concrete.
@@ -84,6 +86,8 @@ export interface Rig {
   fish: THREE.Group | null;
   poolWater: Prism | null;
   inletWater: Prism | null;
+  /** The sheet of water that falls into the inlet basin over the headwall (water). */
+  inletSheet: Nappes | null;
   bladeCap: { geometry: THREE.BufferGeometry; quads: number } | null;
   controllerLed: THREE.MeshStandardMaterial | null;
   batterySegments: THREE.MeshStandardMaterial[];
@@ -129,6 +133,7 @@ export function emptyRig(layout: Layout): Rig {
     fish: null,
     poolWater: null,
     inletWater: null,
+    inletSheet: null,
     bladeCap: null,
     controllerLed: null,
     batterySegments: [],
@@ -158,6 +163,8 @@ export interface BuildCtx {
   ratios: { chain: number; belt: number };
   pocket: PocketBuilder;
   textures: { chain: THREE.Texture; belt: THREE.Texture };
+  /** The water of the world: noise texture and the four materials (src/three/water). */
+  water: WaterKit;
 }
 
 export const tiltOf = (l: Layout): THREE.Group => {
@@ -360,12 +367,21 @@ export function buildScrewParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
     cut.clip(root);
     cut.cap('inlet-sill', tilt, [b.extensionCap], 0, rtint);
     cut.cap('inlet-sill', root, [b.headCap], 0, rtint);
-    const water = new Prism(waterMaterial(0.5, COLOURS.water), capWater());
+    const water = new Prism(ctx.water.volume({ opacity: 0.5, color: COLOURS.water }), ctx.water.cap());
     water.mesh.name = 'inlet-water';
     root.add(water.mesh, water.cap);
     cut.clip(water.mesh);
     cut.registerCap('inlet-sill', water.cap);
     rig.inletWater = water;
+    // the sheet that pours over the headwall into the basin (a ribbon whose size the water code sets from the flow)
+    const sheet = new Nappes(
+      [{ x: l.headX, z0: -0.85 * l.Rt, z1: 0.85 * l.Rt, film: 0.3 * l.k }],
+      ctx.water.fall(),
+      'inlet-sheet',
+    );
+    root.add(sheet.mesh);
+    cut.clip(sheet.mesh);
+    rig.inletSheet = sheet;
   }
 
   // ---- outlet pool
@@ -376,7 +392,7 @@ export function buildScrewParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
     mergeStatic(root, { name: 'pool', colours: false });
     cut.clip(root);
     cut.cap('outlet-pool', root, b.caps, 0, rtint);
-    const water = new Prism(waterMaterial(0.5, COLOURS.water), capWater());
+    const water = new Prism(ctx.water.volume({ opacity: 0.5, color: COLOURS.water }), ctx.water.cap());
     water.mesh.name = 'pool-water';
     root.add(water.mesh, water.cap);
     cut.clip(water.mesh);
@@ -390,15 +406,19 @@ export function buildScrewParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
     const tilt = tiltOf(l);
     root.add(tilt);
     const n = pocketCount(shape);
-    const mat = waterMaterial(0.5, COLOURS.water);
+    const mat = ctx.water.volume({ opacity: 0.5, color: COLOURS.water });
     mat.userData.noShare = true;
+    // the pocket lies a millimetre off the faceted blade: bias it towards the eye so that the facets do not cut through it
+    mat.polygonOffset = true;
+    mat.polygonOffsetFactor = -4;
+    mat.polygonOffsetUnits = -4;
     const pockets = new THREE.InstancedMesh(ctx.pocket.geometry, mat, n);
     pockets.name = 'pockets';
     pockets.frustumCulled = false;
     pockets.renderOrder = 2;
     pockets.userData.sharedGeometry = true;
     tilt.add(pockets);
-    const pocketCap = new THREE.InstancedMesh(rig.capShape.geometry, capWater(), n);
+    const pocketCap = new THREE.InstancedMesh(rig.capShape.geometry, ctx.water.cap(), n);
     pocketCap.name = 'pocket-sections';
     pocketCap.frustumCulled = false;
     pocketCap.renderOrder = 4;

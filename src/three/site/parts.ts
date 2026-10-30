@@ -2,25 +2,27 @@ import * as THREE from 'three';
 import { MAT, mesh } from '@onigam/lab-kit/three';
 import { BLADES } from '../../sim/machine';
 import { PSI_OPT } from '../../sim/machine';
-import { COLOURS, DEG, SITE, TROUGH, bladeThickness, type ScrewShape } from '../dims';
+import { COLOURS, DEG, SITE, TROUGH, WATER_FX, bladeThickness, type ScrewShape } from '../dims';
 import { rng } from '@onigam/lab-kit/three';
-import { noShadow, waterMaterial } from '../common';
+import { noShadow, smoothstep } from '../common';
 import { mergeStatic } from '../merge';
-import { Prism, capWater } from '../screw/water';
+import { Prism } from '../screw/water';
 import { PocketBuilder, bladeGeometry, coreGeometry, pocketCount, troughGeometry, trueGap } from '../screw/helix';
 import { computeLayout, type Layout } from '../screw/layout';
 import { worldPrism } from '../screw/structure';
-import { FallSheet, Sheet, sheetMaterial } from './water';
+import { WaterBody, bump, gridLines, plateau } from '../water/body';
+import { Nappes } from '../water/nappe';
+import type { WaterKit } from './water';
+import { masonryMaterial } from './materials';
 
 // The static geometry of the parts of the `site` world (the moving water is `water.ts`, the animation is in `scene.ts`). The site frame: X east,
 // Y up (0 = design headwater), Z south; the water flows towards -X. See dims.SITE for the sizes and for what is compressed.
 
-export const concrete = (): THREE.MeshStandardMaterial =>
-  new THREE.MeshStandardMaterial({ color: COLOURS.concrete, roughness: 0.95 });
-export const concreteLight = (): THREE.MeshStandardMaterial =>
-  new THREE.MeshStandardMaterial({ color: 0xb5afa3, roughness: 0.95 });
-const earthMat = () => new THREE.MeshStandardMaterial({ color: 0x7b6548, roughness: 1 });
-const grassMat = () => new THREE.MeshStandardMaterial({ color: 0x86a05a, roughness: 1 });
+// The masonry that holds the water (weir body, canal and chamber walls, quay, gate posts, fish-pass walls, piers): a coursed stone with mortar and
+// per-block variation, projected by the object-space position so that every geometry takes it (boxes, extrusions, the trough). Only the material is
+// the scenery's: the geometry and the part ids of the structures do not change.
+export const concrete = (): THREE.MeshStandardMaterial => masonryMaterial('wall', 0xdcd8cc);
+export const concreteLight = (): THREE.MeshStandardMaterial => masonryMaterial('coping', 0xe4dfd3);
 const gravel = () => new THREE.MeshStandardMaterial({ color: 0x8d8777, roughness: 1 });
 
 /** A box between two corners. */
@@ -36,30 +38,6 @@ export function box(
   const g = new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0);
   const m = mesh(g, mat, [(x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2]);
   return m;
-}
-
-// ------------------------------------------------------------------------------------------------ ground (scenery)
-
-/** The land: tiles of earth with a skin of grass, round the water. */
-export function buildGround(): THREE.Group {
-  const g = new THREE.Group();
-  g.name = 'ground';
-  const { ground: G, river, canal, embankment: E, tailrace: T } = SITE;
-  const top = SITE.groundY;
-  const tiles: [number, number, number, number][] = [
-    [G.xMin, G.xMax, G.zMin, canal.zNorth], // north of the canal and the chamber
-    [G.xMin, G.xMax, river.zSouth, G.zMax], // south of the river
-    [-33.4, SITE.chamber.xWest, E.zNorth, E.zSouth], // the embankment between the canal and the river, west of the chamber
-    [SITE.chamber.xEast, canal.mouthX, E.zNorth, E.zSouth], // ... and east of it
-    [G.xMin, T.xEnd, canal.zNorth, river.zNorth], // west of the end of the tailrace
-    [canal.xMax, G.xMax, canal.zNorth, river.zNorth], // east of the mouth of the canal
-  ];
-  for (const [x0, x1, z0, z1] of tiles) {
-    g.add(box(x0, G.bottomY, z0, x1, top - 0.06, z1, earthMat()));
-    g.add(box(x0, top - 0.06, z0, x1, top, z1, grassMat()));
-  }
-  mergeStatic(g, { name: 'ground' });
-  return g;
 }
 
 /** A thin concrete lining on the two sides of a channel that runs along X. */
@@ -80,16 +58,38 @@ export function lining(
 
 export interface RiverBuild {
   group: THREE.Group;
-  up: Sheet[];
-  down: Sheet[];
+  up: WaterBody[];
+  down: WaterBody[];
 }
 
-/** Sheets of the river: above and below the weir, leaving the fish pass its own water. */
-export function buildRiver(tex: THREE.Texture): RiverBuild {
+/** The zones of the river's plan where the grid is fine: along the two banks, where the opacity and the bed fall away. */
+const bankZones = (z0: number, z1: number, north = true, south = true): [number, number, number][] => [
+  ...(north ? ([[z0, z0 + 1.2, 0.3]] as [number, number, number][]) : []),
+  ...(south ? ([[z1 - 1.2, z1, 0.3]] as [number, number, number][]) : []),
+];
+
+/** Opacity at the banks and depth of the bed of a sheet of the river (north and south banks, or only one of them). */
+const bankShore = (z0: number, z1: number, north: boolean, south: boolean) => (_x: number, z: number) =>
+  smoothstep(0, 0.9, Math.min(north ? z - z0 : 99, south ? z1 - z : 99));
+const bankBed = (z0: number, z1: number, north: boolean, south: boolean) => (_x: number, z: number) =>
+  0.4 + 0.6 * smoothstep(0, 2.6, Math.min(north ? z - z0 : 99, south ? z1 - z : 99));
+
+/** The weir's plan: the two spans of the free crest (the notch and the fish pass break it), for the foam that follows them. */
+export function weirSpans(): [number, number][] {
+  const { river: r, notch: n, fishPass: fp } = SITE;
+  return [
+    [r.zNorth, n.z - n.width / 2],
+    [n.z + n.width / 2, fp.z],
+  ];
+}
+
+/** Bodies of the river: above and below the weir, leaving the fish pass its own water. */
+export function buildRiver(wk: WaterKit): RiverBuild {
   const g = new THREE.Group();
   const r = SITE.river;
   const w = SITE.weir;
   const fp = SITE.fishPass;
+  const n = SITE.notch;
   const xu = w.x + w.thickness / 2;
   const xd = w.x - w.thickness / 2;
   g.add(box(xu, SITE.ground.bottomY, r.zNorth, r.xEast, r.bedUpY, r.zSouth, gravel()));
@@ -108,12 +108,62 @@ export function buildRiver(tex: THREE.Texture): RiverBuild {
     g.add(rock);
   }
   mergeStatic(g, { name: 'river-bed' });
-  const mk = (x0: number, x1: number, z0: number, z1: number, name: string) =>
-    new Sheet(x0, x1, z0, z1, sheetMaterial(tex), name);
-  const up = [mk(fp.xEast, r.xEast, r.zNorth, r.zSouth, 'river-up'), mk(xu, fp.xEast, r.zNorth, fp.z, 'river-up-near')];
+  const zsAll = gridLines(r.zNorth, r.zSouth, bankZones(r.zNorth, r.zSouth), 2);
+  const zsNear = gridLines(r.zNorth, fp.z, bankZones(r.zNorth, fp.z, true, false), 2);
+  const up = [
+    new WaterBody(fp.xEast, r.xEast, r.zNorth, r.zSouth, wk.surface(), 'river-up', {
+      xs: gridLines(fp.xEast, r.xEast, [[fp.xEast, fp.xEast + 14, 1.2]], 18),
+      zs: zsAll,
+    })
+      .shore(bankShore(r.zNorth, r.zSouth, true, true))
+      .bed(bankBed(r.zNorth, r.zSouth, true, true)),
+    new WaterBody(xu, fp.xEast, r.zNorth, fp.z, wk.surface(), 'river-up-near', {
+      xs: gridLines(xu, fp.xEast, [], 0.5),
+      zs: zsNear,
+    })
+      .shore(bankShore(r.zNorth, fp.z, true, false))
+      .bed(bankBed(r.zNorth, fp.z, true, false)),
+  ];
+  // below the weir: the foam of the toe (channel 0), the trail and its standing waves (1), the plunge of the notch (2), the outlet of the pass (3)
+  const spans = weirSpans();
+  const inSpan = (z: number) => Math.max(...spans.map(([a, b]) => plateau(z, a, b, 0.45)));
+  const toe = (x: number, z: number) => plateau(x, xd - 1.7, xd - 0.05, 0.9) * inSpan(z);
+  const trail = (x: number, z: number) => {
+    const s = xd - 1.0 - x;
+    return (
+      0.9 *
+      (s <= 0 ? plateau(x, xd - 1.0, xd, 0.6) : Math.exp(-s / WATER_FX.foam.trail)) *
+      plateau(z, r.zNorth, fp.z, 1.3)
+    );
+  };
+  const plunge = (x: number, z: number) => bump(Math.hypot(x - (xd - 0.45), z - n.z), 0, 1.4);
+  const passOut = (x: number, z: number) => bump(Math.hypot(x - (fp.xWest - 0.45), z - (fp.z + r.zSouth) / 2), 0, 1.5);
+  const paint = (b: WaterBody) => b.paint(0, toe).paint(1, trail).paint(2, plunge).paint(3, passOut);
   const down = [
-    mk(r.xWest, fp.xWest, r.zNorth, r.zSouth, 'river-down'),
-    mk(fp.xWest, xd, r.zNorth, fp.z, 'river-down-near'),
+    paint(
+      new WaterBody(r.xWest, fp.xWest, r.zNorth, r.zSouth, wk.surface({ waves: true }), 'river-down', {
+        xs: gridLines(
+          r.xWest,
+          fp.xWest,
+          [
+            [-24, fp.xWest, 0.25],
+            [-80, -24, 1.2],
+          ],
+          25,
+        ),
+        zs: zsAll,
+      })
+        .shore(bankShore(r.zNorth, r.zSouth, true, true))
+        .bed(bankBed(r.zNorth, r.zSouth, true, true)),
+    ),
+    paint(
+      new WaterBody(fp.xWest, xd, r.zNorth, fp.z, wk.surface({ waves: true }), 'river-down-near', {
+        xs: gridLines(fp.xWest, xd, [], 0.15),
+        zs: gridLines(r.zNorth, fp.z, bankZones(r.zNorth, fp.z, true, false), 0.25),
+      })
+        .shore(bankShore(r.zNorth, fp.z, true, false))
+        .bed(bankBed(r.zNorth, fp.z, true, false)),
+    ),
   ];
   for (const s of [...up, ...down]) g.add(s.mesh);
   return { group: g, up, down };
@@ -121,10 +171,11 @@ export function buildRiver(tex: THREE.Texture): RiverBuild {
 
 export interface WeirBuild {
   group: THREE.Group;
-  falls: FallSheet[];
+  /** The sheets of water over the crest: one ribbon per span of the free crest. */
+  falls: Nappes;
 }
 
-export function buildWeir(tex: THREE.Texture): WeirBuild {
+export function buildWeir(wk: WaterKit): WeirBuild {
   const g = new THREE.Group();
   const { weir: w, notch: n, fishPass: fp, river: r } = SITE;
   const x0 = w.x - w.thickness / 2;
@@ -141,25 +192,22 @@ export function buildWeir(tex: THREE.Texture): WeirBuild {
   // apron: a slab at the foot of the downstream face
   g.add(box(x0 - 1.6, base, r.zNorth, x0, r.bedDownY + 0.04, fp.z, concrete()));
   mergeStatic(g, { name: 'weir' });
-  const mat = () => {
-    const m = sheetMaterial(tex, 0.8);
-    m.transparent = true;
-    return m;
-  };
-  const falls = [
-    new FallSheet(x0 - 0.03, r.zNorth, zn, mat(), 'weir-fall-north'),
-    new FallSheet(x0 - 0.03, zs, fp.z, mat(), 'weir-fall-south'),
-  ];
-  for (const f of falls) g.add(f.mesh);
+  const lip = x0 - 0.045;
+  const falls = new Nappes(
+    weirSpans().map(([z0, z1]) => ({ x: lip, z0, z1, film: w.thickness + 0.05 })),
+    wk.fall(),
+    'weir-fall',
+  );
+  g.add(falls.mesh);
   return { group: g, falls };
 }
 
 export interface NotchBuild {
   group: THREE.Group;
-  fall: FallSheet;
+  fall: Nappes;
 }
 
-export function buildNotch(tex: THREE.Texture): NotchBuild {
+export function buildNotch(wk: WaterKit): NotchBuild {
   const g = new THREE.Group();
   const { weir: w, notch: n } = SITE;
   const x0 = w.x - w.thickness / 2;
@@ -189,21 +237,28 @@ export function buildNotch(tex: THREE.Texture): NotchBuild {
     ),
   );
   mergeStatic(g, { name: 'notch' });
-  const m = sheetMaterial(tex, 0.85);
-  m.transparent = true;
-  const fall = new FallSheet(x0 - 0.12, n.z - n.width / 2, n.z + n.width / 2, m, 'notch-fall');
+  const fall = new Nappes(
+    [{ x: x0 - 0.11, z0: n.z - n.width / 2, z1: n.z + n.width / 2, film: w.thickness + 0.1 }],
+    wk.fall(),
+    'notch-fall',
+  );
   g.add(fall.mesh);
   return { group: g, fall };
 }
 
 export interface FishPassBuild {
   group: THREE.Group;
-  pools: Sheet[];
+  pools: WaterBody[];
   /** Floor tops of the pools, and the heights of the sills between them, upstream to downstream. */
   floors: number[];
+  /** Tops of the sills (the one upstream of each pool, then the last one before the river) and the x of their downstream faces. */
+  sills: number[];
+  sillX: number[];
+  /** The cascades over the sills: one ribbon per sill. */
+  cascades: Nappes;
 }
 
-export function buildFishPass(tex: THREE.Texture): FishPassBuild {
+export function buildFishPass(wk: WaterKit): FishPassBuild {
   const g = new THREE.Group();
   const fp = SITE.fishPass;
   const n = fp.pools;
@@ -212,8 +267,10 @@ export function buildFishPass(tex: THREE.Texture): FishPassBuild {
   const z1 = SITE.river.zSouth;
   const top = SITE.weir.crestY;
   const step = (top - SITE.tailY) / n;
-  const pools: Sheet[] = [];
+  const pools: WaterBody[] = [];
   const floors: number[] = [];
+  const sills: number[] = [];
+  const sillX: number[] = [];
   const sillT = 0.12;
   // north wall (the side towards the river)
   g.add(box(fp.xWest - sillT, SITE.river.bedDownY, fp.z, fp.xEast + sillT, top + 0.35, z0, concrete()));
@@ -223,29 +280,46 @@ export function buildFishPass(tex: THREE.Texture): FishPassBuild {
     const level = top - i * step - 0.02;
     const floor = level - 0.55;
     floors.push(floor);
+    sills.push(level + 0.12);
+    sillX.push(xe - sillT);
     g.add(box(xw, SITE.river.bedDownY, z0, xe, floor, z1, concrete()));
     g.add(box(xe - sillT, floor, z0, xe, level + 0.12, z1, concreteLight())); // the sill upstream of pool i
-    const mat = sheetMaterial(tex);
-    const s = new Sheet(xw + 0.02, xe - sillT, z0, z1, mat, `pass-pool-${i}`);
+    // the foam of the plunge of the cascade, at the upstream end of the pool (channel 0), and along its walls
+    const s = new WaterBody(xw + 0.02, xe - sillT, z0, z1, wk.surface(), `pass-pool-${i}`, {
+      xs: gridLines(xw + 0.02, xe - sillT, [], 0.18),
+      zs: gridLines(z0, z1, [], 0.2),
+    });
+    s.paint(0, (x) => plateau(x, xe - sillT - 0.6, xe - sillT - 0.05, 0.4));
     s.set(level);
     pools.push(s);
   }
   g.add(box(fp.xWest - sillT, SITE.river.bedDownY, z0, fp.xWest, top - n * step + 0.1, z1, concreteLight()));
+  sills.push(top - n * step + 0.1);
+  sillX.push(fp.xWest - sillT);
   mergeStatic(g, { name: 'pass' });
   for (const s of pools) g.add(s.mesh);
-  return { group: g, pools, floors };
+  const cascades = new Nappes(
+    sillX.map((x) => ({ x, z0, z1, film: sillT + 0.04 })),
+    wk.fall(),
+    'pass-cascades',
+  );
+  g.add(cascades.mesh);
+  return { group: g, pools, floors, sills, sillX, cascades };
 }
 
 // ------------------------------------------------------------------------------------------------ headrace, rack, gate
 
 export interface HeadraceBuild {
   group: THREE.Group;
-  mouth: Sheet;
-  above: Sheet;
-  below: Sheet;
+  mouth: WaterBody;
+  above: WaterBody;
+  below: WaterBody;
 }
 
-export function buildHeadrace(tex: THREE.Texture): HeadraceBuild {
+/** Length of the ramp over which the surface falls across the rack (the level step), m. */
+export const RACK_RAMP = 0.9;
+
+export function buildHeadrace(wk: WaterKit): HeadraceBuild {
   const g = new THREE.Group();
   const c = SITE.canal;
   g.add(box(c.xMin, SITE.ground.bottomY, c.zNorth, c.xMax, c.bedY, c.zSouth, gravel()));
@@ -255,9 +329,25 @@ export function buildHeadrace(tex: THREE.Texture): HeadraceBuild {
   g.add(box(c.mouthX, c.bedY, c.zNorth, c.xMax, SITE.groundY, c.zNorth + 0.15, concrete()));
   mergeStatic(g, { name: 'headrace' });
   const inner = [c.zNorth + 0.15, c.zSouth - 0.15] as const;
-  const mouth = new Sheet(c.mouthX, c.xMax - 0.01, inner[0], SITE.embankment.zSouth, sheetMaterial(tex), 'canal-mouth');
-  const above = new Sheet(SITE.gate.x, c.mouthX, inner[0], inner[1], sheetMaterial(tex), 'canal-above-gate');
-  const below = new Sheet(c.xMin, SITE.gate.x, inner[0], inner[1], sheetMaterial(tex), 'canal-below-gate');
+  const rackX = c.mouthX;
+  // the foam behind the bars of the rack (channel 0) and at the gate (channel 0 of the sheet below it)
+  const mouth = new WaterBody(c.mouthX, c.xMax - 0.01, inner[0], SITE.embankment.zSouth, wk.surface(), 'canal-mouth', {
+    xs: gridLines(c.mouthX, c.xMax - 0.01, [], 0.6),
+    zs: gridLines(inner[0], SITE.embankment.zSouth, [[inner[0], inner[0] + 0.8, 0.25]], 1),
+  });
+  mouth
+    .shore((_x, z) => smoothstep(0, 1, SITE.embankment.zSouth - z))
+    .bed((_x, z) => 0.5 + 0.5 * smoothstep(0, 2, SITE.embankment.zSouth - z));
+  const above = new WaterBody(SITE.gate.x, c.mouthX, inner[0], inner[1], wk.surface(), 'canal-above-gate', {
+    xs: gridLines(SITE.gate.x, c.mouthX, [[rackX - RACK_RAMP, rackX, 0.15]], 1.5),
+    zs: gridLines(inner[0], inner[1], [], 0.5),
+  });
+  above.paint(0, (x) => plateau(x, rackX - 1.5, rackX - 0.05, 0.9));
+  const below = new WaterBody(c.xMin, SITE.gate.x, inner[0], inner[1], wk.surface(), 'canal-below-gate', {
+    xs: gridLines(c.xMin, SITE.gate.x, [[SITE.gate.x - 2.4, SITE.gate.x, 0.3]], 3),
+    zs: gridLines(inner[0], inner[1], [], 0.5),
+  });
+  below.paint(0, (x) => plateau(x, SITE.gate.x - 2.2, SITE.gate.x - 0.05, 1.2));
   for (const s of [mouth, above, below]) g.add(s.mesh);
   return { group: g, mouth, above, below };
 }
@@ -397,7 +487,7 @@ export interface ChamberBuild {
 }
 
 /** The old water chamber: a pit, the trough on piers, the screw (bladed, turning), the basin on the canal side and the pool on the tailrace side. */
-export function buildChamber(shape: ScrewShape, pocket: PocketBuilder): ChamberBuild {
+export function buildChamber(shape: ScrewShape, pocket: PocketBuilder, wk: WaterKit): ChamberBuild {
   const ch = SITE.chamber;
   const c = SITE.canal;
   const l = computeLayout(shape);
@@ -509,15 +599,15 @@ export function buildChamber(shape: ScrewShape, pocket: PocketBuilder): ChamberB
     u.clone().negate(),
     new THREE.Vector3(origin.x + l.L * l.cosB, origin.y + l.L * l.sinB, zc),
   );
-  const pm = waterMaterial(0.5, COLOURS.water);
+  const pm = wk.volume({ opacity: 0.5, color: COLOURS.water });
   pm.clippingPlanes = planes;
   const pockets = new THREE.InstancedMesh(pocket.geometry, pm, n);
   pockets.frustumCulled = false;
   pockets.userData.sharedGeometry = true;
   pockets.name = 'site-pockets';
   tilt.add(pockets);
-  const basin = new Prism(waterMaterial(0.5, COLOURS.water), capWater());
-  const pool = new Prism(waterMaterial(0.5, COLOURS.water), capWater());
+  const basin = new Prism(wk.volume({ opacity: 0.5, color: COLOURS.water }), wk.cap());
+  const pool = new Prism(wk.volume({ opacity: 0.5, color: COLOURS.water }), wk.cap());
   for (const p of [basin, pool]) {
     p.cap.visible = false;
     g.add(p.mesh);
@@ -548,10 +638,10 @@ export function buildChamber(shape: ScrewShape, pocket: PocketBuilder): ChamberB
 
 export interface TailraceBuild {
   group: THREE.Group;
-  sheets: Sheet[];
+  sheets: WaterBody[];
 }
 
-export function buildTailrace(tex: THREE.Texture): TailraceBuild {
+export function buildTailrace(wk: WaterKit): TailraceBuild {
   const g = new THREE.Group();
   const c = SITE.canal;
   const T = SITE.tailrace;
@@ -576,15 +666,30 @@ export function buildTailrace(tex: THREE.Texture): TailraceBuild {
     ),
   );
   mergeStatic(g, { name: 'tailrace' });
-  const along = new Sheet(T.xEnd + 0.15, ch.xWest, c.zNorth + 0.15, c.zSouth - 0.15, sheetMaterial(tex), 'tail-run');
-  const turn = new Sheet(
+  // the wake of the screw's outlet runs down the race (channel 0: foam that thins out, channel 1 is its envelope for the ripples); the turn ends on the sill
+  const along = new WaterBody(T.xEnd + 0.15, ch.xWest, c.zNorth + 0.15, c.zSouth - 0.15, wk.surface(), 'tail-run', {
+    xs: gridLines(T.xEnd + 0.15, ch.xWest, [[ch.xWest - 12, ch.xWest, 0.5]], 3),
+    zs: gridLines(c.zNorth + 0.15, c.zSouth - 0.15, [], 0.5),
+  });
+  along.paint(0, (x) => 0.75 * Math.exp(-(ch.xWest - x) / 3.2));
+  const turn = new WaterBody(
     T.xEnd + 0.15,
     wEnd - 0.15,
     c.zSouth - 0.15,
     SITE.embankment.zSouth - 0.4,
-    sheetMaterial(tex),
+    wk.surface(),
     'tail-turn',
+    {
+      xs: gridLines(T.xEnd + 0.15, wEnd - 0.15, [], 0.5),
+      zs: gridLines(
+        c.zSouth - 0.15,
+        SITE.embankment.zSouth - 0.4,
+        [[SITE.embankment.zSouth - 1.5, SITE.embankment.zSouth - 0.4, 0.25]],
+        0.8,
+      ),
+    },
   );
+  turn.paint(0, (_x, z) => 0.8 * plateau(z, SITE.embankment.zSouth - 1.2, SITE.embankment.zSouth - 0.4, 0.5));
   for (const s of [along, turn]) g.add(s.mesh);
   return { group: g, sheets: [along, turn] };
 }

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import { clamp, lerp } from '@onigam/lab-kit/three';
-import { DEG } from '../dims';
+import { DEG, SCENERY } from '../dims';
 import { smoothstep } from '../common';
 
 // Sky dome (Preetham + clouds, stars at night), the sun and the moon as one directional light whose shadow box follows
@@ -101,12 +101,17 @@ export function createSky(scene: THREE.Scene): SkyRig {
   u.rayleigh.value = 1.3;
   u.mieCoefficient.value = 0.004;
   u.mieDirectionalG.value = 0.82;
-  if (u.cloudCoverage) u.cloudCoverage.value = 0.3;
+  if (u.cloudCoverage) {
+    u.cloudCoverage.value = 0.36;
+    u.cloudDensity.value = 0.55;
+    u.cloudElevation.value = 0.45;
+    u.cloudScale.value = 0.00022;
+  }
   injectNight(sky);
   scene.add(sky);
 
   scene.environment = envTexture();
-  scene.fog = new THREE.FogExp2(0xc6d4e0, 0.0005);
+  scene.fog = new THREE.FogExp2(0xc6d4e0, SCENERY.fogDensity);
 
   const sun = new THREE.DirectionalLight(0xfff2e0, 3);
   sun.castShadow = true;
@@ -115,6 +120,9 @@ export function createSky(scene: THREE.Scene): SkyRig {
   sun.shadow.camera.far = 900;
   sun.shadow.bias = -0.0003;
   sun.shadow.normalBias = 0.05;
+  // softer shadows: a wider filter and a lighter shadow, as a paper-like light has
+  sun.shadow.radius = 2.2;
+  sun.shadow.intensity = 0.86;
   scene.add(sun, sun.target);
 
   const hemi = new THREE.HemisphereLight(0xbcd3ee, 0x4a4a32, 0.9);

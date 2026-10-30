@@ -353,3 +353,68 @@ export const SITE = {
 export const RACK_CLEAN_LOSS = (RACK_CLEAN_ZETA * CANAL_SPEED * CANAL_SPEED) / (2 * 9.81);
 /** Speed of the water in the canal, m/s (sim). */
 export const CANAL_SPEED_MS = CANAL_SPEED;
+
+// ------------------------------------------------------------------------------------------------ the look of the water (the water role)
+
+/**
+ * The look of the water: art direction, not measurements. Every value is an `estimate` (nothing here is a result of the simulation); what the
+ * water SHOWS (the head over the crest, the unit discharge, the speed of the canal, the level step across the rack, the leak and the
+ * overflow of the screw) is read from `MillState` and the SITE block above, see `docs/water.md` for which effect is physical and which is
+ * decorative. Positive numbers only (`dims.test.ts` walks every export).
+ */
+export const WATER_FX = {
+  /** Colours of the water, sRGB hex. estimate: shallow = what a film of water over a pale bed shows, deep = clear mill-race water in the shade of the banks, murk = the same in a flood (loaded with silt). */
+  colours: {
+    shallow: 0x9fd8dc,
+    deep: 0x2a7f95,
+    murkShallow: 0xb39a6c,
+    murkDeep: 0x6e5738,
+    foam: 0xf6f4ec,
+    foamMurk: 0xdcd3c0,
+  },
+  /** Absorption of the light by clear water, per metre of depth (the red goes first). estimate: a clear river, a metre of it is already a colour. */
+  absorb: 0.85,
+  /** Metres of the plan per tile of the noise texture, for the three layers of ripples, and the speed of each layer relative to the surface current. estimate. */
+  tiles: [5, 2.2, 1.3],
+  layerSpeed: [1, 1.12, 0.88],
+  /** Slope scale of the ripples (about the largest slope of a layer): quiet water, the river at its design speed, a flood. estimate. */
+  ripple: { quiet: 0.05, river: 0.2, flood: 0.34 },
+  /** Standing waves below the weir: amplitude at the design overflow and at the largest, wavelength, decay length, m. estimate: a plunge pool trails a train of waves that dies in a few wavelengths. */
+  waves: { amplitude: 0.035, amplitudeMax: 0.09, wavelength: 1.5, decay: 7 },
+  /** Gains of the foam at the weir: unit discharge q (m²/s) at which the foam of the toe is full, and the length it trails downstream, m. estimate. */
+  foam: { toeFullQ: 0.2, trail: 5, rackFull: 0.9 },
+  /** Largest number of particles of spray per world, size range (m) and lifetime (s) of a drop at the weir, at the screw. estimate. */
+  spray: { max: 600, size: 0.13, sizeScrew: 0.04, life: 1.1 },
+  /** Standing pools of the fish pass: unit discharge of the cascades (m²/s) and the depth of its pools' tint, m. estimate: the pass carries a fraction of the reserved flow. */
+  pass: { q: 0.045, depth: 0.55 },
+  /** Largest unit discharge the nappe is drawn for, m²/s (a flood: the picture is capped). estimate. */
+  nappeMaxQ: 1.2,
+} as const;
+
+// ------------------------------------------------------------------------------------------------ the scenery (polish wave)
+
+/**
+ * The land round the mill race (src/three/site/terrain.ts, docs/scenery.md): every number is an estimate of ours, nothing here is read from a source.
+ * The land meets the water at the openings of `SITE` (river, canal, tailrace, chamber): lined edges stay at `SITE.groundY`, the banks of the river and
+ * of the mouth slope down to a `lip` and stop in a short earth face over the water.
+ */
+export const SCENERY = {
+  /** Half size of the land mesh, m: far enough that the fog (`fogDensity`) has swallowed the edge, and the hills end beyond the horizon. estimate. */
+  extent: 2400,
+  /** Density of the exponential-squared fog, 1/m: about 6 % at 200 m (the far views), 0.1 % left at the edge of the land. estimate. */
+  fogDensity: 0.0012,
+  /** Level of the land at the edge of an opening, over the datum, m: the pond reach (a little over the crest), the tailwater reach (a metre and more over the water: a flood rises 1.2 m), the fish pass (over its highest pool). estimate. */
+  lip: { pondY: 0.12, tailY: -0.3, passY: 0.18 },
+  /** Width over which a bank rises from its lip to the meadow, m. estimate. */
+  bankWidth: 3.4,
+  /** The meadow is flat at `SITE.groundY` here (the buildings, the yard, the lines): x0, x1, z0, z1, m; and a flat floodplain on the south bank. estimate. */
+  plateau: { westX: -48, eastX: 28, northZ: -34, southZ: -4 },
+  southFlat: { westX: -80, eastX: 90, northZ: 12, southZ: 36 },
+  /** The river goes on beyond the dims (x = ±160): it runs under a road bridge, then bends away between hills. Half width of the far river, m, and the deck of the bridges over the datum. estimate. */
+  farRiver: { halfWidth: 6, bedBelow: 0.5, bridgeX: 161, bridgeHalf: 3.1, deckY: 2.5, roadHalf: 2.6 },
+  /** Levels of the water used to colour the banks (the design levels): pond (a few mm under the crest) and tailwater. */
+  design: { pondY: -0.06, tailY: -DESIGN.head },
+  /** Vegetation counts (instances), m of the home-view corridor kept free of tall plants. estimate. */
+  trees: { willows: 10, poplars: 25, oaks: 16, conifersNear: 70, conifersFar: 1200, shrubs: 55 },
+  homeCorridor: 11,
+} as const;

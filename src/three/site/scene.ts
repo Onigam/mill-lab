@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { PartRegistry, clamp, damp, rng } from '@onigam/lab-kit/three';
+import { PartRegistry, clamp, damp } from '@onigam/lab-kit/three';
 import type { SceneModule } from '@onigam/lab-kit/three';
 import { partIds } from '../../part-ids';
 import type { MillState } from '../../sim/types';
@@ -10,11 +10,9 @@ import { anchor, hotspots, type HotspotDef } from '../world';
 import { PocketBuilder, pocketShift } from '../screw/helix';
 import { buildHouse, buildMill, buildPowerhouse } from './buildings';
 import {
-  box,
   buildChamber,
   buildFishPass,
   buildGate,
-  buildGround,
   buildHeadrace,
   buildNotch,
   buildRack,
@@ -24,7 +22,11 @@ import {
   type ChamberBuild,
 } from './parts';
 import { createSky } from './sky';
-import { waterTexture } from './water';
+import { WIND, textureStats } from './materials';
+import { buildProps, buildBridges } from './props';
+import { buildTerrain } from './terrain';
+import { buildVegetation, planVegetation } from './vegetation';
+import { SiteWaterFx, waterKit } from './water';
 
 // The "site" world: the mill race at the scale of the place. The river flows towards -X: the weir with its reserved-flow notch and its fish pass,
 // the intake with its coarse trash rack and its head gate, the headrace canal, the old water chamber with the screw in it, the tailrace (COMPRESSED
@@ -93,6 +95,8 @@ export interface SiteScene extends SceneModule<MillState> {
   readonly levels: Levels;
   readonly drawn: { shape: ScrewShape; rebuilds: number; debris: number; theta: number };
   readonly chamber: () => ChamberBuild;
+  /** The moving water: levels of the look, the spray, the foam (src/three/site/water.ts). */
+  readonly water: () => SiteWaterFx;
   flows: { water: FlowDots; current: FlowDots };
   /** Parts of the world that are not registered: the supports of the "no floating part" test. */
   scenery(): THREE.Object3D[];
@@ -115,12 +119,13 @@ const sameShape = (a: ScrewShape, b: ScrewShape): boolean => {
 };
 
 export function createSiteScene(): SiteScene {
+  const tBuild = performance.now();
   const scene = new THREE.Scene();
   scene.name = 'site';
   const registry = new PartRegistry();
   const sky = createSky(scene);
   sky.focusShadow(V(-4, 0, -6), 62);
-  const tex = waterTexture();
+  const wk = waterKit();
   const roots: Record<string, THREE.Group> = {};
   for (const id of IDS) {
     const g = new THREE.Group();
@@ -130,24 +135,30 @@ export function createSiteScene(): SiteScene {
   }
 
   // ---- scenery: the land
-  const ground = buildGround();
+  const tLand = performance.now();
+  const plan = planVegetation();
+  const terrain = buildTerrain(plan.shade);
+  const ground = terrain.group;
   scene.add(ground);
+  const plants = buildVegetation(plan);
+  scene.add(plants.group);
+  const tLandEnd = performance.now();
   const props = new THREE.Group();
   props.name = 'props';
   scene.add(props);
 
   // ---- river, weir, notch, fish pass
-  const river = buildRiver(tex);
+  const river = buildRiver(wk);
   roots.river.add(river.group);
-  const weir = buildWeir(tex);
+  const weir = buildWeir(wk);
   roots.weir.add(weir.group);
-  const notch = buildNotch(tex);
+  const notch = buildNotch(wk);
   roots['reserved-flow-notch'].add(notch.group);
-  const pass = buildFishPass(tex);
+  const pass = buildFishPass(wk);
   roots['fish-pass'].add(pass.group);
 
   // ---- headrace, rack, gate
-  const head = buildHeadrace(tex);
+  const head = buildHeadrace(wk);
   roots.headrace.add(head.group);
   const rack = buildRack();
   roots['trash-rack'].add(rack.group);
@@ -155,7 +166,7 @@ export function createSiteScene(): SiteScene {
   roots['intake-gate'].add(gate.group);
 
   // ---- tailrace
-  const tail = buildTailrace(tex);
+  const tail = buildTailrace(wk);
   roots.tailrace.add(tail.group);
 
   // ---- buildings
@@ -172,7 +183,7 @@ export function createSiteScene(): SiteScene {
   // ---- the chamber and the screw in it (rebuilt when the shape changes)
   const pocket = new PocketBuilder();
   let shape: ScrewShape = { ...DESIGN_SHAPE };
-  let chamber: ChamberBuild = buildChamber(shape, pocket);
+  let chamber: ChamberBuild = buildChamber(shape, pocket, wk);
   roots['water-chamber'].add(chamber.group);
 
   // ---- poles and the lines: chamber -> powerhouse -> house (scenery)
@@ -197,9 +208,6 @@ export function createSiteScene(): SiteScene {
     V(phOut.x + 12, 0, phOut.z - 7.5),
     V(houseIn.x - 3, 0, houseIn.z + 0.6),
   ];
-  const poleMat = new THREE.MeshStandardMaterial({ color: 0x5e4129, roughness: 0.9 });
-  for (const p of polesAt)
-    props.add(box(p.x - 0.1, SITE.groundY, p.z - 0.1, p.x + 0.1, SITE.groundY + 5.2, p.z + 0.1, poleMat));
   const top = (p: THREE.Vector3) => V(p.x, SITE.groundY + 5.1, p.z);
   const lineB = wire([
     phOut,
@@ -210,55 +218,12 @@ export function createSiteScene(): SiteScene {
     V(houseIn.x - 0.4, houseIn.y + 0.3, houseIn.z),
     houseIn,
   ]);
-  // the footbridge over the canal and the trees
-  const planks = new THREE.MeshStandardMaterial({ color: 0x8a6a45, roughness: 0.9 });
-  props.add(
-    box(2.4, SITE.groundY - 0.1, SITE.canal.zNorth - 0.6, 3.6, SITE.groundY + 0.04, SITE.canal.zSouth + 0.6, planks),
-  );
-  for (const z of [SITE.canal.zNorth - 0.55, SITE.canal.zSouth + 0.55])
-    props.add(box(2.4, SITE.groundY + 0.04, z - 0.03, 3.6, SITE.groundY + 0.9, z + 0.03, poleMat));
-  const rand = rng(5);
-  const free = (x: number, z: number) => {
-    const inRect = (cx: number, cz: number, hx: number, hz: number) => Math.abs(x - cx) < hx && Math.abs(z - cz) < hz;
-    return !(
-      inRect(SITE.mill.x, SITE.mill.z, SITE.mill.length / 2 + 3, SITE.mill.width / 2 + 3) ||
-      inRect(SITE.house.x, SITE.house.z, SITE.house.length / 2 + 3, SITE.house.width / 2 + 3) ||
-      inRect(SITE.powerhouse.x, SITE.powerhouse.z, 5, 4) ||
-      inRect(-2, -5.6, 14, 7) ||
-      (z > -9 && z < 14)
-    );
-  };
-  const spots: { x: number; z: number; h: number }[] = [];
-  for (let tries = 0; tries < 900 && spots.length < 70; tries++) {
-    const x = -90 + rand() * 170;
-    const z = -10 - rand() * 60; // north of the canal only: nothing stands between the visitor and the race
-    if (free(x, z)) spots.push({ x, z, h: 4 + rand() * 4.5 });
-  }
-  const trunks = new THREE.InstancedMesh(
-    new THREE.CylinderGeometry(0.16, 0.22, 1, 6).translate(0, 0.5, 0),
-    new THREE.MeshStandardMaterial({ color: 0x5e4129, roughness: 1 }),
-    spots.length,
-  );
-  const crowns = new THREE.InstancedMesh(
-    new THREE.IcosahedronGeometry(1, 1),
-    new THREE.MeshStandardMaterial({ color: 0x587a3c, roughness: 0.95, flatShading: true }),
-    spots.length,
-  );
-  const m4 = new THREE.Matrix4();
-  const q0 = new THREE.Quaternion();
-  spots.forEach((t, i) => {
-    m4.compose(V(t.x, SITE.groundY, t.z), q0, V(1, t.h * 0.45, 1));
-    trunks.setMatrixAt(i, m4);
-    m4.compose(V(t.x, SITE.groundY + t.h * 0.62, t.z), q0, V(t.h * 0.3, t.h * 0.38, t.h * 0.3));
-    crowns.setMatrixAt(i, m4);
-  });
-  for (const m of [trunks, crowns]) {
-    m.frustumCulled = false;
-    m.castShadow = true;
-    m.receiveShadow = true;
-  }
-  props.add(trunks, crowns);
+  // the poles with their crossarms, the footbridge, the walls, the fence, the lamps, the bench, the barrels and the firewood, the road bridges
+  props.add(buildProps({ poles: polesAt }).group);
+  const bridges = buildBridges();
+  scene.add(bridges);
   mergeStatic(props, { name: 'props' });
+  const tProps = performance.now();
 
   // ---- anchors of the labels (children of the part, so that they follow the explode)
   const anchors: Record<string, THREE.Object3D> = {};
@@ -283,6 +248,10 @@ export function createSiteScene(): SiteScene {
   anchors['house-load'] = house.anchor;
 
   for (const id of IDS) registry.add(id, roots[id], V(...EXPLODE[id]));
+
+  // ---- the moving water: the foam, the falls, the spray (src/three/site/water.ts)
+  const fx = new SiteWaterFx(wk, { river, weir, notch, pass, head, tail, chamber: () => chamber }, registry);
+  scene.add(fx.spray.object);
 
   // ---- the water dots
   const waterDots = new FlowDots(150, { color: 0x1c7fe0, size: 0.32, throughWalls: true, opacity: 0.95 });
@@ -382,7 +351,7 @@ export function createSiteScene(): SiteScene {
   const setShape = (next: ScrewShape) => {
     shape = shapeOf(next, shape);
     clearGroup(roots['water-chamber']);
-    chamber = buildChamber(shape, pocket);
+    chamber = buildChamber(shape, pocket, wk);
     roots['water-chamber'].add(chamber.group);
     refresh('water-chamber');
     drawn.shape = shape;
@@ -400,10 +369,12 @@ export function createSiteScene(): SiteScene {
     levels,
     drawn,
     chamber: () => chamber,
+    water: () => fx,
     flows: { water: waterDots, current: currentDots },
-    scenery: () => [ground, props],
+    scenery: () => [ground, plants.group, props, bridges],
     settle() {
       first = true;
+      fx.settle();
     },
     lamp: { panes: house.panes, bulb: house.bulb, light: house.light },
     powerLed: ph.led,
@@ -428,42 +399,22 @@ export function createSiteScene(): SiteScene {
         setShape(want);
       }
       sky.update(s.hour, view.time, s.day);
+      WIND.time.value = view.time;
 
       // ---- levels
       follow(levels, targets(s), dt, first);
       first = false;
       const { pond, canalUp, canalEnd, tail: tailY } = levels;
-      for (const sh of river.up) sh.set(pond);
-      for (const sh of river.down) sh.set(tailY);
-      head.mouth.set(pond);
-      head.above.set(canalUp);
-      head.below.set(canalUp - 0.01, canalEnd);
-      for (const sh of tail.sheets) sh.set(tailY);
-      const n = pass.pools.length;
-      pass.pools.forEach((p, i) => p.set(Math.max(pass.floors[i] + 0.12, pond - ((i + 0.5) * (pond - tailY)) / n)));
-      // falls over the weir and through the notch
-      const crest = SITE.weir.crestY;
-      weir.falls.forEach((f) => f.set(Math.max(crest, pond), crest - tailY, pond - crest));
-      notch.fall.set(pond, crest - SITE.notch.depth - tailY, pond - (crest - SITE.notch.depth));
+      // the water: levels, flow, foam, falls, spray (src/three/site/water.ts)
+      fx.update(s, dt, view, levels);
       gate.plate.position.y = gate.closedY + (gate.openY - gate.closedY) * levels.gate;
       // the rack clogs
       const b = rackBlocked(s.rackLoss);
       rack.debris.count = Math.round((rack.maxDebris * b) / 0.95);
       drawn.debris = rack.debris.count;
 
-      // ---- the water moves: the streaks run at a speed that follows the flow (the canal at its design speed, 0.8 m/s, when the machine takes its design flow)
-      const flowK = clamp(s.flow / DESIGN.flow, 0, 1.6);
-      const vCanal = CANAL_SPEED_MS * flowK;
+      const vCanal = CANAL_SPEED_MS * clamp(s.flow / DESIGN.flow, 0, 1.6);
       const vRiver = 0.3 + 1.1 * Math.sqrt(Math.max(0, s.riverFlow));
-      river.up.forEach((sh) => sh.flow(vRiver * dt));
-      river.down.forEach((sh) => sh.flow(vRiver * 1.3 * dt));
-      head.mouth.flow(vRiver * 0.5 * dt);
-      head.above.flow(vCanal * dt);
-      head.below.flow(vCanal * dt);
-      tail.sheets.forEach((sh) => sh.flow(vCanal * dt));
-      pass.pools.forEach((sh) => sh.flow(0.4 * dt));
-      weir.falls.forEach((f) => f.flow(2.5 * dt));
-      notch.fall.flow(2.5 * dt);
 
       // ---- the screw in the chamber: angle, pockets, the pools on its two sides
       let dTheta = 0;
@@ -549,5 +500,11 @@ export function createSiteScene(): SiteScene {
       }
     },
   };
+  // the first build, for the budget of docs/polish-rules.md (about 400 ms on a laptop): the numbers are in docs/scenery.md
+  // eslint-disable-next-line no-console
+  console.info(
+    `[scenery] site world built in ${Math.round(performance.now() - tBuild)} ms: land ${Math.round(tLandEnd - tLand)} ms ` +
+      `(textures ${Math.round(textureStats().ms)} ms), props ${Math.round(tProps - tLandEnd)} ms`,
+  );
   return mod;
 }

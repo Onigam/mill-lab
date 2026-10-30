@@ -13,6 +13,8 @@ import { PocketBuilder, pocketSection, pocketShift } from './helix';
 import { computeLayout, inletLevel, troughFloorY, worldPoint, type Layout } from './layout';
 import { FLOOR_Y, BASE_Y } from './structure';
 import { dashTexture } from './drive';
+import { waterKit } from '../water/kit';
+import { ScrewWaterFx } from './water';
 
 // The "screw" world: the machine in its water chamber, at its true size, the lower end in the outlet pool on the left, the upper end and its
 // drive on the right. Everything is drawn from the state: the screw turns by `angle`, the pockets of water descend by the same angle, the level
@@ -89,6 +91,8 @@ export interface ScrewScene extends SceneModule<MillState> {
     theta: number;
   };
   flows: { water: FlowDots; current: FlowDots };
+  /** The moving water: meniscus, inlet sheet, outlet wake, leak, overflow, spray (src/three/screw/water.ts). */
+  water(): ScrewWaterFx;
   /** Force the rebuild for a shape now (tests, and the first frame). */
   setShape(shape: ScrewShape): void;
   /** The scenery that is not a part: the supports of the "no floating part" test. */
@@ -145,7 +149,10 @@ export function createScrewScene(opts: ScrewOptions = {}): ScrewScene {
   let shape: ScrewShape = { ...DESIGN_SHAPE };
   let layout = computeLayout(shape);
   const ratios = defaultDriveRatios(shape.outerDiameter);
-  const ctx: BuildCtx = { roots, cut, planes, ratios: { ...ratios }, pocket, textures };
+  const water0 = waterKit();
+  const ctx: BuildCtx = { roots, cut, planes, ratios: { ...ratios }, pocket, textures, water: water0 };
+  // the moving water: the meniscus, the inlet sheet, the outlet wake, the leak and the overflow (src/three/screw/water.ts)
+  const fx = new ScrewWaterFx(water0, registry);
   const rig = emptyRig(layout);
   scene.add(rig.platform, rig.props);
   const drawn = { shape, layout, fill: -1, rebuilds: 0, ratios: { ...ratios }, theta: 0 };
@@ -153,7 +160,7 @@ export function createScrewScene(opts: ScrewOptions = {}): ScrewScene {
   // ---- the water dots ("Flux"): the water first, then the current in the wires
   const water = new FlowDots(110, { color: 0x1c7fe0, size: 0.1, throughWalls: true, opacity: 0.95 });
   const current = new FlowDots(90, { color: 0xff8a3d, size: 5, pixels: true, throughWalls: true, opacity: 0.95 });
-  scene.add(water.object, current.object);
+  scene.add(water.object, current.object, fx.spray.object);
   let waterPath = -1;
   let currentPath = -1;
   let outPath = -1;
@@ -285,6 +292,8 @@ export function createScrewScene(opts: ScrewOptions = {}): ScrewScene {
     clipPlanes(layout);
     buildScrewParts(layout, ctx, rig);
     buildDriveParts(layout, ctx, rig);
+    fx.setLayout(layout);
+    fx.clipWith(cut);
     for (const id of IDS) if (registry.get(id)) refresh(id);
     placeAnchors(layout);
     setExplode(layout);
@@ -351,6 +360,7 @@ export function createScrewScene(opts: ScrewOptions = {}): ScrewScene {
     cut,
     drawn,
     flows: { water, current },
+    water: () => fx,
     fish: rig.fish!,
     keyLight,
     setShape(next) {
@@ -498,6 +508,9 @@ export function createScrewScene(opts: ScrewOptions = {}): ScrewScene {
         (rig.poolWater!.mesh.material as THREE.MeshStandardMaterial).opacity =
           0.42 + 0.1 * clamp(state.tailRise / 1.2, 0, 1);
       }
+
+      // ---- the moving water: meniscus, inlet sheet, outlet wake, leak, overflow, spray
+      fx.update(state, dt, view, rig, fill, unwrapped);
 
       // ---- the fish rides a pocket (visible in the section; in the whole view it shows through the water)
       {
