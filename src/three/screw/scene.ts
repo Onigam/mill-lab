@@ -27,8 +27,7 @@ const HOTSPOTS: HotspotDef[] = [
   { id: 'trapped-water', fr: 'Poche d’eau', en: 'Water pocket' },
   { id: 'chain', fr: 'Chaîne', en: 'Chain' },
   { id: 'trough', fr: 'Auge', en: 'Trough' },
-  { id: 'generator', fr: 'Génératrice', en: 'Generator', minor: true },
-  { id: 'battery', fr: 'Batterie', en: 'Battery', minor: true },
+  { id: 'generator', fr: 'Génératrice', en: 'Generator', minor: true, goto: 'generator' },
   { id: 'screw-core', fr: 'Noyau central', en: 'Screw core', minor: true },
   { id: 'blade-fastener', fr: 'Fixations des pales', en: 'Blade fasteners', minor: true },
   { id: 'upper-bearing', fr: 'Palier haut', en: 'Upper bearing', minor: true },
@@ -41,8 +40,6 @@ const HOTSPOTS: HotspotDef[] = [
   { id: 'pulley-large', fr: 'Grande poulie', en: 'Large pulley', minor: true },
   { id: 'belt', fr: 'Courroie', en: 'Belt', minor: true },
   { id: 'pulley-small', fr: 'Petite poulie', en: 'Small pulley', minor: true },
-  { id: 'rectifier', fr: 'Redresseur', en: 'Rectifier', minor: true },
-  { id: 'charge-controller', fr: 'Régulateur de charge', en: 'Charge controller', minor: true },
 ];
 
 /** Explode offsets at the design size, in the frame of the screw (u along the axis towards the upper end, n perpendicular and up, z towards the viewer), metres. */
@@ -64,9 +61,6 @@ export const EXPLODE: Record<string, { u: number; n: number; z: number }> = {
   belt: { u: 0, n: 1.9, z: 0.5 },
   'pulley-small': { u: -0.7, n: 0.4, z: 0.6 },
   generator: { u: 0.7, n: 0.5, z: 0.8 },
-  rectifier: { u: 0, n: 0.4, z: 1.0 },
-  'charge-controller': { u: 0, n: 0.4, z: 1.0 },
-  battery: { u: 0, n: 0.9, z: 1.4 },
 };
 
 const IDS = partIds('screw');
@@ -239,9 +233,6 @@ export function createScrewScene(opts: ScrewOptions = {}): ScrewScene {
     set('belt', W(l.sBelt, 0.5 * (cC[0] + cG[0]) + 0.12 * k, 0.5 * (cC[1] + cG[1])));
     set('pulley-small', W(l.sBelt, cG[0] + rig.drive.smallPulley.r, cG[1]));
     set('generator', W(l.sGenFront + 0.17 * k, cG[0] + 0.62 * k, cG[1]));
-    set('rectifier', rig.places.rect.clone().add(V(0, 0.22 * k, 0.1 * k)));
-    set('charge-controller', rig.places.ctrl.clone().add(V(0, 0.38 * k, 0.06 * k)));
-    set('battery', rig.places.battery.clone().add(V(0, 0.16 * k, 0.12 * k)));
   };
 
   const setExplode = (l: Layout) => {
@@ -567,14 +558,6 @@ export function createScrewScene(opts: ScrewOptions = {}): ScrewScene {
         view.cutaway &&
         (rig.pockets!.visible ?? false) &&
         (registry.get('trapped-water')?.display ?? 'solid') === 'solid';
-
-      // ---- the lamp of the controller and the charge segments of the battery
-      if (rig.controllerLed) rig.controllerLed.emissiveIntensity = state.charging ? 2.2 : 0;
-      const lit = state.charging ? clamp(state.electricPower / 2500, 0.2, 1) : 0;
-      rig.batterySegments.forEach((m, i) => {
-        const chase = state.charging ? 0.5 + 0.5 * Math.sin(view.time * 3 - i * 0.9) : 0;
-        m.emissiveIntensity = i === 0 ? 0.35 + 1.6 * lit * (state.charging ? 1 : 0) : 2 * lit * chase;
-      });
 
       // ---- "Flux": the water rides the pockets, the current follows the amperes
       water.object.visible = view.schematic && fill > 0.05;

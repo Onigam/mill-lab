@@ -250,26 +250,34 @@ function tube(
     }
 }
 
-/** A hanging ribbon (a willow strand): from `base`, out a little, down by `length`; two triangles per segment, seen from both sides. */
-function strand(
+/**
+ * A fine hanging strand: a thin ribbon that leaves `base` along `out` at an angle of (1 - arch) of a right angle below the horizontal,
+ * bends under its weight and ends vertical, `length` long (a quarter-circle-like arc), narrowing and darkening towards its tip, with a
+ * slight wave of its width so that it reads as a twig with leaves rather than a thread.
+ */
+function fineStrand(
   m: Mesher,
   base: THREE.Vector3,
   out: THREE.Vector3,
   length: number,
   width: number,
   segs: number,
+  arch: number,
   top: THREE.Color,
   bottom: THREE.Color,
 ): void {
   const tmp = new THREE.Color();
   const side = new THREE.Vector3(-out.z, 0, out.x).normalize();
+  const th0 = (1 - Math.min(1, Math.max(0, arch))) * (Math.PI / 2);
+  const R = length / (Math.PI / 2 - th0 + 1e-6);
   const row: [number, number][] = [];
   for (let i = 0; i <= segs; i++) {
     const t = i / segs;
-    const px = base.x + out.x * t * 0.35 * length;
-    const py = base.y - t * length;
-    const pz = base.z + out.z * t * 0.35 * length;
-    const w = width * (1 - 0.55 * t);
+    const th = th0 + t * (Math.PI / 2 - th0);
+    const px = base.x + out.x * R * (Math.sin(th) - Math.sin(th0));
+    const py = base.y + R * (Math.cos(th) - Math.cos(th0));
+    const pz = base.z + out.z * R * (Math.sin(th) - Math.sin(th0));
+    const w = width * (1 - 0.6 * t) * (1 + 0.45 * Math.sin(t * 17 + length * 40));
     tmp.copy(top).lerp(bottom, t);
     const sw = 0.5 + 1.5 * t ** 1.4;
     const a = m.vert(px - side.x * w, py, pz - side.z * w, tmp, 0, t * 6, sw);
@@ -281,8 +289,6 @@ function strand(
     const [c, d] = row[i + 1];
     m.tri(a, c, b);
     m.tri(b, c, d);
-    m.tri(a, b, c);
-    m.tri(b, d, c);
   }
 }
 
@@ -343,23 +349,36 @@ function willowGeometry(): { wood: THREE.BufferGeometry; leaves: THREE.BufferGeo
   const lo = C(0x587a31);
   const hi = C(0x8fab4a);
   const r = rng(3);
-  // the dome of the crown
-  lobe(lv, 0, 0.7, 0, 0.3, 0.2, 0.3, { lo, hi, seed: 1, noise: 0.2 });
-  lobe(lv, 0.17, 0.62, 0.05, 0.2, 0.15, 0.2, { lo, hi, seed: 2 });
-  lobe(lv, -0.17, 0.61, -0.05, 0.2, 0.15, 0.2, { lo, hi, seed: 3 });
-  // the curtain: broad hanging panels round the rim in two rings, and finer strands inside
-  const top = C(0x86a444);
-  const bottom = C(0x547530);
-  const ring = (n: number, rho: number, y: number, len: number, wid: number, seed: number) => {
-    for (let i = 0; i < n; i++) {
-      const a = ((i + 0.5 * seed) / n) * Math.PI * 2 + (r() - 0.5) * 0.18;
-      const out = new THREE.Vector3(Math.cos(a), 0, Math.sin(a));
-      strand(lv, new THREE.Vector3(out.x * rho, y, out.z * rho), out, len * (0.82 + 0.3 * r()), wid, 3, top, bottom);
-    }
-  };
-  ring(22, 0.3, 0.62, 0.46, 0.055, 0);
-  ring(16, 0.23, 0.7, 0.4, 0.05, 1);
-  ring(9, 0.12, 0.74, 0.3, 0.045, 0);
+  // a small, low dome of foliage at the top: the curtain of strands below does most of the work (a dome with a few broad hanging
+  // panels read as a jellyfish)
+  lobe(lv, 0, 0.7, 0, 0.2, 0.12, 0.2, { lo, hi, seed: 1, noise: 0.25 });
+  lobe(lv, 0.11, 0.66, 0.04, 0.13, 0.09, 0.13, { lo, hi, seed: 2, noise: 0.25 });
+  lobe(lv, -0.11, 0.65, -0.04, 0.13, 0.09, 0.13, { lo, hi, seed: 3, noise: 0.25 });
+  // the curtain: many fine strands that start near the top, arch out and then hang, like the long, thin twigs of a weeping willow
+  const palette = [C(0x86a444), C(0x93ad4e), C(0x7a9a3c)];
+  const bottoms = [C(0x547530), C(0x5f7f33), C(0x6d8a3a)];
+  const N = 175;
+  for (let i = 0; i < N; i++) {
+    const a = r() * Math.PI * 2;
+    const rho = 0.03 + 0.3 * Math.sqrt(r());
+    const out = new THREE.Vector3(Math.cos(a), 0, Math.sin(a));
+    const edge = rho / 0.33;
+    const y = 0.76 - 0.2 * edge * edge;
+    const arch = 0.85 - 0.7 * edge;
+    const length = (0.36 + 0.22 * r()) * (0.85 + 0.3 * (1 - edge));
+    const k = Math.floor(r() * palette.length);
+    fineStrand(
+      lv,
+      new THREE.Vector3(out.x * rho, y, out.z * rho),
+      out,
+      length,
+      0.0058 + 0.004 * r(),
+      6,
+      arch,
+      palette[k],
+      bottoms[k],
+    );
+  }
   return { wood: wood.build(), leaves: lv.build() };
 }
 

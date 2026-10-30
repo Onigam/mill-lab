@@ -12,6 +12,7 @@ import {
   tileMaterial,
   woodMaterial,
 } from './materials';
+import { warning } from '../powerroom/parts';
 
 // The three buildings of the site: the mill (rubble stone with dressed quoins, a clay-tile roof with a ridge, eaves, gutters and downpipes, framed
 // windows with lintels, sills and shutters, a cart door and a loading hatch on the canal side, a hoist beam on the east gable, a chimney), the small
@@ -364,6 +365,12 @@ export function buildPowerhouse(): Powerhouse {
   bx(g, L - 0.1, 0.12, 0.05, 0, b0 + H - 0.36, W / 2 + 0.02, trim);
   for (const sx of [-1, 1])
     bx(g, 0.1, H - 0.3, 0.05, sx * (L / 2 - 0.19), b0 + (H - 0.3) / 2 + 0.05, W / 2 + 0.02, trim);
+  // a sign on the east wall, beside the louvres: the electrical danger triangle (the way into the `powerroom` world is this sign, the label and the open front)
+  const sign = warning(0.4, 0, 0, 0);
+  sign.name = 'sign';
+  sign.rotation.y = Math.PI / 2;
+  sign.position.set(L / 2, b0 + 1.45, -0.55);
+  g.add(sign);
   // louvres on the east wall, a meter box on the west wall
   for (let i = 0; i < 5; i++) bx(g, 0.04, 0.05, 0.5, L / 2 + 0.01, b0 + 1.5 + i * 0.1, 0.3, zinc);
   bx(g, 0.1, 0.4, 0.3, -L / 2 - 0.03, b0 + 1.2, 0.5, iron);

@@ -51,7 +51,7 @@ const HOTSPOTS: HotspotDef[] = [
   { id: 'water-chamber', fr: 'Chambre d’eau', en: 'Water chamber', goto: 'screw' },
   { id: 'weir', fr: 'Seuil', en: 'Weir' },
   { id: 'mill-building', fr: 'Moulin', en: 'Mill' },
-  { id: 'powerhouse', fr: 'Local technique', en: 'Powerhouse' },
+  { id: 'powerhouse', fr: 'Local technique', en: 'Powerhouse', goto: 'powerroom' },
   { id: 'house-load', fr: 'Maison', en: 'House' },
   { id: 'headrace', fr: 'Bief d’amenée', en: 'Headrace', minor: true },
   { id: 'river', fr: 'Rivière', en: 'River', minor: true },

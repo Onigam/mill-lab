@@ -2,7 +2,9 @@ import * as THREE from 'three';
 import { describe, expect, it } from 'vitest';
 import type { SceneModule } from '@onigam/lab-kit/three';
 import type { MillState } from '../sim/types';
+import { createGeneratorScene } from './generator/scene';
 import { MERGE } from './merge';
+import { createPowerroomScene } from './powerroom/scene';
 import { createScrewScene } from './screw/scene';
 import { createSiteScene } from './site/scene';
 import { drawStats, stateWith, view } from './test-utils';
@@ -61,3 +63,5 @@ function compare(name: string, make: () => SceneModule<MillState>) {
 
 compare('screw', () => createScrewScene());
 compare('site', () => createSiteScene());
+compare('generator', () => createGeneratorScene());
+compare('powerroom', () => createPowerroomScene());

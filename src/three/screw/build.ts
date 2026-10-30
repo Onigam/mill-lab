@@ -6,7 +6,6 @@ import {
   COLOURS,
   CORE_PLATE,
   DRIVE,
-  ELECTRONICS,
   GENERATOR,
   coreWall,
   largeSprocketRadius,
@@ -30,17 +29,7 @@ import {
   pillowBlock,
   wedge,
 } from './structure';
-import {
-  bandGeometry,
-  bandLoop,
-  buildBattery,
-  buildController,
-  buildGenerator,
-  buildRectifier,
-  pulley,
-  sprocket,
-  type Wheel,
-} from './drive';
+import { bandGeometry, bandLoop, buildGenerator, pulley, sprocket, type Wheel } from './drive';
 import { Nappes } from '../water/nappe';
 import type { WaterKit } from '../water/kit';
 import { Prism, SectionCap, buildFish } from './water';
@@ -89,12 +78,10 @@ export interface Rig {
   /** The sheet of water that falls into the inlet basin over the headwall (water). */
   inletSheet: Nappes | null;
   bladeCap: { geometry: THREE.BufferGeometry; quads: number } | null;
-  controllerLed: THREE.MeshStandardMaterial | null;
-  batterySegments: THREE.MeshStandardMaterial[];
-  /** Unregistered scenery: the platform, the board and the cables (the supports of the "no floating part" test). */
+  /** Unregistered scenery: the platform and the cable out (the supports of the "no floating part" test). */
   platform: THREE.Group;
   props: THREE.Group;
-  /** Polylines for the flow dots, world frame: the current from the generator to the battery, and the line out of the controller. */
+  /** Polylines for the flow dots, world frame: the current from the generator's terminal to the end of the platform, and the cable down and away to the powerhouse. */
   paths: { current: THREE.Vector3[]; out: THREE.Vector3[] };
   /** The drive in numbers (tests). */
   drive: {
@@ -109,13 +96,9 @@ export interface Rig {
     teeth: [number, number];
     ratios: { chain: number; belt: number };
   };
-  /** Placement of the electronics (world), for the anchors and the cables. */
+  /** Placement of the generator (world), for its label and the room over it. */
   places: {
-    rect: THREE.Vector3;
-    ctrl: THREE.Vector3;
-    battery: THREE.Vector3;
     generator: THREE.Vector3;
-    board: THREE.Vector3;
   };
 }
 
@@ -135,8 +118,6 @@ export function emptyRig(layout: Layout): Rig {
     inletWater: null,
     inletSheet: null,
     bladeCap: null,
-    controllerLed: null,
-    batterySegments: [],
     platform: new THREE.Group(),
     props: new THREE.Group(),
     paths: { current: [], out: [] },
@@ -152,7 +133,7 @@ export function emptyRig(layout: Layout): Rig {
       teeth: [0, 0],
       ratios: { chain: 1, belt: 1 },
     },
-    places: { rect: v(), ctrl: v(), battery: v(), generator: v(), board: v() },
+    places: { generator: v() },
   };
 }
 
@@ -201,7 +182,7 @@ const SCREW_PARTS = [
   'outlet-pool',
   'trapped-water',
 ];
-/** The parts of the machine proper (the `site` world draws these, at the same size, beside the screw's shaft) and the three boxes of the electronics. */
+/** The parts of the machine proper (the `site` world draws these, at the same size, beside the screw's shaft). The electronics are not drawn here: they stand in the powerhouse (`powerroom` world). */
 export const MACHINE_PARTS = [
   'drive-sprocket',
   'chain',
@@ -212,7 +193,6 @@ export const MACHINE_PARTS = [
   'pulley-small',
   'generator',
 ] as const;
-const ELECTRONIC_PARTS = ['rectifier', 'charge-controller', 'battery'];
 
 /** Everything but the parts that depend on the ratios of the drive. */
 export function buildScrewParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
@@ -440,11 +420,11 @@ export function buildScrewParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
 /** What the machine of the drive needs of a build context (the `site` world builds it without the section kit, the pockets or the water). */
 export type DriveCtx = Pick<BuildCtx, 'roots' | 'ratios' | 'textures'>;
 
-/** Sprockets, chain, countershaft, pulleys, belt, generator, electronics: depends on the two ratios. */
+/** Sprockets, chain, countershaft, pulleys, belt, generator and the cable that leaves it: depends on the two ratios. */
 export function buildDriveParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
   clearGroup(rig.props);
   const terminal = buildDriveMachine(l, ctx, rig);
-  buildElectronics(l, ctx, rig, terminal);
+  buildCable(l, rig, terminal);
 }
 
 /**
@@ -682,104 +662,40 @@ export function buildDriveMachine(l: Layout, ctx: DriveCtx, rig: Rig): THREE.Vec
   return genTerminal;
 }
 
-/** The electronics: a plywood board on legs at the far end of the platform, the three boxes on and in front of it, the cables from the generator's terminal. */
-function buildElectronics(l: Layout, ctx: DriveCtx, rig: Rig, genTerminal: THREE.Vector3): void {
-  const { roots } = ctx;
-  for (const id of ELECTRONIC_PARTS) clearGroup(roots[id]);
+/**
+ * The cable that leaves the generator's terminal box for the powerhouse (the rectifier, the charge controller and the battery stand there: `powerroom` world, as the `site`
+ * world draws the same cable): up from the box, along the platform, down its end and away along the floor. Scenery, with the two polylines of the dots of the current.
+ */
+function buildCable(l: Layout, rig: Rig, genTerminal: THREE.Vector3): void {
   const k = l.k;
-  // ---- electronics: a plywood board on legs at the far end of the platform, the battery on the platform in front of it
-  const boardX = l.platX1 - 0.75 * k;
-  const boardZ = l.platZ0 + 0.35 * k;
-  const [bw, bh, bd] = ELECTRONICS.board.map((v) => v * k) as [number, number, number];
-  const lift = ELECTRONICS.boardLift * k;
-  const boardY = l.platTop + lift + bh / 2;
-  const board = new THREE.Group();
-  board.name = 'board';
-  board.add(mesh(new THREE.BoxGeometry(bw, bh, bd), woodMat(0xc8a06a), [boardX, boardY, boardZ]));
-  for (const sx of [-1, 1])
-    board.add(
-      mesh(new THREE.BoxGeometry(0.05 * k, lift + 0.02 * k, 0.05 * k), MAT.woodDark(), [
-        boardX + sx * bw * 0.4,
-        l.platTop + (lift + 0.02 * k) / 2,
-        boardZ,
-      ]),
-    );
-  mergeStatic(board, { name: 'board' });
-  rig.props.add(board);
-  rig.places.board.set(boardX, boardY, boardZ);
-  const faceZ = boardZ + bd / 2;
-  const rb = buildRectifier(k);
-  const cb = buildController(k);
-  const bb = buildBattery(k);
-  const rectPos = v3(boardX - bw * 0.25, boardY - bh * 0.28, faceZ + (ELECTRONICS.rectifier[2] * k) / 2);
-  const ctrlPos = v3(boardX + bw * 0.2, boardY - bh * 0.46, faceZ + (ELECTRONICS.controller[2] * k) / 2);
-  const batPos = v3(boardX - 0.05 * k, l.platTop, faceZ + 0.5 * k);
-  rig.places.rect.copy(rectPos);
-  rig.places.ctrl.copy(ctrlPos);
-  rig.places.battery.copy(batPos);
-  const boxes: [string, { meshes: THREE.Mesh[] }, THREE.Vector3][] = [
-    ['rectifier', rb, rectPos],
-    ['charge-controller', cb, ctrlPos],
-    ['battery', bb, batPos],
+  const z = genTerminal.z;
+  const onPlatform = l.platTop + 0.03 * k;
+  const end = l.platX1 - 0.15 * k;
+  const run = [
+    genTerminal.clone(),
+    v3(genTerminal.x + 0.03 * k, genTerminal.y + 0.14 * k, z),
+    v3(genTerminal.x + 0.36 * k, genTerminal.y + 0.06 * k, z),
+    v3(genTerminal.x + 0.8 * k, onPlatform + 0.3 * k, z),
+    v3(genTerminal.x + 1.1 * k, onPlatform + 0.02 * k, z),
+    v3(end, onPlatform, z),
   ];
-  for (const [id, b, pos] of boxes) {
-    const g = new THREE.Group();
-    g.position.copy(pos);
-    b.meshes.forEach((m) => g.add(m));
-    roots[id].add(g);
-    mergeStatic(roots[id], { name: id });
-  }
-  rig.controllerLed = cb.led ?? null;
-  rig.batterySegments = bb.segments;
-
-  // ---- cables (scenery): generator -> rectifier -> controller -> battery, and the line out of the controller
+  const down = [
+    v3(end, onPlatform, z),
+    v3(l.platX1 + 0.02 * k, l.platTop - 0.02 * k, z),
+    v3(l.platX1 + 0.1 * k, BASE_Y + 0.05, z),
+    v3(l.platX1 + 0.5 * k, BASE_Y + 0.04, z),
+    v3(l.platX1 + 1.4 * k, BASE_Y + 0.04, z),
+  ];
   const cable = new THREE.Group();
   cable.name = 'cables';
-  const at = (p: THREE.Vector3, o: THREE.Vector3) => p.clone().add(o);
-  const rIn = at(rectPos, rb.inPort);
-  const rOut = at(rectPos, rb.outPort);
-  const cIn = at(ctrlPos, cb.inPort);
-  const cOut = at(ctrlPos, cb.outPort);
-  const bPlus = at(batPos, bb.inPort);
-  const ac = [
-    genTerminal,
-    v3(genTerminal.x, genTerminal.y + 0.25 * k, genTerminal.z),
-    v3(genTerminal.x + 0.9 * k, l.platTop + 0.5 * k, boardZ + 1.3 * k),
-    v3(rIn.x - 0.12 * k, rIn.y + 0.3 * k, rIn.z + 0.3 * k),
-    v3(rIn.x, rIn.y + 0.04 * k, rIn.z + 0.05 * k),
-    rIn,
-  ];
-  const dc1 = [
-    rOut,
-    v3(rOut.x + 0.03 * k, rOut.y - 0.05 * k, rOut.z + 0.08 * k),
-    v3((rOut.x + cIn.x) / 2, rOut.y - 0.16 * k, rOut.z + 0.11 * k),
-    v3(cIn.x - 0.03 * k, cIn.y + 0.05 * k, cIn.z + 0.08 * k),
-    cIn,
-  ];
-  const dc2 = [
-    cOut,
-    v3(cOut.x + 0.08 * k, cOut.y - 0.08 * k, cOut.z + 0.22 * k),
-    v3(bPlus.x + 0.05 * k, bPlus.y + 0.32 * k, bPlus.z - 0.1 * k),
-    bPlus,
-  ];
-  const tail = [
-    v3(cOut.x, cOut.y + 0.02 * k, cOut.z),
-    v3(cOut.x + 0.22 * k, cOut.y + 0.1 * k, cOut.z + 0.14 * k),
-    v3(l.platX1 - 0.15 * k, l.platTop + 0.06 * k, cOut.z + 0.45 * k),
-    v3(l.platX1 + 0.04 * k, l.platTop + 0.05 * k, cOut.z + 0.45 * k),
-    v3(l.platX1 + 0.12 * k, BASE_Y + 0.04, cOut.z + 0.45 * k),
-    v3(l.platX1 + 1.4 * k, BASE_Y + 0.04, cOut.z + 0.45 * k),
-  ];
-  const mats = [MAT.cableRed(), MAT.cableBlack(), MAT.cableRed(), MAT.cableBlack()];
-  [ac, dc1, dc2, tail].forEach((pts, i) => {
-    const curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal', 0.3);
-    const tube = mesh(new THREE.TubeGeometry(curve, 48, 0.008 * k, 6, false), mats[i]);
-    tube.castShadow = false;
-    cable.add(tube);
-  });
-  rig.props.add(cable);
   const sample = (pts: THREE.Vector3[], n: number) =>
     new THREE.CatmullRomCurve3(pts, false, 'centripetal', 0.3).getPoints(n);
-  rig.paths.current = [...sample(ac, 30), ...sample(dc1, 12).slice(1), ...sample(dc2, 14).slice(1)];
-  rig.paths.out = sample(tail, 30);
+  const all = [...sample(run, 40), ...sample(down, 20).slice(1)];
+  const curve = new THREE.CatmullRomCurve3(all, false, 'centripetal', 0.3);
+  const tube = mesh(new THREE.TubeGeometry(curve, 96, 0.009 * k, 8, false), MAT.printBlack());
+  tube.castShadow = false;
+  cable.add(tube);
+  rig.props.add(cable);
+  rig.paths.current = sample(run, 40);
+  rig.paths.out = sample(down, 20);
 }

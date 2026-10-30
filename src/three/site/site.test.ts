@@ -45,7 +45,7 @@ describe('site world', () => {
     for (const id of IDS) expect(reg.get(id)!.meshes.length, id).toBeGreaterThan(0);
   });
 
-  it('has a hotspot for every part, five main labels; the water chamber opens the screw world; anchors live in the scene', () => {
+  it('has a hotspot for every part, five main labels; the water chamber opens the screw world and the powerhouse the powerroom world; anchors live in the scene', () => {
     expect(mod.hotspots.map((h) => h.partId).sort()).toEqual([...IDS].sort());
     expect(mod.hotspots.filter((h) => !h.minor).map((h) => h.partId)).toEqual([
       'water-chamber',
@@ -55,7 +55,10 @@ describe('site world', () => {
       'house-load',
     ]);
     expect(mod.hotspots.find((h) => h.partId === 'water-chamber')!.goto).toBe('screw');
-    expect(mod.hotspots.filter((h) => h.goto).length).toBe(1);
+    expect(mod.hotspots.find((h) => h.partId === 'powerhouse')!.goto).toBe('powerroom');
+    // the building carries the danger triangle that tells where the way in is
+    expect(mod.registry.get('powerhouse')!.object.getObjectByName('sign')).toBeDefined();
+    expect(mod.hotspots.filter((h) => h.goto).length).toBe(2);
     mod.scene.updateMatrixWorld(true);
     for (const h of mod.hotspots) {
       let o: THREE.Object3D | null = h.anchor;

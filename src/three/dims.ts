@@ -447,3 +447,99 @@ export const SITE_DRIVE = {
   /** The cable that leaves the generator's terminal for the powerhouse: height of its first rise over the terminal, m. estimate. */
   cableRise: 0.4,
 } as const;
+
+// ------------------------------------------------------------------------------------------------ the generator, inside (completion wave A, 3D role)
+
+/**
+ * The permanent-magnet generator of the `generator` world, seen from the inside. NOTE for the data role: the lead's brief calls this block `GENERATOR`, but that name is the
+ * outside of the blue machine (`GENERATOR`, above: body, bells, shaft, terminal box, feet) and is used by the drawings and the sheets, so the inside is `GENERATOR_DESIGN`.
+ * It is the SAME machine: the frame, the shaft and the terminal box are `GENERATOR` and are not repeated here; this block only adds what is inside them. What the simulation
+ * gives (rated speed 600 rpm, 39 N·m, 2.2 kW, see `docs/physics.md` §1.8 and §6) is a result, not a dimension: it is read from `MillState` and `src/sim`, never typed here.
+ * Everything else is an estimate of ours: the sources give no pole count, slot count, magnet size or air gap. Frame of the world: X along the shaft, the front face of the
+ * body at x = 0 and the body going towards +x (as in the `screw` world, whose small pulley sits on the stub at x < 0), Y up, Z towards the viewer, the axis through the origin.
+ * Angles ψ are measured from +Y towards +Z (the top of the machine is ψ = 0).
+ */
+export const GENERATOR_DESIGN = {
+  /** Three phases (derived: the three-phase bridge of `sim/mech`). */
+  phases: 3,
+  /** Number of magnet poles, north and south alternating, and of stator slots (teeth, coils). estimate: a 24-slot, 16-pole winding is a usual concentrated winding (slots per pole and phase = 1/2); it makes every tooth carry one coil and the phases follow A, B, C round the stator. */
+  poles: 16,
+  slots: 24,
+  /** Rated shaft speed, rpm. sim (`GEN_RATED_RPM`): the electrical frequency is `poles × rpm / 120`, see `electricalFrequency`. */
+  ratedRpm: GEN_RATED_RPM,
+  /** The section: the front half of the machine (z > 0) is removed from this x on, so that the plane through the axis AND the plane across it (at `section`) both show. estimate: through the middle of the stack, between two cooling ribs. */
+  section: 0.14,
+  /** Steel tube of the frame under the cooling ribs: wall thickness, m (its outer face is `GENERATOR.bodyRadius`). estimate. */
+  shellWall: 0.008,
+  /** Cooling ribs round the body (as the blue machine draws them: 5, at sixths of the length), m. estimate. */
+  ribs: { count: 5, width: 0.008, height: 0.006 },
+  /** Bearing seat of each end bell: the front boss outside the bell, the housing tube inside it, m. estimate. */
+  seat: { bossRadius: 0.04, bossLength: 0.02, housingRadius: 0.042, housingLength: 0.014 },
+  /** Deep-groove ball bearings (one per bell): outer radius, width, ring thickness, balls (count, radius). The inner radius is the shaft's. estimate: a catalogue 62 mm bearing for a 28 mm shaft. */
+  bearing: { outerRadius: 0.031, width: 0.016, ring: 0.0055, balls: 8, ballRadius: 0.003 },
+  /** Shaft: key on the stub (length, width, height proud of the shaft), retaining rings against the bearings (radius, width), m. estimate. */
+  shaft: { keyLength: 0.07, keyWidth: 0.008, keyHeight: 0.0022, keyFrom: 0.04, ringRadius: 0.0165, ringWidth: 0.003 },
+  /** Laminated stator core, pressed in the tube: outer radius, bore (tooth tips), yoke thickness, stack length, tooth stem width, tooth tip half width, shoe thickness, slope from shoe to stem, m. estimate. */
+  stator: {
+    outerRadius: GENERATOR.bodyRadius - 0.008,
+    boreRadius: 0.0925,
+    yoke: 0.02,
+    stack: 0.15,
+    stem: 0.0105,
+    tipHalfWidth: 0.0092,
+    shoe: 0.006,
+    slope: 0.004,
+  },
+  /** Radial air gap between the tooth tips and the magnets, m. estimate: a gap of 1 to 2 mm is usual for a machine of this size. */
+  gap: 0.0015,
+  /** Rotor: solid steel core on the shaft (same stack length as the stator), surface magnets (radial thickness, fraction of the pole pitch they cover, clearance at the ends), m. estimate. */
+  rotor: { stack: 0.15, magnetThickness: 0.006, magnetArc: 0.8, magnetEndClearance: 0.002 },
+  /** One coil per tooth: its build (thickness of a side in the slot), the insulation between the coil and the tooth, the radial extent (from the shoe to the slot bottom), the end turn beyond the stack (thickness along the axis), m. estimate. */
+  coil: { build: 0.0058, insulation: 0.0012, from: 0.104, to: 0.1255, overhang: 0.014 },
+  /** Terminal box inside: the walls of the sheet-steel box, the studs (radius, height over the block), the cable gland on the end wall and the leads' radius, m. The box itself is `GENERATOR.box`. estimate. */
+  terminals: { wall: 0.004, stud: 0.0045, studHeight: 0.03, nut: 0.007, gland: 0.014, lead: 0.003 },
+  /** Height of the skids that carry the feet (scenery of the world), m. estimate. */
+  skid: 0.06,
+} as const;
+
+/** Electrical frequency of a machine with `poles` poles at `rpm`, Hz. derived: f = poles × rpm / 120 (80 Hz at 16 poles and 600 rpm). */
+export const electricalFrequency = (rpm: number, poles: number = GENERATOR_DESIGN.poles): number => (poles * rpm) / 120;
+
+// ------------------------------------------------------------------------------------------------ the powerroom (completion wave A, 3D role)
+
+/**
+ * The little electrical room of the powerhouse, seen from inside: the wall of equipment in the order the current goes. The room is the building of `SITE.powerhouse` (the site
+ * draws its front open so that the inside can be seen; here the front is a wall that fades when the camera is outside). Every size is an estimate: catalogue sizes of a 48 V system;
+ * the three pieces moved from the `screw` world (rectifier, charge controller, battery) keep their `ELECTRONICS` sizes. The room is a place, not a wiring plan.
+ * Frame: origin on the floor at the middle of the back wall, X along the wall (the cable from the generator comes in through the west wall, on the left; the supply to the
+ * house leaves through the east wall, on the right), Y up, Z into the room (towards the viewer), the inner face of the back wall at z = 0. A `size` is [width, height, depth].
+ */
+export const POWERROOM = {
+  /** Thickness of the walls, m (the site's powerhouse), and the inside of the room: width along the wall, depth, height. derived from `SITE.powerhouse`. */
+  wall: 0.14,
+  width: SITE.powerhouse.length - 0.28,
+  depth: SITE.powerhouse.width - 0.28,
+  height: SITE.powerhouse.wallHeight,
+  /** The switchboard: a steel mounting plate on the back wall (half width, bottom, top, thickness), the cable trunking along its top and bottom (height, depth), the rails that carry the small devices, m. estimate. */
+  board: { halfWidth: 1.2, y0: 0.92, y1: 2.02, thickness: 0.04 },
+  trunking: { height: 0.09, depth: 0.075 },
+  /** Steel rack that carries the battery (it stands on the floor, in front of the board): height of the shelf, depth, m. estimate. */
+  rack: { shelf: 0.34, depth: 0.42, post: 0.04 },
+  /** The row of devices on the board, in the order the current goes: centre x, centre y (bottom y for the two moved boxes), size. estimate. */
+  breaker: { x: -1.05, y: 1.5, size: [0.14, 0.24, 0.1] },
+  fuseBox: { x: -0.82, y: 1.5, size: [0.2, 0.26, 0.1] },
+  rectifier: { x: -0.55, bottom: 1.36 },
+  controller: { x: -0.22, bottom: 1.3 },
+  battery: { x: -0.05, z: 0.3 },
+  dumpLoad: { x: 0.24, y: 1.48, size: [0.3, 0.32, 0.14] },
+  inverter: { x: 0.66, y: 1.42, size: [0.42, 0.4, 0.16] },
+  meter: { x: 1.03, y: 1.5, size: [0.16, 0.22, 0.09] },
+  /** Earthing: the earth bar and the surge protector on the lower rail of the board, the rod (radius, length above the floor), its distance from the west wall, m. estimate. */
+  earthBar: { x: -1.05, y: 1.0, size: [0.2, 0.05, 0.04] },
+  surge: { x: -0.78, y: 1.02, size: [0.07, 0.1, 0.07] },
+  rod: { radius: 0.0085, above: 0.12, x: -1.12, z: 0.16, length: 2.4 },
+  /** The doorway in the east wall (width, height, distance from the front wall) and the door, m. estimate. */
+  door: { width: 0.9, height: 2.05, fromFront: 0.25 },
+  /** Insulating mat in front of the board (the usual rule for a switchboard): width, depth, thickness, m. estimate. */
+  mat: { width: 2.2, depth: 0.8, thickness: 0.01 },
+} as const;

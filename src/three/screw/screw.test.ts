@@ -40,10 +40,13 @@ describe('screw world', () => {
     return q;
   };
 
-  it('registers exactly the twenty frozen ids, each with meshes of its own', () => {
+  it('registers exactly the seventeen frozen ids (the electronics moved to the powerroom world), each with meshes of its own', () => {
     go();
+    expect(IDS).toHaveLength(17);
     expect([...reg.ids()].sort()).toEqual([...IDS].sort());
     for (const id of IDS) expect(reg.get(id)!.meshes.length, id).toBeGreaterThan(0);
+    // the rectifier, the charge controller and the battery are drawn in the powerroom world now
+    for (const id of ['rectifier', 'charge-controller', 'battery']) expect(reg.get(id), id).toBeUndefined();
   });
 
   it('has a hotspot for every part, four main labels, and anchors that live in the scene', () => {
@@ -65,13 +68,13 @@ describe('screw world', () => {
     }
   });
 
-  it('has no floating part: every part touches another part or the scenery (platform, board, floor)', () => {
+  it('has no floating part: every part touches another part or the scenery (platform, floor)', () => {
     go();
     reg.setAllFactors(0);
     expect(floating(sceneBoxes(mod), 0.02, supports())).toEqual([]);
   });
 
-  it('stands what carries the load on what holds it: pillars on the floor, the machine on the platform, the boxes on the board', () => {
+  it('stands what carries the load on what holds it: pillars on the floor, the machine on the platform', () => {
     go();
     reg.setAllFactors(0);
     const l = mod.drawn.layout;
@@ -87,20 +90,18 @@ describe('screw world', () => {
     // the bearing stands on the headwall, the rest on the platform that goes on from it, in plan
     expect(b.get('upper-bearing')!.min.x).toBeGreaterThanOrEqual(l.headX - 0.02);
     expect(b.get('upper-bearing')!.max.x).toBeLessThanOrEqual(l.platX0 + 0.02);
-    for (const id of ['countershaft', 'generator', 'battery', 'rectifier', 'charge-controller']) {
+    for (const id of ['countershaft', 'generator']) {
       expect(b.get(id)!.min.x, id).toBeGreaterThanOrEqual(l.platX0 - 0.02);
       expect(b.get(id)!.max.x, id).toBeLessThanOrEqual(l.platX1 + 0.02);
       expect(b.get(id)!.min.z, id).toBeGreaterThanOrEqual(l.platZ0);
       expect(b.get(id)!.max.z, id).toBeLessThanOrEqual(l.platZ1);
     }
-    // the battery on the platform; the rectifier and the controller against the board (scenery)
-    expect(b.get('battery')!.min.y).toBeCloseTo(l.platTop, 3);
-    const board = new THREE.Box3().setFromObject(rig.props.children[0], true);
-    for (const id of ['rectifier', 'charge-controller']) {
-      expect(touches(b.get(id)!, board, 0.002), id).toBe(true);
-      expect(b.get(id)!.min.y, id).toBeGreaterThan(board.min.y);
-      expect(b.get(id)!.max.y, id).toBeLessThan(board.max.y);
-    }
+    // the cable that leaves the generator's terminal goes over the platform, down its end and away on the floor (scenery, it carries the dots of the current)
+    const cable = new THREE.Box3().setFromObject(rig.props.children[0], true);
+    expect(rig.props.children[0].name).toBe('cables');
+    expect(cable.min.y).toBeLessThan(BASE_Y + 0.1);
+    expect(cable.max.x).toBeGreaterThan(l.platX1);
+    expect(touches(b.get('generator')!, cable, 0.05)).toBe(true);
     // the water stays between the two ends of the flights and inside the trough in plan
     const w = b.get('trapped-water')!;
     expect(w.min.z).toBeGreaterThanOrEqual(-l.ro - 0.01);
@@ -478,7 +479,7 @@ describe('screw world', () => {
       expect(fish.userData.ownerPart ?? fish.children[0].userData.ownerPart).toBe('scenery');
     });
 
-    it('moves the dots of the water down the pockets at the speed of the pockets, and the dots of the current with the amperes', () => {
+    it('moves the dots of the water down the pockets at the speed of the pockets, and the dots of the current (generator to cable) with the amperes', () => {
       go({}, { schematic: false });
       expect(mod.flows.water.object.visible).toBe(false);
       expect(mod.flows.current.object.visible).toBe(false);
@@ -528,17 +529,7 @@ describe('screw world', () => {
         'trapped-water',
       ])
         expect(clipped(id), id).toBe(true);
-      for (const id of [
-        'generator',
-        'chain',
-        'belt',
-        'pulley-small',
-        'pulley-large',
-        'battery',
-        'rectifier',
-        'upper-bearing',
-        'countershaft',
-      ])
+      for (const id of ['generator', 'chain', 'belt', 'pulley-small', 'pulley-large', 'upper-bearing', 'countershaft'])
         expect(clipped(id), id).toBe(false);
       // the blades cross the plane once per blade spacing above the axis and once below
       const l = mod.drawn.layout;

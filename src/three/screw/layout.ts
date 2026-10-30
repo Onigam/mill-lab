@@ -92,6 +92,7 @@ export function computeLayout(shape: ScrewShape): Layout {
   const sBelt = L + DRIVE.beltPlane * k;
   const sGenFront = sBelt + 0.15 * k;
   const sGenBack = sGenFront + GENERATOR.bodyLength * k;
+  const generatorY = DRIVE.generatorAt[0] * k;
   const sShaftEnd = sChain + 0.2 * k;
   const sShaftStart = sLow - 0.1 * k;
 
@@ -113,7 +114,10 @@ export function computeLayout(shape: ScrewShape): Layout {
   const headHalf = Ro + 0.3 * k;
 
   const platX0 = headX + headThick;
-  const platX1 = platX0 + PLATFORM.length * k;
+  // the platform carries the bearing, the countershaft and the generator, and lets the cable that leaves it run on to its edge: it ends a metre beyond the generator
+  // (`PLATFORM.length`, the longer platform of the first version, had room for the board and the battery that now stand in the powerroom world)
+  const xGenBack = (sGenBack + 0.03 * k) * cosB - generatorY * sinB;
+  const platX1 = Math.min(platX0 + PLATFORM.length * k, xGenBack + 1.0 * k);
   const platZ0 = -PLATFORM.back * k;
   const platZ1 = PLATFORM.halfWidth * k;
   return {

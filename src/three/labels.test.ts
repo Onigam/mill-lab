@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import type { SceneModule } from '@onigam/lab-kit/three';
 import type { MillState } from '../sim/types';
 import { LABEL_HEIGHT, labelBoxes, type LabelBox } from './framing';
+import { createGeneratorScene } from './generator/scene';
+import { createPowerroomScene } from './powerroom/scene';
 import { createScrewScene } from './screw/scene';
 import { createSiteScene } from './site/scene';
 import { stateWith, view } from './test-utils';
@@ -48,3 +50,5 @@ function check(name: string, mod: SceneModule<MillState>) {
 
 check('site', createSiteScene());
 check('screw', createScrewScene());
+check('generator', createGeneratorScene());
+check('powerroom', createPowerroomScene());
