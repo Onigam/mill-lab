@@ -3,7 +3,7 @@
 // ids. Only the lead edits this file; a role that thinks an id is missing or wrong reports it, it never adds one.
 import type { PartCategory } from '@onigam/lab-kit/content';
 
-export type WorldId = 'site' | 'screw';
+export type WorldId = 'site' | 'screw' | 'generator' | 'powerroom';
 
 export const PART_CATEGORIES: Record<WorldId, Record<string, PartCategory>> = {
   // the mill race at the scale of the place: the river, the weir, the canal with its coarse rack and its head gate, the notch that
@@ -45,9 +45,33 @@ export const PART_CATEGORIES: Record<WorldId, Record<string, PartCategory>> = {
     belt: 'mechanical',
     'pulley-small': 'mechanical',
     generator: 'electrical',
+  },
+  // the permanent-magnet generator in section and exploded (reached from the `generator` part of the `screw` world): a three-phase
+  // radial-flux machine with an inner rotor and surface magnets, the one the drive turns at about 600 rpm (research §5, `mech.ts`)
+  generator: {
+    'gen-frame': 'structure',
+    'gen-stator': 'electrical',
+    'gen-coils': 'electrical',
+    'gen-rotor': 'mechanical',
+    'gen-magnets': 'electrical',
+    'gen-shaft': 'mechanical',
+    'gen-bearings': 'mechanical',
+    'gen-terminals': 'electrical',
+  },
+  // the powerhouse (reached from the `powerhouse` part of the `site` world): the wall of the little building where the current of
+  // the generator goes through protection, rectification, regulation, storage and use, in the order the current goes through them.
+  // The rectifier, the charge controller and the battery used to be drawn beside the generator in the `screw` world: they live here now
+  powerroom: {
+    'dc-breaker': 'electrical',
+    'fuse-box': 'electrical',
     rectifier: 'electrical',
     'charge-controller': 'electrical',
     battery: 'electrical',
+    'dump-load': 'electrical',
+    inverter: 'electrical',
+    'energy-meter': 'electrical',
+    switchboard: 'structure',
+    earthing: 'electrical',
   },
 };
 

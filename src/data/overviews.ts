@@ -22,4 +22,16 @@ export const OVERVIEWS: Record<WorldId, { title: L; text: L }> = {
       'The water comes in over the **inlet sill**, settles in the **water pockets** between the blades and runs down the **trough**, turning the screw: three threads of **blade modules**, held on the **screw core** by **fasteners** and carried by an **upper bearing** and a **lower bearing**. It leaves through the **outlet pool**. The screw turns at {rpm} rpm (model result); a **chain** then a **belt**, with their sprockets and pulleys on the **countershaft**, multiply that speed up to the **generator**, whose **rectifier** and **charge controller** charge the **battery**.\n\n**What to look at**: follow one pocket from the top to the bottom of the screw; slow the rotation, switch on **Flows**, then change the gap or the speed in the **Simulation**. **Careful**: a turning screw snatches an arm, a sleeve, hair. Never a hand near the chain, the belt or the blades.',
     ),
   },
+  // placeholders: the data role replaces them with the real texts of the two new worlds
+  generator: {
+    title: l('La génératrice', 'The generator'),
+    text: l('La génératrice transforme la rotation en courant.', 'The generator turns rotation into current.'),
+  },
+  powerroom: {
+    title: l('Le local technique', 'The powerhouse'),
+    text: l(
+      'Le courant de la génératrice passe par des protections et charge la batterie.',
+      'The current of the generator goes through protections and charges the battery.',
+    ),
+  },
 };

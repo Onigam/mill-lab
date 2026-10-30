@@ -361,6 +361,12 @@ const LAB = {
   goChamber: ['Entrer dans la chambre d’eau', 'Go into the water chamber'],
   groupSite: ['Le site', 'The site'],
   groupScrew: ['La vis', 'The screw'],
+  sceneGenerator: ['Génératrice', 'Generator'],
+  scenePowerroom: ['Local', 'Powerhouse'],
+  goGenerator: ['Ouvrir la génératrice', 'Open the generator'],
+  goPowerroom: ['Entrer dans le local technique', 'Enter the powerhouse'],
+  groupGenerator: ['La génératrice', 'The generator'],
+  groupPowerroom: ['Le local technique', 'The powerhouse'],
   noticeGeneric: [
     'La vis dessinée ici est générique : ses dimensions viennent des règles de dimensionnement publiées, appliquées à une chute et à un débit choisis, pas d’une machine réelle. Le film montre trois filets, une pente, une transmission ; il ne donne ni diamètre, ni longueur, ni rendement. Les puissances et les rendements affichés sont les résultats d’un modèle pédagogique, jamais des mesures, et ce n’est pas un plan de construction.',
     'The screw drawn here is generic: its dimensions come from published sizing rules, applied to a chosen head and flow, not from a real machine. The film shows three threads, a slope, a drive; it gives no diameter, no length, no efficiency. The powers and efficiencies shown are results of an educational model, never measurements, and this is not a construction plan.',
