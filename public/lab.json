@@ -1,0 +1,9 @@
+{
+  "id": "lab-template",
+  "title": { "fr": "Lab Template", "en": "Lab Template" },
+  "tagline": { "fr": "Un lab à remplacer", "en": "A lab to replace" },
+  "tags": [],
+  "difficulty": 1,
+  "minutes": 10,
+  "energyProfile": null
+}

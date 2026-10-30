@@ -1,0 +1,14 @@
+version: 2
+updates:
+  # lab-kit (a Git dependency pinned to a tag) and the tooling
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      tooling:
+        patterns: ['typescript', 'vite', 'vitest', 'prettier', '@types/*']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

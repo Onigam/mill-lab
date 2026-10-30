@@ -1,0 +1,8 @@
+node_modules
+dist
+.DS_Store
+*.log
+.vercel
+.env*.local
+# transcripts of third-party videos stay private (copyright)
+docs/transcript*.md
