@@ -191,12 +191,8 @@ export class SimPanel implements PanelController {
       markers: () => {
         const p = sim().params;
         const pt = siteMarker(p.head, p.designFlow);
-        return [
-          { x: 0, label: '1 m' },
-          { x: 1, label: '10 m' },
-          { x: 2, label: '100 m' },
-          { x: pt.x, y: pt.y, label: t('markSite'), color: SERIES_COLORS.dump },
-        ];
+        // only the visitor's site: the decade labels that stood here ("1 m", "10 m", "100 m") crowded the top of the zones
+        return [{ x: pt.x, y: pt.y, label: t('markSite'), color: SERIES_COLORS.dump }];
       },
     });
     this.compareOpts = {

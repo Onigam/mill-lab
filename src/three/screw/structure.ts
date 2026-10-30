@@ -266,11 +266,13 @@ export function buildPlatform(l: Layout): THREE.Group {
   const post = PLATFORM.post * l.k;
   const top = l.platTop;
   g.add(mesh(boxGeometry(l.platX0, top - slab, l.platZ0, l.platX1, top, l.platZ1), concrete()));
-  const px = [l.platX0 + post / 2 + 0.05, (l.platX0 + l.platX1) / 2, l.platX1 - post / 2 - 0.05];
-  for (const x of px)
-    for (const z of [l.platZ0 + post / 2 + 0.05, l.platZ1 - post / 2 - 0.05])
-      g.add(
-        mesh(boxGeometry(x - post / 2, BASE_Y, z - post / 2, x + post / 2, top - slab, z + post / 2), concreteDark()),
-      );
+  // a solid masonry plinth under the slab, set back from its edge, rather than posts: a platform on four legs read as a table
+  const inset = Math.max(0.12, post * 0.8);
+  g.add(
+    mesh(
+      boxGeometry(l.platX0 + inset, BASE_Y, l.platZ0 + inset, l.platX1 - inset, top - slab, l.platZ1 - inset),
+      concreteDark(),
+    ),
+  );
   return g;
 }
