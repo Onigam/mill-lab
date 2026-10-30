@@ -7,7 +7,8 @@ import { PARTS } from './data/parts';
 import { SHEETS } from './drawings';
 import { t } from './i18n/ui';
 import { SimPanel } from './panels/sim';
-import { DemoSim } from './sim/engine';
+import { STRIP_SPEEDS, stripAlarms, stripClock, stripValues } from './panels/strip';
+import { MillSim } from './sim/engine';
 import { createDeviceScene } from './three/device';
 
 // The lab described to the kit. Edit the content here and in src/data, src/three, src/sim, src/drawings;
@@ -15,10 +16,10 @@ import { createDeviceScene } from './three/device';
 
 configureDrawings({ project: { fr: 'MILL LAB — dispositif', en: 'MILL LAB — device' } });
 
-export const lab: LabDefinition<DemoSim> = {
+export const lab: LabDefinition<MillSim> = {
   id: 'mill-lab',
   brand: { title: 'MILL LAB', tagline: strL('tagline'), icon: './favicon.svg' },
-  sim: new DemoSim(),
+  sim: new MillSim(),
   defaultScene: 'device',
   parts: PARTS,
   scenes: [
@@ -43,14 +44,7 @@ export const lab: LabDefinition<DemoSim> = {
     groups: [{ id: 'device', label: strL('groupDevice') }],
     intro: strL('plansIntro'),
   },
-  simPanel: (ctx: AppContext<DemoSim>) => new SimPanel(ctx),
-  strip: {
-    values: (sim) => [{ label: t('liveRpm'), value: String(Math.round(sim.state.rpm)), unit: 'rpm' }],
-    clock: (sim) => {
-      const s = Math.floor(sim.state.simTime);
-      return { time: `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`, sub: '' };
-    },
-    alarms: () => [],
-  },
+  simPanel: (ctx: AppContext<MillSim>) => new SimPanel(ctx),
+  strip: { values: stripValues, clock: stripClock, alarms: stripAlarms, speeds: STRIP_SPEEDS },
   about: () => [h('div', { class: 'callout callout--tip' }, h('span', {}, t('disclaimer')))],
 };
