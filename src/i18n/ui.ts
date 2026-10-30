@@ -347,6 +347,37 @@ const LAB = {
   alarmNoCharge: ['La génératrice ne charge pas', 'Generator not charging'],
   alarmRack: ['Grille colmatée', 'Rack clogged'],
   alarmRange: ['Roue hors plage de chute', 'Wheel outside its heads'],
+
+  // ---- the two worlds, the buttons that lead to them, the Sources panel: notice, warnings, outline of the video (data role, wave 2)
+  // `tagline` and `disclaimer` above are the template's and stay; the lab's own versions follow (the lead picks them in src/lab.ts).
+  labTagline: [
+    'Une vis d’Archimède, une petite chute, de l’électricité',
+    'An Archimedes screw, a small head, electricity',
+  ],
+  sceneSite: ['Site', 'Site'],
+  sceneScrew: ['Vis', 'Screw'],
+  goSite: ['Voir le site', 'See the site'],
+  goScrew: ['Voir la vis', 'See the screw'],
+  goChamber: ['Entrer dans la chambre d’eau', 'Go into the water chamber'],
+  groupSite: ['Le site', 'The site'],
+  groupScrew: ['La vis', 'The screw'],
+  noticeGeneric: [
+    'La vis dessinée ici est générique : ses dimensions viennent des règles de dimensionnement publiées, appliquées à une chute et à un débit choisis, pas d’une machine réelle. Le film montre trois filets, une pente, une transmission ; il ne donne ni diamètre, ni longueur, ni rendement. Les puissances et les rendements affichés sont les résultats d’un modèle pédagogique, jamais des mesures, et ce n’est pas un plan de construction.',
+    'The screw drawn here is generic: its dimensions come from published sizing rules, applied to a chosen head and flow, not from a real machine. The film shows three threads, a slope, a drive; it gives no diameter, no length, no efficiency. The powers and efficiencies shown are results of an educational model, never measurements, and this is not a construction plan.',
+  ],
+  safety: [
+    'Reconstitution pédagogique, pas un plan de construction. Un canal, une rivière et une chambre d’eau sont des lieux où l’on se noie : n’y allez jamais seul, jamais machine en marche, et fermez et verrouillez la vanne de tête avant tout travail. Une vis, une chaîne ou une courroie qui tournent happent un bras, une manche, des cheveux : gardez les carters et un garde-corps. Descendre une machine lourde par une échelle est dangereux : montez-la en pièces, à plusieurs, à la corde. Une batterie débite des courants énormes en cas de court-circuit et peut dégager un gaz explosif ou prendre feu : un fusible au plus près, des outils isolés, un électricien pour le câblage et le raccordement. Sans charge électrique, la vis s’emballe et la génératrice monte en tension : la vanne de sécurité est la seconde protection. Les outils et la poussière de bois demandent lunettes, gants et masque.',
+    'Educational reconstruction, not a construction plan. A canal, a river and a water chamber are places where people drown: never go alone, never with the machine running, and shut and lock the head gate before any work. A screw, a chain or a belt that turn snatch an arm, a sleeve, hair: keep the guards and a guard rail. Lowering a heavy machine down a ladder is dangerous: bring it in pieces, with several people, on a rope. A battery delivers huge currents in a short circuit and may give off an explosive gas or catch fire: a fuse as close as possible, insulated tools, an electrician for the wiring and the connection. With no electrical load, the screw races and the generator’s voltage climbs: the safety gate is the second protection. Tools and wood dust call for goggles, gloves and a mask.',
+  ],
+  legal: [
+    'Un bief n’est pas libre d’usage. Il faut un droit d’utiliser l’eau (pour un moulin ancien, un droit parfois très vieux, à faire reconnaître : en France, on parle de droit « fondé en titre ») et, selon le pays, une autorisation de produire de l’électricité. Une part de l’eau, le débit réservé, doit rester dans la rivière, et les poissons doivent pouvoir la descendre et la remonter (la continuité écologique) : c’est l’administration de l’eau qui fixe ces valeurs, site par site. Les démarches peuvent prendre des années. Ces règles dépendent du pays : renseignez-vous auprès du service de l’eau du vôtre.',
+    'A mill race is not free to use. You need a right to use the water (for an old mill, sometimes a very old right that has to be recognised) and, depending on the country, a permit to produce electricity. A share of the water, the reserved flow, must stay in the river, and fish must be able to pass both ways: the water authority sets these values, site by site. The paperwork can take years. These rules depend on the country: ask the water service of yours.',
+  ],
+  chapters: ['Sommaire de la vidéo', 'Video outline'],
+  sourcesNoCopy: [
+    'Aucune image ni aucun texte de la vidéo n’est repris : seuls des faits et des chiffres, avec leur horodatage.',
+    'No footage or text from the video is reused: only facts and figures, with their timestamps.',
+  ],
 } as const satisfies Record<string, readonly [string, string]>;
 
 registerStrings(LAB);
