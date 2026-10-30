@@ -12,7 +12,7 @@ import { t } from './i18n/ui';
 import { SimPanel } from './panels/sim';
 import { STRIP_SPEEDS, stripAlarms, stripClock, stripValues } from './panels/strip';
 import { MillSim } from './sim/engine';
-import { createScrewScene, createSiteScene, WORLD } from './three';
+import { createGeneratorScene, createPowerroomScene, createScrewScene, createSiteScene, WORLD } from './three';
 
 // The lab described to the kit. Edit the content here and in src/data, src/three, src/sim, src/drawings;
 // the kit supplies the whole application frame (see BRIEF.md: the frame is locked).
@@ -30,7 +30,9 @@ function about(ctx: AppContext<MillSim>): HTMLElement[] {
   return [
     h('div', { class: 'callout callout--tip' }, h('span', {}, t('disclaimer'))),
     h('div', { class: 'callout callout--tip' }, h('span', {}, t('noticeGeneric'))),
+    h('div', { class: 'callout callout--tip' }, h('span', {}, t('noticeElectric'))),
     h('div', { class: 'callout callout--warn' }, icon(ICONS.warn, 16), h('span', {}, t('safety'))),
+    h('div', { class: 'callout callout--warn' }, icon(ICONS.warn, 16), h('span', {}, t('safetyElectric'))),
     h('div', { class: 'callout callout--warn' }, icon(ICONS.warn, 16), h('span', {}, t('legal'))),
     h(
       'p',
@@ -145,7 +147,10 @@ export const lab: LabDefinition<MillSim> = {
       ...WORLD.site,
       overview: {
         ...OVERVIEWS.site,
-        actions: [{ label: strL('goChamber'), scene: 'screw', primary: true }],
+        actions: [
+          { label: strL('goChamber'), scene: 'screw', primary: true },
+          { label: strL('goPowerroom'), scene: 'powerroom' },
+        ],
       },
     },
     {
@@ -155,12 +160,37 @@ export const lab: LabDefinition<MillSim> = {
       ...WORLD.screw,
       overview: {
         ...OVERVIEWS.screw,
+        actions: [
+          { label: strL('goSite'), scene: 'site', primary: true },
+          { label: strL('goGenerator'), scene: 'generator' },
+        ],
+      },
+    },
+    {
+      id: 'generator',
+      label: strL('sceneGenerator'),
+      module: createGeneratorScene(),
+      ...WORLD.generator,
+      overview: {
+        ...OVERVIEWS.generator,
+        actions: [{ label: strL('goScrew'), scene: 'screw', primary: true }],
+      },
+    },
+    {
+      id: 'powerroom',
+      label: strL('scenePowerroom'),
+      module: createPowerroomScene(),
+      ...WORLD.powerroom,
+      overview: {
+        ...OVERVIEWS.powerroom,
         actions: [{ label: strL('goSite'), scene: 'site', primary: true }],
       },
     },
   ],
   partLinks: {
     'water-chamber': { scene: 'screw', label: strL('goChamber') },
+    generator: { scene: 'generator', label: strL('goGenerator') },
+    powerhouse: { scene: 'powerroom', label: strL('goPowerroom') },
   },
   guides: {
     // the assembly starts in the chamber of the site and then plays on the machine; the installation plays on the site
@@ -173,10 +203,12 @@ export const lab: LabDefinition<MillSim> = {
     groups: [
       { id: 'site', label: strL('groupSite') },
       { id: 'screw', label: strL('groupScrew') },
+      { id: 'generator', label: strL('groupGenerator') },
+      { id: 'powerroom', label: strL('groupPowerroom') },
     ],
     intro: l(
-      'Trois plans A3 générés à partir des cotes du modèle 3D et de la simulation : le bief du moulin, la vis en coupe, la transmission et l’électricité. Reconstitution pédagogique d’une vis générique, pas un plan de construction.',
-      'Three A3 drawings generated from the 3D model’s dimensions and the simulation: the mill race, the screw in section, the drive and the electricity. Educational reconstruction of a generic screw, not a construction plan.',
+      'Huit plans A3 générés à partir des cotes du modèle 3D et de la simulation : le bief du moulin et le choix de la turbine, la vis en coupe et son module de pale, la transmission, la génératrice en coupe, le plan et le câblage du local technique. Reconstitution pédagogique d’une vis et d’une génératrice génériques, pas un plan de construction.',
+      'Eight A3 drawings generated from the 3D model’s dimensions and the simulation: the mill race and the choice of turbine, the screw in section and its blade module, the drive, the generator in section, the layout and the wiring of the powerhouse. Educational reconstruction of a generic screw and generator, not a construction plan.',
     ),
   },
   simPanel: (ctx: AppContext<MillSim>) => new SimPanel(ctx),

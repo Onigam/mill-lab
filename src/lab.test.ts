@@ -9,8 +9,8 @@ const sceneIds = lab.scenes.map((s) => s.id);
 const module = (id: string) => lab.scenes.find((s) => s.id === id)!.module;
 
 describe('lab definition', () => {
-  it('declares the two worlds, the site first', () => {
-    expect(sceneIds).toEqual(['site', 'screw']);
+  it('declares the four worlds, the site first', () => {
+    expect(sceneIds).toEqual(['site', 'screw', 'generator', 'powerroom']);
     expect([...sceneIds].sort()).toEqual([...WORLDS].sort());
     expect(lab.defaultScene).toBe('site');
   });
@@ -82,7 +82,7 @@ describe('lab definition', () => {
   });
 
   it('opens every lesson on an existing world, part, preset and scenario', () => {
-    expect(lab.lessons?.items).toHaveLength(6);
+    expect(lab.lessons?.items).toHaveLength(8);
     for (const lesson of lab.lessons?.items ?? []) {
       const { scene, part, preset, scenario } = lesson.focus;
       expect(sceneIds, `${lesson.id}: scene`).toContain(scene);
@@ -94,7 +94,7 @@ describe('lab definition', () => {
 
   it('draws each sheet of the plans from existing worlds, parts and groups', () => {
     const groups = (lab.plans?.groups ?? []).map((g) => g.id);
-    expect(lab.plans?.sheets).toHaveLength(3);
+    expect(lab.plans?.sheets).toHaveLength(8);
     for (const sheet of lab.plans?.sheets ?? []) {
       expect(groups, `${sheet.id}: group`).toContain(sheet.group);
       expect(sheet.scene, `${sheet.id}: world`).toBeDefined();

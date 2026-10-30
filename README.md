@@ -11,19 +11,23 @@ built on the same frame, [lab-kit](https://github.com/Onigam/lab-kit).
 
 ## What is in it
 
-- **Two 3D worlds**: the **site** (the river, the weir, the canal with its coarse rack and head gate, the notch that leaves the
-  reserved flow in the river, the fish pass, the water chamber, the tailrace, the mill, the powerhouse and the house) and the **screw
-  in its chamber** (three wooden threads in a trough, bearings, the chain and belt drive, the generator and its electronics). Explode,
-  X-ray, isolate, a section along the axis that shows the pockets of water going down like a slide, current-flow overlays, labels,
-  slow motion.
-- **Assembly and installation guides** (20 and 11 steps), a **catalogue of 32 parts**, and **six short lessons with a quiz**: from
-  water to watts, why a screw works, why a speed multiplier, which turbine, a wheel or a screw, the year of the mill.
+- **Four 3D worlds**: the **site** (the river, the weir, the canal with its coarse rack and head gate, the notch that leaves the
+  reserved flow in the river, the fish pass, the water chamber, the tailrace, the mill, the powerhouse and the house), the **screw in
+  its chamber** (three wooden threads in a trough, bearings, the chain and belt drive), the **generator** opened in section (a
+  three-phase permanent-magnet machine: frame, stator, coils, rotor, magnets, shaft, bearings, terminals) and the **powerhouse**
+  (the wall of equipment in the order the current goes: breaker, fuses, rectifier, charge controller, battery, dump load, inverter,
+  meter, board and earthing). Explode, X-ray, isolate, a section along the axis that shows the pockets of water going down like a
+  slide, current-flow overlays, labels, slow motion.
+- **Assembly and installation guides** (34 and 16 steps across the worlds), a **catalogue of 47 parts**, and **eight short lessons
+  with a quiz**: from water to watts, why a screw works, why a speed multiplier, from rotation to volts, protect-regulate-store,
+  which turbine, a wheel or a screw, the year of the mill.
 - **A simulation** (a pure, unit-tested physics model): the screw's geometry from published design rules, its filling, leakage and
   losses, the drive and a permanent-magnet generator on a 48 V battery, a water wheel for comparison, a head and flow chart that
   places each type of turbine with lines of equal power, and a yearly hydrology with low water and floods. Four presets, nine
   scenarios, a site that follows the seasons.
-- **Three A3 design drawings** generated from the same dimensions as the 3D model: the mill race in plan and profile, the screw in
-  section, the drive and the electricity.
+- **Eight A3 design drawings** generated from the same dimensions as the 3D model: the mill race in plan and profile, the screw in
+  section, its blade module and core, the drive, the generator in section, the layout and the wiring of the powerhouse, and the
+  "which turbine for my site?" chart.
 
 ## What is real and what is not
 
@@ -61,7 +65,7 @@ Vercel. `npm run kit:bump` moves to a newer lab-kit.
 - `src/three/` the two worlds and `dims.ts`, the single source of dimensions (metres, each tagged); `src/sim/` the pure physics
   (including `mech.ts`, the speed multiplier and generator matching); `src/data/` parts, guides, chapters, lessons;
   `src/drawings/` the A3 sheets; `src/panels/` the simulation panel; `src/lab.ts` describes the lab to the kit;
-  `src/part-ids.ts` freezes the 32 part ids shared by all of them.
+  `src/part-ids.ts` freezes the 47 part ids shared by all of them.
 - `docs/` research notes and sources, physics notes, 3D, data, drawings and lessons notes, requests to the kit; `BRIEF.md` is the
   brief the agent team works from.
 
@@ -79,12 +83,13 @@ quatrième de la série commencée avec [Pelton Lab](https://github.com/Onigam/p
 
 **▶ https://mill-lab.vercel.app** · français et anglais · ordinateur, tablette et téléphone
 
-**Ce qu'il contient.** Deux mondes 3D (le **site** du moulin et la **vis dans sa chambre**) avec éclaté, rayons X, isolement, coupe le
-long de l'axe qui montre les poches d'eau, flux ; des guides de **montage** (20 étapes) et d'**installation** (11 étapes) ; un
-catalogue de **32 pièces** ; **six leçons** avec quiz ; une **simulation** (géométrie de la vis par des règles de conception
-publiées, remplissage, fuites et pertes, transmission et génératrice sur batterie 48 V, roue pour comparaison, graphique chute et
-débit qui place chaque type de turbine, année d'hydrologie avec basses eaux et crues ; quatre préréglages, neuf scénarios) ;
-**trois plans A3** générés des cotes du modèle 3D.
+**Ce qu'il contient.** Quatre mondes 3D (le **site** du moulin, la **vis dans sa chambre**, la **génératrice** ouverte en coupe et le
+**local technique** avec ses équipements dans l'ordre du courant) avec éclaté, rayons X, isolement, coupe le long de l'axe qui
+montre les poches d'eau, flux ; des guides de **montage** (34 étapes) et d'**installation** (16 étapes) ; un catalogue de **47
+pièces** ; **huit leçons** avec quiz ; une **simulation** (géométrie de la vis par des règles de conception publiées, remplissage,
+fuites et pertes, transmission et génératrice sur batterie 48 V, roue pour comparaison, graphique chute et débit qui place chaque type
+de turbine, année d'hydrologie avec basses eaux et crues ; quatre préréglages, neuf scénarios) ; **huit plans A3** générés des cotes
+du modèle 3D.
 
 **Ce qui est réel, ce qui ne l'est pas.** Reconstitution pédagogique indépendante, aucune image des vidéos reprise. La source
 principale est une vidéo sur une vis d'Archimède en bois construite par une association dans un vieux moulin. **Cette association ne
