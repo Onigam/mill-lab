@@ -1,8 +1,8 @@
 {
-  "name": "lab-template",
+  "name": "mill-lab",
   "private": true,
   "version": "0.1.0",
-  "description": "Template of an interactive 3D energy lab built on @onigam/lab-kit",
+  "description": "Interactive 3D lab of a hydrodynamic Archimedes screw and a water wheel: how a river without a high drop becomes electricity",
   "type": "module",
   "scripts": {
     "dev": "vite",
