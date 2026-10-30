@@ -23,6 +23,17 @@ describe('the simulation as a LabSim', () => {
     expect(sim.state.electricPower).toBeLessThan(2500);
     expect(sim.state.alarms).toEqual([]);
   });
+  it('starts the clock of the year at noon, as the strip says', () => {
+    const sim = new MillSim();
+    expect(sim.state.hour).toBe(12);
+    run(sim, 1);
+    expect(sim.state.hour).toBeGreaterThan(12);
+    expect(sim.state.hour).toBeLessThan(12.01);
+    sim.set({ timeScale: 3600 });
+    run(sim, 2); // two seconds at one hour a second
+    expect(sim.state.hour).toBeGreaterThan(14);
+    expect(sim.state.hour).toBeLessThan(14.2);
+  });
   it('does nothing while paused', () => {
     const sim = new MillSim();
     run(sim, 5);
@@ -73,7 +84,7 @@ describe('the simulation as a LabSim', () => {
     run(c, 10);
     expect(c.state.simTime).toBeCloseTo(10 * 86400, 0);
     // the days went by: a ten-day-long river was followed
-    expect(Math.abs(c.state.day - 273 - 10)).toBeLessThan(0.5);
+    expect(Math.abs(c.state.day - 273 - 10 - 0.5)).toBeLessThan(0.1); // ten days after the noon start
   });
   it('fast-forward is consistent: a year at 86400 s per second gives, to 3 %, the energy of the yearly calculation', () => {
     const sim = new MillSim();

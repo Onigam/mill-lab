@@ -28,7 +28,7 @@ export function stripValues(sim: MillSim): StripValue[] {
   ];
 }
 
-/** "12 Oct" and the time of the day (the clock starts on 1 October at 08:00). */
+/** "12 Oct" and the time of the day (the clock starts on 1 October at 12:00). */
 export function stripClock(sim: MillSim): { time: string; sub: string } {
   return clockOf(sim.state);
 }

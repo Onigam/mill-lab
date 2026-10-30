@@ -28,6 +28,8 @@ import { simulateYear, type YearResult } from './year';
 const DT_MAX = 0.25;
 const SCOPE_EVERY = 0.25;
 const SCOPE_LENGTH = 240;
+/** The clock starts on `START_DAY` at this hour (noon: at 08:00 the sun is on the horizon on 1 October, and the landscape would open at dawn). */
+const START_HOUR = 12;
 
 const TIME_KEYS: (keyof MillParams)[] = ['slowMo', 'timeScale', 'running'];
 
@@ -60,7 +62,7 @@ function initialState(p: MillParams): MillState {
     ...op,
     simTime: 0,
     day: START_DAY,
-    hour: 8,
+    hour: START_HOUR,
     outerDiameter: plant.screw?.outerDiameter ?? 0,
     innerDiameter: plant.screw?.innerDiameter ?? 0,
     pitch: plant.screw?.pitch ?? 0,
@@ -179,7 +181,7 @@ export class MillSim implements LabSim {
     const s = this.state;
     s.simTime = 0;
     s.day = START_DAY;
-    s.hour = 8;
+    s.hour = START_HOUR;
     s.energyHydraulic = 0;
     s.energyElectric = 0;
     s.energyToday = 0;
@@ -205,7 +207,7 @@ export class MillSim implements LabSim {
     // the clock of the year
     const clock = dt * p.timeScale;
     s.simTime += clock;
-    const days = START_DAY + s.simTime / SECONDS_PER_DAY;
+    const days = START_DAY + (START_HOUR * 3600 + s.simTime) / SECONDS_PER_DAY;
     const wasDay = Math.floor(s.day);
     s.day = days % 365;
     s.hour = (days - Math.floor(days)) * 24;

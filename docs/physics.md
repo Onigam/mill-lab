@@ -279,7 +279,7 @@ The state is flat and read-only. The rotation is already slowed by `slowMo`.
 | `loss*` (Gap, Overflow, Drawdown, Inlet, Outlet, Friction, Bearing, Drive, Generator)                       | W                                                                                                                              |
 | `generatorRpm`, `openCircuitVolts`, `current`, `generatorTorque`, `driveEfficiency`, `charging`             | the generator and the drive                                                                                                    |
 | `stopped` (`no`, `lowWater`, `flood`, `closed`, `noStart`), `alarms`                                        | situation and strip alarms                                                                                                     |
-| `simTime`, `day`, `hour`, `energy*`                                                                         | slow clock (starts on 1 October at 08:00), Wh counters                                                                         |
+| `simTime`, `day`, `hour`, `energy*`                                                                         | slow clock (starts on 1 October at 12:00), Wh counters                                                                         |
 | `sim.scope`, `sim.getYear()`, `sim.getSpeedCurve()`, `sim.getCompare()`, `sim.getCandidates()`, `sim.plant` | last minute, the year, the curves, the other machines, the chooser, the sized machine                                          |
 
 ## 5. Presets and scenarios

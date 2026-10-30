@@ -226,10 +226,10 @@ describe('what the panel says and plots (model.ts)', () => {
     expect(live.xs[live.xs.length - 1]).toBe(0);
     expect(niceCeil(1234)).toBe(2000);
   });
-  it('the strip has four values, a date on 1 October at 08:00 and the alarms of the state', () => {
+  it('the strip has four values, a date on 1 October at 12:00 and the alarms of the state', () => {
     expect(stripValues(sim)).toHaveLength(4);
     const c = clockOf(new MillSim().state);
-    expect(c.sub).toBe('08:00');
+    expect(c.sub).toBe('12:00');
     setLang('en');
     expect(clockOf(new MillSim().state).time).toBe('1 Oct');
     const fast = new MillSim();
