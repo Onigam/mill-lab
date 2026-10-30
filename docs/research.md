@@ -145,7 +145,22 @@ third world and a question for the checkpoint, not a version switch (§8, questi
   review papers are credited with links in the Sources panel. The narration text names nobody: "the video", "the association" at most
   in the panel. The lab is an _independent educational reconstruction_, not an official drawing or a product.
 
-## 8. Open questions for the owner
+## 8. Decisions of the owner (2026-10-30)
+
+The owner answered "Oui, tes choix": **all eight recommendations are accepted**. This is a decision on the content, not a go for any
+agent (§9).
+
+1. Main source = the wooden-screw video (S1); S2 to S4 secondary.
+2. A **generic** screw sized by published design rules, never presented as the association's machine.
+3. Default design point = **full size** (head 1.75 m, flow about 180 L/s, about 2 kW), with a switch for the 200 W prototype's head and flow.
+4. The wheel = **comparison only** (curves, chooser, one lesson), no third world.
+5. Level = **Lite** (2 worlds, about 28 parts, 3 sheets, 6 lessons).
+6. The chooser covers wheels, screw, crossflow, Kaplan, Francis and Pelton, with a link to Pelton Lab.
+7. The drive is drawn **chain (slow side) then belt (fast side)**.
+8. No contact with the association is assumed: dimensions stay derived. If one turns up, the real values replace them in `dims.ts`,
+   marked `reported`.
+
+### Questions asked
 
 1. Main source = the wooden-screw video (S1), with S2 to S4 as secondary sources. OK?
 2. The machine is a **generic** screw sized by published design rules (the maker gives no dimensions), never presented as theirs. OK?
@@ -161,5 +176,5 @@ third world and a question for the checkpoint, not a version switch (§8, questi
 
 Wave 1 (one physics agent, or me alone if you prefer): `src/sim/**` with the screw, the wheel, the chooser and `sim/mech`, tests on K1
 and K10 to K16, `docs/physics.md`, the simulation panel. Then wave 2 (3D ‖ data), wave 3 (plans ‖ lessons), a light quality pass by
-me, your checkpoint, and only then the spoken guide (decided per lab and per language, the credits being limited). The lab will move
-to the current kit (v0.4.0) before wave 1. I do not start any agent without your go.
+me, your checkpoint, and only then the spoken guide (decided per lab and per language, the credits being limited). The lab moved
+to the current kit (v0.4.0) on 2026-10-30. I do not start any agent without your go.
