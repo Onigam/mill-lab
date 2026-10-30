@@ -293,17 +293,17 @@ The state is flat and read-only. The rotation is already slowed by `slowMo`.
 
 The **mill race is the full-size preset** (one entry, not two): the three sites of the brief are the three watercourses of the `site` select.
 
-| id                  | What                                                                                                                                                                     |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `low-water`         | the river falls from 0.22 to 0.03 m³/s in 150 s: the fill falls, the power falls to a fifth, the gate closes (K13)                                                       |
-| `flood`             | the river rises to 1.9 m³/s: the tailwater climbs by 1.2 m before the gate closes at six times the median (1.34 m³/s), the head collapses, the screw slows and overflows |
-| `debris`            | a rack in the intake clogs to 90 %, costing most of the head; at 100 s the rack is taken out, as a screw allows                                                          |
-| `too-fast`          | the speed is imposed and climbs to 2.4 times the rule: the buckets are half empty, the power falls by half                                                               |
-| `too-slow`          | the speed falls to 0.3 times the rule: the buckets overflow                                                                                                              |
-| `wrong-ratio`       | belt ratio × 0.45 (the generator never charges, the screw runs at twice its speed), then × 1.9 (the screw is held back), then right again                                |
-| `rough-surface`     | the roughness rises from 0.5 to 5 mm: the friction loss rises 1.9 times and the power falls by 7 %                                                                       |
-| `wheel-instead`     | the screw, then a breastshot wheel, then an undershot wheel, on the same water                                                                                           |
-| `prototype-vs-full` | the prototype for 40 s, then the full-size machine                                                                                                                       |
+| id                  | What                                                                                                                                                                                                                                    |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `low-water`         | the river falls from 0.22 to 0.03 m³/s in 150 s: the fill falls, the power falls to a fifth, the gate closes (K13)                                                                                                                      |
+| `flood`             | the river rises to 1.9 m³/s: the tailwater climbs by 1.2 m before the gate closes at six times the median (1.34 m³/s), the head collapses, the screw slows and overflows                                                                |
+| `debris`            | a rack in the intake clogs to 90 %, costing most of the head; at 100 s the rack is taken out, as a screw allows                                                                                                                         |
+| `too-fast`          | the speed is imposed and climbs to 2.4 times the rule: the buckets are half empty, the power falls by half                                                                                                                              |
+| `too-slow`          | the speed falls to 0.3 times the rule: the buckets overflow                                                                                                                                                                             |
+| `wrong-ratio`       | belt ratio × 0.45, rounded to 1.5 (the generator stops charging for under a second, then the screw settles at about 117 rpm with 1.3 kW and pockets half empty: twice its speed), then × 1.9 (the screw is held back), then right again |
+| `rough-surface`     | the roughness rises from 0.5 to 5 mm: the friction loss rises 1.9 times and the power falls by 7 %                                                                                                                                      |
+| `wheel-instead`     | the screw, then a breastshot wheel, then an undershot wheel, on the same water                                                                                                                                                          |
+| `prototype-vs-full` | the prototype for 40 s, then the full-size machine                                                                                                                                                                                      |
 
 ## 6. Key figures → tests → results
 

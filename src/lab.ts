@@ -4,6 +4,7 @@ import { h, icon, ICONS, type AppContext, type LabDefinition } from '@onigam/lab
 import { ASSEMBLY } from './data/assembly';
 import { CHAPTERS } from './data/chapters';
 import { INSTALL } from './data/install';
+import { LESSONS } from './data/lessons';
 import { OVERVIEWS } from './data/overviews';
 import { PARTS } from './data/parts';
 import { SHEETS } from './drawings';
@@ -166,6 +167,7 @@ export const lab: LabDefinition<MillSim> = {
     assembly: { scene: 'screw', steps: ASSEMBLY },
     install: { scene: 'site', steps: INSTALL },
   },
+  lessons: { intro: strL('lessonsIntroMill'), items: LESSONS },
   plans: {
     sheets: SHEETS,
     groups: [

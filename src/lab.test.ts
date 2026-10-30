@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { WORLDS, partIds } from './part-ids';
 import { lab } from './lab';
+import { PRESET_IDS, SCENARIO_IDS } from './sim/presets';
 
 // The lead's integration checks: the pieces written by different roles must agree with each other.
 
@@ -78,6 +79,17 @@ describe('lab definition', () => {
 
   it('links its part sheets into the main video', () => {
     expect(lab.video?.id).toBe('hM4cDkSSsrQ');
+  });
+
+  it('opens every lesson on an existing world, part, preset and scenario', () => {
+    expect(lab.lessons?.items).toHaveLength(6);
+    for (const lesson of lab.lessons?.items ?? []) {
+      const { scene, part, preset, scenario } = lesson.focus;
+      expect(sceneIds, `${lesson.id}: scene`).toContain(scene);
+      if (part) expect(module(scene).registry.get(part), `${lesson.id}: part ${part}`).toBeDefined();
+      if (preset) expect(PRESET_IDS as string[], `${lesson.id}: preset ${preset}`).toContain(preset);
+      if (scenario) expect(SCENARIO_IDS as string[], `${lesson.id}: scenario ${scenario}`).toContain(scenario);
+    }
   });
 
   it('draws each sheet of the plans from existing worlds, parts and groups', () => {

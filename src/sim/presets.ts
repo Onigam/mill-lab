@@ -147,7 +147,9 @@ function scenarioBase(id: ScenarioId): ScenarioSetup {
         ramps: [{ key: 'fixedRpm', at: 5, duration: 90, from: Math.round(rpm0), to: Math.round(0.3 * rpm0) }],
       };
     case 'wrong-ratio':
-      // belt too small a ratio: the generator never reaches the battery voltage; then too large: the screw is held back
+      // belt too small a ratio (rounded to 1.5): the generator is below the battery voltage for a moment, then the screw settles at
+      // about 117 rpm, 1.3 kW and half-empty pockets (the engine, not a rule of thumb: src/data/lessons.test.ts pins the transient);
+      // then too large: the screw is held back
       return {
         params: full,
         events: [
