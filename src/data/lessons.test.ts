@@ -5,10 +5,12 @@ import { LAB_STRINGS } from '../i18n/ui';
 import { partIds, WORLDS, type WorldId } from '../part-ids';
 import {
   BELT_EFFICIENCY,
+  BUS_VOLTS,
   CHAIN_EFFICIENCY,
   FLOOD_GATE_FACTOR,
   FLOW_MIN_FRAC,
   G,
+  GEN_HEADROOM,
   GEN_RATED_RPM,
   HOURS_PER_YEAR,
   RESERVED_FRACTION,
@@ -18,7 +20,7 @@ import {
 } from '../sim/machine';
 import { MillSim } from '../sim/engine';
 import { candidatesFor, fits, ZONES } from '../sim/chooser';
-import { cutInOmega, radToRpm, rpmToRad, stagesNeeded } from '../sim/mech';
+import { cutInOmega, generatorAt, radToRpm, rpmToRad, stagesNeeded } from '../sim/mech';
 import { hydraulicPower } from '../sim/physics';
 import { PRESET_IDS, presetParams, SCENARIO_IDS, scenarioSetup } from '../sim/presets';
 import { speedRuleRpm } from '../sim/screw';
@@ -26,16 +28,19 @@ import { SITE_IDS, SITES, floodFlow, medianFlow, reservedFlow, tailRise } from '
 import { driveEfficiency, plantFor, solvePlant } from '../sim/system';
 import { sizeWheel, wheelPoint, WHEEL_SOURCES, type WheelType } from '../sim/wheel';
 import { simulateYear } from '../sim/year';
-import { SCREW } from '../three/dims';
+import { electricalFrequency, GENERATOR_DESIGN, SCREW } from '../three/dims';
 import { CHAPTERS } from './chapters';
 import { FIG } from './figures';
 import { figInfo, LESSON_FIG, rawOf, type Kind } from './lessons-fig';
 import { LESSONS } from './lessons';
+import { PARTS } from './parts';
 
-// The six lessons (the owner chose Lite): shape and length, French and English written together, the focus each one opens in the 3D
-// view and in the simulation, the quiz, every number of every text (a typed number against an allow-list with its source, a
-// placeholder against the simulation, the dimensions or the sources), what the lessons say will happen when the visitor runs their
-// scenario, and the honest points the wave 1 findings ask to be said. Piggott Lab's lessons.test.ts is the model.
+// The eight lessons (the owner chose Lite, six lessons; completion wave B added "from rotation to volts" and "protect, regulate, store"
+// after "why a speed multiplier", so that the order follows the energy): shape and length, French and English written together, the
+// focus each one opens in the 3D view and in the simulation, the quiz, every number of every text (a typed number against an allow-list
+// with its source, a placeholder against the simulation, the dimensions or the sources), what the lessons say will happen when the
+// visitor runs their scenario, and the honest points the wave 1 findings and the completion wave A ask to be said. Piggott Lab's
+// lessons.test.ts is the model.
 
 const VIDEO_SECONDS = 57 * 60 + 20; // the main video lasts 57 min 16 s
 
@@ -98,16 +103,19 @@ const quizEn = (id: string): string =>
 
 // ------------------------------------------------------------------------------------------------ shape and parity
 
-describe('the six lessons', () => {
-  it('are six (the owner chose Lite), with unique kebab-case ids, in the order of the story', () => {
+describe('the eight lessons', () => {
+  it('are eight, with unique kebab-case ids, in the order of the energy: water, screw, multiplier, generator, powerhouse, then the choice and the year', () => {
     expect(LESSONS.map((x) => x.id)).toEqual([
       'water-to-watts',
       'why-screw',
       'speed-multiplier',
+      'rotation-to-volts',
+      'protect-regulate-store',
       'which-turbine',
       'wheel-or-screw',
       'mill-year',
     ]);
+    expect(new Set(LESSONS.map((x) => x.id)).size).toBe(8);
     for (const les of LESSONS) expect(les.id).toMatch(/^[a-z]+(-[a-z]+)*$/);
   });
 
@@ -125,7 +133,7 @@ describe('the six lessons', () => {
       expect(les.quiz?.length, les.id).toBeGreaterThanOrEqual(2);
       expect(les.quiz?.length, les.id).toBeLessThanOrEqual(3);
     }
-    expect(LESSONS.reduce((n, x) => n + (x.quiz?.length ?? 0), 0)).toBe(16);
+    expect(LESSONS.reduce((n, x) => n + (x.quiz?.length ?? 0), 0)).toBe(22);
   });
 
   it('keep every paragraph short (2 to 4 sentences, at most 85 words, no sentence over 36 words) and a lesson near 250 words at most', () => {
@@ -175,7 +183,7 @@ describe('the six lessons', () => {
 
   it('are in British English', () => {
     const american =
-      /\b(colors?|centers?|meters?|liters?|gray|analyz\w*|behaviors?|fibers?|aluminum|favors?|honors?|labor|neighbors?|catalogs?|defense|license|plow|sulfur|gasoline|molds?|realiz\w*|organiz\w*|recogniz\w*|minimiz\w*|maximiz\w*|optimiz\w*|utiliz\w*|standardiz\w*)\b/i;
+      /\b(colors?|centers?|(?<!energy )meters?|liters?|gray|analyz\w*|behaviors?|fibers?|aluminum|favors?|honors?|labor|neighbors?|catalogs?|defense|license|plow|sulfur|gasoline|molds?|realiz\w*|organiz\w*|recogniz\w*|minimiz\w*|maximiz\w*|optimiz\w*|utiliz\w*|standardiz\w*)\b/i;
     for (const { label, text } of allTexts()) expect(text.en, label).not.toMatch(american);
     // …and the words that matter here are the British ones
     expect(bodyEn('water-to-watts')).toMatch(/litres/);
@@ -257,9 +265,13 @@ describe('the six lessons', () => {
       'water-to-watts',
       'why-screw',
       'speed-multiplier',
+      'rotation-to-volts',
+      'protect-regulate-store',
       'which-turbine',
       'mill-year',
     ]);
+    expect(lesson('rotation-to-volts').formula).toBe('V = k · ω');
+    expect(lesson('protect-regulate-store').formula).toBe('I = U / R');
   });
 });
 
@@ -277,7 +289,7 @@ describe('the focus of each lesson opens what it talks about', () => {
     }
   });
 
-  it('is the one the brief gives: site / screw worlds, the part, the starting point and the scenario of each lesson', () => {
+  it('is the one the brief gives: the world, the part, the starting point and the scenario of each lesson', () => {
     const focus = Object.fromEntries(
       LESSONS.map((x) => [x.id, [x.focus.scene, x.focus.part, x.focus.preset, x.focus.scenario]]),
     );
@@ -285,14 +297,24 @@ describe('the focus of each lesson opens what it talks about', () => {
       'water-to-watts': ['site', 'weir', 'full-size', undefined],
       'why-screw': ['screw', 'trapped-water', 'full-size', 'too-fast'],
       'speed-multiplier': ['screw', 'pulley-large', 'full-size', 'wrong-ratio'],
+      'rotation-to-volts': ['generator', 'gen-magnets', 'full-size', undefined],
+      'protect-regulate-store': ['powerroom', 'fuse-box', 'full-size', undefined],
       'which-turbine': ['site', 'water-chamber', 'river', undefined],
       'wheel-or-screw': ['screw', 'blade-module', 'full-size', 'wheel-instead'],
       'mill-year': ['site', 'reserved-flow-notch', 'full-size', 'low-water'],
     });
-    // a scenario makes the preset « custom »: the two lessons that are about a starting point offer none
-    expect(LESSONS.filter((x) => !x.focus.scenario).map((x) => x.id)).toEqual(['water-to-watts', 'which-turbine']);
-    // every lesson opens something new
-    expect(new Set(LESSONS.map((x) => `${x.focus.scene}/${x.focus.part}`)).size).toBe(6);
+    // a scenario makes the preset « custom »: the lessons that are about a starting point or about parts the model does not move offer
+    // none (no scenario of the simulation shows the volts or the protections: `too-fast` would show the volts, but through the
+    // pockets of lesson 2, and in the imposed-speed mode that is not the generator on its battery)
+    expect(LESSONS.filter((x) => !x.focus.scenario).map((x) => x.id)).toEqual([
+      'water-to-watts',
+      'rotation-to-volts',
+      'protect-regulate-store',
+      'which-turbine',
+    ]);
+    // every lesson opens something new, and the four worlds are all opened by a lesson
+    expect(new Set(LESSONS.map((x) => `${x.focus.scene}/${x.focus.part}`)).size).toBe(8);
+    expect(new Set(LESSONS.map((x) => x.focus.scene))).toEqual(new Set(['site', 'screw', 'generator', 'powerroom']));
   });
 
   it('opens each starting point and runs each scenario in the engine without error, and the scenario makes the preset « custom »', () => {
@@ -317,14 +339,19 @@ describe('the focus of each lesson opens what it talks about', () => {
       expect(seconds(les.video), les.id).toBeLessThanOrEqual(VIDEO_SECONDS);
       expect(starts, les.id).toContain(les.video);
     }
-    // the wheel is the subject of another video, not of the main one: no timestamp for lesson 5
+    // the wheel is the subject of another video, not of the main one: no timestamp for the wheel lesson
     expect(LESSONS.filter((x) => x.video).map((x) => x.id)).toEqual([
       'water-to-watts',
       'why-screw',
       'speed-multiplier',
+      'rotation-to-volts',
+      'protect-regulate-store',
       'which-turbine',
       'mill-year',
     ]);
+    // the generator is chosen and its belt shown at 35:43; the batteries that a continuous production spares at 22:03
+    expect(lesson('rotation-to-volts').video).toBe('35:43');
+    expect(lesson('protect-regulate-store').video).toBe('22:03');
   });
 });
 
@@ -334,7 +361,7 @@ describe('the quiz', () => {
   const items = LESSONS.flatMap((les) => (les.quiz ?? []).map((q, i) => ({ id: `${les.id} Q${i + 1}`, les, q })));
 
   it('has 3 choices per question, an answer in range, a distinct text per choice, an explanation of 15 to 60 words', () => {
-    expect(items).toHaveLength(16);
+    expect(items).toHaveLength(22);
     for (const { id, q } of items) {
       expect(q.choices.length, id).toBe(3);
       expect(Number.isInteger(q.answer) && q.answer >= 0 && q.answer < q.choices.length, id).toBe(true);
@@ -389,13 +416,29 @@ describe('the quiz', () => {
     expect(q('speed-multiplier', 0).choices[1]!.en).toMatch(/faster means stronger/);
     expect(q('speed-multiplier', 1).choices[0]!.en).toMatch(/belt multiplies the torque/);
     expect(q('speed-multiplier', 1).choices[2]!.en).toMatch(/lose less power/);
-    // lesson 4: the screw accepts any flow / a machine works anywhere if big enough
+    // lesson 4 (volts): the magnets alone set the voltage / the voltage follows the square of the speed / a rectifier raises the voltage /
+    // a rectifier brakes a full battery's generator / the video opened the generator / the screw's sizing rule gives the poles
+    expect(q('rotation-to-volts', 0).choices[0]!.en).toMatch(/magnets alone set the voltage/);
+    expect(q('rotation-to-volts', 0).choices[2]!.en).toMatch(/square of the speed/);
+    expect(q('rotation-to-volts', 1).choices[1]!.en).toMatch(/raise the generator’s voltage/);
+    expect(q('rotation-to-volts', 1).choices[2]!.en).toMatch(/slow the generator down/);
+    expect(q('rotation-to-volts', 2).choices[0]!.en).toMatch(/measured on the video’s generator/);
+    expect(q('rotation-to-volts', 2).choices[1]!.en).toMatch(/published rule that sizes the screw/);
+    // lesson 5 (protections): the battery is dangerous only when overcharged, and the voltage rises by itself / direct current is just
+    // "stronger" or heats more / the model's controller opens the breaker, or the model shows the screw racing
+    expect(q('protect-regulate-store', 0).choices[1]!.en).toMatch(/rises by itself/);
+    expect(q('protect-regulate-store', 0).choices[2]!.en).toMatch(/only when overcharged/);
+    expect(q('protect-regulate-store', 1).choices[0]!.en).toMatch(/carries more power/);
+    expect(q('protect-regulate-store', 1).choices[1]!.en).toMatch(/heats the contacts faster/);
+    expect(q('protect-regulate-store', 2).choices[0]!.en).toMatch(/the model’s controller does so by itself/);
+    expect(q('protect-regulate-store', 2).choices[2]!.en).toMatch(/the model shows that as well/);
+    // lesson 6: the screw accepts any flow / a machine works anywhere if big enough
     expect(q('which-turbine', 0).choices[0]!.en).toMatch(/accepts any flow/);
     expect(q('which-turbine', 1).choices[2]!.en).toMatch(/works anywhere/);
-    // lesson 5: take the higher / trust the model
+    // lesson 7: take the higher / trust the model
     expect(q('wheel-or-screw', 0).choices[0]!.en).toMatch(/Take the higher/);
     expect(q('wheel-or-screw', 0).choices[2]!.en).toMatch(/Trust the lab’s model/);
-    // lesson 6: the reserved flow is not the screw's capacity / a flood is not a matter of too much water for the screw
+    // lesson 8: the reserved flow is not the screw's capacity / a flood is not a matter of too much water for the screw
     expect(q('mill-year', 0).choices[0]!.en).toMatch(/largest flow the screw can swallow/);
     expect(q('mill-year', 1).choices[2]!.en).toMatch(/runs away/);
     expect(q('mill-year', 2).choices[0]!.en).toMatch(/runs a little over half the time/);
@@ -426,7 +469,7 @@ const TYPED: Record<string, string> = {
   '2.4': 'the too-fast scenario forces the screw to 2.4 times its speed (presets.ts)',
   '2.5': '2.5 m, smallest head of the overshot wheel (magazine, ZONES.overshot.head)',
   '3': '3 m of head: the 30 kW plant of another video; the « River with a weir » starting point (presets.ts); breastshot wheel largest head',
-  '5': 'cross-reference « leçon 5 / lesson 5 »',
+  '7': 'cross-reference « leçon 7 / lesson 7 » (the wheel lesson, since the two lessons of the generator and the powerhouse came in)',
   '8': 'smallest head of the crossflow zone, m (ZONES.crossflow.head)',
   '9.22': 'head of the 30 kW crossflow plant, m (another video)',
   '9.81': 'gravity, m/s² (the kit’s G)',
@@ -442,6 +485,8 @@ const TYPED: Record<string, string> = {
   '85': 'about 85 % of the overshot and undershot wheels (review)',
   '90': '80 to 90 % of the overshot wheel (encyclopaedia)',
   '100': '100 L/s falling 1 m (video)',
+  '120':
+    'f = poles × rpm / 120: the frequency of a rotating machine, 120 = 2 poles per pair × 60 s per minute (physics of electrical machines; data.test.ts REPORTED too)',
   '200': 'the 200 W of the prototype (video); 200 m of head of the 30 kW plant (another video)',
   '220': 'head of the mountain plant, m (another video)',
   '450': 'flow of the 30 kW crossflow plant, L/s (another video)',
@@ -596,6 +641,16 @@ describe('the figures of the lessons are what the simulation finds', () => {
     const rpm = (m: WheelType) => plantFor(presetParams('full-size', m)).designRpm;
     printed('wheelRpmLow', Math.min(rpm('overshot'), rpm('breastshot'), rpm('undershot')));
     printed('wheelRpmHigh', Math.max(rpm('overshot'), rpm('breastshot'), rpm('undershot')));
+  });
+
+  it('derived: the generator’s voltage is its constant times its speed: 9 V for 100 rpm, 4.9 V at the screw’s own speed, 27 V at half the rated speed', () => {
+    const volts = (rpm: number) => generatorAt(plant.generator, rpmToRad(rpm)).openCircuitVolts;
+    printed('voltPer100', volts(100));
+    printed('voltScrew', volts(op.rpm));
+    printed('voltHalf', volts(GEN_RATED_RPM / 2));
+    // …and by the other road: the 53.7 V of the design point divided by the ratio of the drive, and by two
+    expect(Math.abs(volts(op.rpm) - FIG.voc[0] / (p.chainRatio * p.beltRatio))).toBeLessThan(0.1);
+    expect(Math.abs(volts(GEN_RATED_RPM / 2) - FIG.voc[0] / 2)).toBeLessThan(0.1);
   });
 });
 
@@ -776,7 +831,234 @@ describe('lesson 3 — why a speed multiplier', () => {
   });
 });
 
-describe('lesson 4 — which turbine for my site', () => {
+describe('lesson 4 — from rotation to volts', () => {
+  const p = presetParams('full-size');
+  const plant = plantFor(p);
+  const op = solvePlant(p, p.riverFlow);
+  const g = plant.generator;
+  const volts = (rpm: number) => generatorAt(g, rpmToRad(rpm)).openCircuitVolts;
+  const name = (id: string) => PARTS.find((x) => x.id === id)!.name;
+
+  it('says the voltage grows in strict proportion to the speed, and the model makes it so at every speed', () => {
+    for (const rpm of [50, 100, 300, 600, 1200, 1960])
+      expect(volts(rpm) / rpm, `${rpm} rpm`).toBeCloseTo(volts(600) / 600, 9);
+    expect(bodyEn('rotation-to-volts')).toMatch(/in strict proportion/);
+    expect(bodyFr('rotation-to-volts')).toMatch(/en proportion exacte/);
+    expect(lesson('rotation-to-volts').formula).toBe('V = k · ω');
+  });
+
+  it('needs hundreds of rpm to beat the battery: at the screw’s own speed the same machine gives a tenth of the 48 V, at half the rated speed it charges nothing, it starts at 552 rpm', () => {
+    expect(volts(op.rpm)).toBeLessThan(BUS_VOLTS / 5);
+    expect(volts(op.rpm) / BUS_VOLTS).toBeLessThan(0.11);
+    expect(op.openCircuitVolts).toBeGreaterThan(BUS_VOLTS);
+    expect(op.openCircuitVolts / BUS_VOLTS).toBeCloseTo(1 + GEN_HEADROOM, 2);
+    // the quiz: half the speed gives about 27 V, less than the battery’s 48 V: nothing would charge
+    expect(volts(GEN_RATED_RPM / 2)).toBeLessThan(BUS_VOLTS);
+    expect(generatorAt(g, rpmToRad(GEN_RATED_RPM / 2)).current).toBe(0);
+    expect(Math.round(radToRpm(cutInOmega(g)))).toBe(FIG.cutInRpm[0]);
+    expect(FIG.cutInRpm[0]).toBeLessThan(GEN_RATED_RPM);
+    expect(FIG.cutInRpm[0]).toBeGreaterThan(GEN_RATED_RPM / 2);
+    expect(Math.abs(op.openCircuitVolts - FIG.voc[0])).toBeLessThan(0.05);
+    expect(FIG.busVolts[0]).toBe(BUS_VOLTS);
+    expect(FIG.genRpm[0]).toBe(GEN_RATED_RPM);
+    expect(bodyEn('rotation-to-volts')).toMatch(/hence the speed multiplier/);
+    expect(bodyFr('rotation-to-volts')).toMatch(/d’où le multiplicateur de vitesse/);
+  });
+
+  it('gives the design point: 600 rpm, 53.7 V, 39 N·m, 46 A and 2.2 kW (the chips and the quiz), the books closed (48 V × 45.8 A)', () => {
+    expect(Math.round(op.generatorRpm / 10) * 10).toBe(GEN_RATED_RPM);
+    expect(Math.round(op.generatorTorque)).toBe(FIG.torqueGen[0]);
+    expect(Math.round(op.current)).toBe(FIG.current[0]);
+    expect(Math.round(op.electricPower / 100) / 10).toBe(LESSON_FIG.elecKw1[0]);
+    expect(Math.abs(BUS_VOLTS * op.current - op.electricPower)).toBeLessThan(1e-6);
+    const chips = lesson('rotation-to-volts').figures!.map((f) => (f.value as L).en);
+    expect(chips).toEqual(['53.7 V', '39 N·m · 46 A', '16 · 80 Hz']);
+    expect(lesson('rotation-to-volts').figures!.map((f) => (f.value as L).fr)).toEqual([
+      '53,7 V',
+      '39 N·m · 46 A',
+      '16 · 80 Hz',
+    ]);
+    // the 2.2 kW is the quiz's: 46 A at the 48 V of the battery
+    expect(quizEn('rotation-to-volts')).toMatch(/At 600 rpm the battery takes 46 A, that is 2\.2 kW \(model results\)/);
+    expect(lesson('rotation-to-volts').quiz![0]!.explain.fr).toMatch(
+      /À 600 tr\/min, la batterie prend 46 A, soit 2,2 kW/,
+    );
+  });
+
+  it('explains the three phases and the rectifier in the words of the part sheets, the rectifier being defined here and not again', () => {
+    const t = bodyEn('rotation-to-volts');
+    expect(t).toMatch(/\*\*three-phase\*\*/);
+    expect(t).toMatch(/\*\*rectifier\*\*, a bridge of six diodes/);
+    expect(bodyFr('rotation-to-volts')).toMatch(/\*\*triphasé\*\*/);
+    expect(bodyFr('rotation-to-volts')).toMatch(/\*\*redresseur\*\*, un pont de six diodes/);
+    expect(name('rectifier').en.toLowerCase()).toBe('rectifier');
+    expect(name('rectifier').fr.toLowerCase()).toBe('redresseur');
+    expect(bodyEn('protect-regulate-store')).not.toMatch(/\*\*rectifier\*\*/);
+    expect(bodyFr('protect-regulate-store')).not.toMatch(/\*\*redresseur\*\*/);
+  });
+
+  it('gives the poles and the frequency as the lab’s estimates, read from the 3D generator: f = poles × rpm / 120, 16 poles, 80 Hz', () => {
+    expect(FIG.genPoles[0]).toBe(GENERATOR_DESIGN.poles);
+    expect(FIG.genFreq[0]).toBe(electricalFrequency(GEN_RATED_RPM, GENERATOR_DESIGN.poles));
+    expect(FIG.genFreq[0]).toBe((FIG.genPoles[0] * GEN_RATED_RPM) / 120);
+    // a pair of poles gives one swing per turn: 8 pairs × 10 turns a second
+    expect(FIG.genFreq[0]).toBe((FIG.genPoles[0] / 2) * (GEN_RATED_RPM / 60));
+    expect(figInfo('genPoles')!.kind).toBe('estimate');
+    expect(figInfo('genFreq')!.kind).toBe('estimate');
+    expect(figInfo('genRpm')!.kind).toBe('assumed');
+    const t = bodyEn('rotation-to-volts');
+    expect(t).toMatch(/the lab draws 16 of them \(estimate\)/);
+    expect(t).toMatch(/poles × rpm \/ 120: 80 Hz at the assumed 600 rpm \(estimate\)/);
+    expect(bodyFr('rotation-to-volts')).toMatch(/80 Hz à 600 tr\/min supposés \(estimation\)/);
+  });
+
+  it('says the video never opens the generator, as the sheets do: the lesson’s own part has no link, and the lab’s generator is generic', () => {
+    expect(PARTS.find((x) => x.id === 'gen-magnets')!.video).toBeUndefined();
+    expect(bodyEn('rotation-to-volts')).toMatch(
+      /The video shows a generator from the trade and never opens it: this one is generic/,
+    );
+    expect(bodyFr('rotation-to-volts')).toMatch(
+      /La vidéo montre une génératrice du commerce sans l’ouvrir : celle-ci est générique/,
+    );
+    expect(quizEn('rotation-to-volts')).toMatch(/never opens it, and the sizing rules are about the screw/);
+    expect(quizEn('rotation-to-volts')).toMatch(/The poles are the lab’s estimate/);
+  });
+});
+
+describe('lesson 5 — protect, regulate, store', () => {
+  const p = presetParams('full-size');
+  const plant = plantFor(p);
+  const op = solvePlant(p, p.riverFlow);
+  const name = (id: string) => PARTS.find((x) => x.id === id)!.name;
+
+  it('draws the ratings as estimates above the service current: a 63 A breaker and an 80 A fuse for 46 A, and says so', () => {
+    expect(figInfo('breakerA')!.kind).toBe('estimate');
+    expect(figInfo('fuseA')!.kind).toBe('estimate');
+    expect(FIG.breakerA[0]).toBeGreaterThan(op.current);
+    expect(FIG.fuseA[0]).toBeGreaterThan(FIG.breakerA[0]);
+    expect(lesson('protect-regulate-store').figures!.map((f) => (f.value as L).en)[0]).toBe('63 A · 80 A');
+    expect(lesson('protect-regulate-store').figures![0]!.label.fr).toMatch(/estimation/);
+    expect(bodyEn('protect-regulate-store')).toMatch(
+      /The ratings drawn here are estimates, and this lab is not a wiring plan/,
+    );
+    expect(bodyFr('protect-regulate-store')).toMatch(
+      /Les calibres dessinés sont des estimations, et ce labo n’est pas un plan de câblage/,
+    );
+  });
+
+  it('computes the dump load by Ohm’s law, the formula of the lesson: 48 V over the 45.8 A of the design point, about 1.05 Ω, which swallows the whole 2.2 kW', () => {
+    expect(figInfo('dumpOhm')!.kind).toBe('derived');
+    expect(BUS_VOLTS / op.current).toBeCloseTo(FIG.dumpOhm[0], 1);
+    expect(BUS_VOLTS ** 2 / op.electricPower).toBeCloseTo(FIG.dumpOhm[0], 1);
+    // I = U / R, and U × I is the electric power the resistor takes
+    expect(BUS_VOLTS / FIG.dumpOhm[0]).toBeCloseTo(op.current, 0);
+    expect((BUS_VOLTS * BUS_VOLTS) / FIG.dumpOhm[0] / 1000).toBeCloseTo(LESSON_FIG.elecKw1[0], 1);
+    expect(lesson('protect-regulate-store').formula).toBe('I = U / R');
+  });
+
+  it('puts hundreds of amps behind a short circuit: with the model’s own circuit resistance (windings and cables) the 48 V would push about 500 A, the order of magnitude of the text', () => {
+    const amps = BUS_VOLTS / plant.generator.resistance;
+    expect(amps).toBeGreaterThan(100);
+    expect(amps).toBeLessThan(1000);
+    expect(amps / op.current).toBeGreaterThan(5);
+    expect(bodyEn('protect-regulate-store')).toMatch(/hundreds of amps in a \*\*short circuit\*\*/);
+    expect(bodyFr('protect-regulate-store')).toMatch(/des centaines d’ampères dans un \*\*court-circuit\*\*/);
+  });
+
+  it('retrieves the free-running figures: with no load at all the screw races to 180 rpm (3.3 times) and the generator to 176 V, three times the design point’s', () => {
+    expect(figInfo('freeRunRpm')!.kind).toBe('model');
+    expect(figInfo('freeRunVolts')!.kind).toBe('model');
+    expect(FIG.freeRunVolts[0] / FIG.voc[0]).toBeGreaterThan(3);
+    expect(FIG.freeRunRpm[0] / FIG.rpm[0]).toBeCloseTo(FIG.freeRunFactor[0], 1);
+    expect(lesson('protect-regulate-store').figures!.map((f) => (f.value as L).en)).toEqual([
+      '63 A · 80 A',
+      '≈ 1.05 Ω',
+      '176 V',
+    ]);
+    expect(bodyEn('protect-regulate-store')).toMatch(
+      /the model finds the screw racing at 180 rpm and 176 V at the generator \(model results\)/,
+    );
+    const free = generatorAt(plant.generator, rpmToRad(FIG.freeRunGenRpm[0]));
+    expect(Math.abs(free.openCircuitVolts - FIG.freeRunVolts[0])).toBeLessThan(2);
+    expect(FIG.freeRunVolts[0]).toBeGreaterThan(BUS_VOLTS);
+    // …and it is the voltage a breaker for direct current must be rated above (the quiz)
+    expect(quizEn('protect-regulate-store')).toMatch(
+      /Its rated voltage must also exceed the highest the circuit can see/,
+    );
+  });
+
+  it('is honest that the model stops at an ideal battery: no dump load, controller, inverter, fuse or meter in its state or parameters, and a battery that takes any current', () => {
+    const sim = new MillSim();
+    for (const k of [...Object.keys(sim.state), ...Object.keys(sim.params)])
+      expect(k, `state or parameter « ${k} »`).not.toMatch(
+        /dump|divert|inverter|controller|fuse|breaker|earth|capacity|soc\b|stateOfCharge/i,
+      );
+    // an ideal battery takes whatever the generator makes: the current only grows with the speed, up to the racing speed
+    const at = (rpm: number) => generatorAt(plant.generator, rpmToRad(rpm)).current;
+    expect(at(1960)).toBeGreaterThan(at(900));
+    expect(at(900)).toBeGreaterThan(at(600));
+    expect(bodyEn('protect-regulate-store')).toMatch(
+      /at an ideal \d+ V battery \(assumption\), without dump load, controller or inverter/,
+    );
+    expect(bodyFr('protect-regulate-store')).toMatch(
+      /batterie idéale de \d+ V \(hypothèse\), sans charge de délestage, sans régulateur ni onduleur/,
+    );
+    expect(quizEn('protect-regulate-store')).toMatch(
+      /The lab’s model has no dump load and no controller: its battery is ideal and takes everything/,
+    );
+    expect(quizEn('protect-regulate-store')).toMatch(/Real plants have one/);
+  });
+
+  it('keeps the safety clauses: lethal mains voltage, hundreds of amps, arcs that do not go out, a qualified electrician, not a wiring plan', () => {
+    const t = bodyEn('protect-regulate-store');
+    expect(t).toMatch(/mains voltage, lethal/);
+    expect(t).toMatch(/does not go out by itself/);
+    expect(t).toMatch(/a qualified electrician chooses and measures them/);
+    expect(t).toMatch(/this lab is not a wiring plan/);
+    expect(t).toMatch(/shows nothing until the day it is needed/);
+    expect(lesson('protect-regulate-store').summary.en).toMatch(/not a wiring plan/);
+    const f = bodyFr('protect-regulate-store');
+    expect(f).toMatch(/mortelle/);
+    expect(f).toMatch(/un électricien qualifié/);
+    expect(f).toMatch(/ce labo n’est pas un plan de câblage/);
+  });
+
+  it('uses the names of the part sheets for what it defines, in both languages, in the order of the current', () => {
+    const t = bodyEn('protect-regulate-store');
+    expect(t).toMatch(/\*\*breaker\*\*/);
+    expect(name('dc-breaker').en.toLowerCase()).toContain('breaker');
+    expect(name('dc-breaker').fr.toLowerCase()).toContain('disjoncteur');
+    for (const [id, en, fr] of [
+      ['charge-controller', 'charge controller', 'régulateur de charge'],
+      ['dump-load', 'dump load', 'charge de délestage'],
+      ['earthing', 'earthing', 'mise à la terre'],
+    ] as const) {
+      expect(name(id).en.toLowerCase(), id).toBe(en);
+      expect(name(id).fr.toLowerCase(), id).toBe(fr);
+      expect(t, id).toContain(`**${en}**`);
+      expect(bodyFr('protect-regulate-store'), id).toContain(`**${fr}**`);
+    }
+    expect(bodyFr('protect-regulate-store')).toMatch(/\*\*disjoncteur\*\*/);
+    expect(bodyFr('protect-regulate-store')).toMatch(/\*\*fusibles\*\*/);
+    // the order of the current: breaker, fuses, then the controller, the dump load, the battery, the inverter, the meter, the earthing
+    const order = [
+      'breaker',
+      'fuses',
+      'short circuit',
+      'charge controller',
+      'dump load',
+      'battery stores',
+      'inverter',
+      'energy meter',
+      'earthing',
+    ];
+    const at = order.map((w) => t.search(new RegExp(w)));
+    expect(at.every((k) => k >= 0)).toBe(true);
+    expect([...at].sort((a, b) => a - b)).toEqual(at);
+  });
+});
+
+describe('lesson 6 — which turbine for my site', () => {
   it('quotes the zones of the chooser: the screw 0.1 to 10 m and 0.01 to 14.5 m³/s, wheels 0.3 to 10 m, Kaplan from 2 m, crossflow 8 to 60 m, Pelton from 75 m', () => {
     expect(ZONES.screw.head).toEqual([0.1, 10]);
     expect(ZONES.screw.flow).toEqual([0.01, 14.5]);
@@ -833,12 +1115,12 @@ describe('lesson 4 — which turbine for my site', () => {
     expect(bodyEn('which-turbine')).toContain('“Which turbine for my site?”');
     expect(bodyFr('which-turbine')).toContain(`« ${LAB_STRINGS.presetRiver![0]} »`);
     expect(bodyEn('which-turbine')).toContain(`“${LAB_STRINGS.presetRiver![1]}”`);
-    expect(LESSONS[3]!.title.fr).toBe(LAB_STRINGS.chartChooser![0].split(' (')[0]);
-    expect(LESSONS[3]!.title.en).toBe(LAB_STRINGS.chartChooser![1].split(' (')[0]);
+    expect(lesson('which-turbine').title.fr).toBe(LAB_STRINGS.chartChooser![0].split(' (')[0]);
+    expect(lesson('which-turbine').title.en).toBe(LAB_STRINGS.chartChooser![1].split(' (')[0]);
   });
 });
 
-describe('lesson 5 — a wheel or a screw', () => {
+describe('lesson 7 — a wheel or a screw', () => {
   const p = presetParams('full-size');
 
   it('quotes both ranges of every source as the model’s table holds them', () => {
@@ -929,7 +1211,7 @@ describe('lesson 5 — a wheel or a screw', () => {
   });
 });
 
-describe('lesson 6 — the year of the mill', () => {
+describe('lesson 8 — the year of the mill', () => {
   const p = presetParams('full-size');
   const year = simulateYear(p);
 
@@ -1024,13 +1306,20 @@ describe('the lessons agree with the interface', () => {
   it('has an intro of the interface that does not promise what the lessons are not', () => {
     const intro = LAB_STRINGS.lessonsIntroMill!;
     expect(intro).toBeDefined();
-    expect(intro[0]).toMatch(/^Six leçons courtes/);
-    expect(intro[1]).toMatch(/^Six short lessons/);
+    expect(intro[0]).toMatch(/^Huit leçons courtes/);
+    expect(intro[1]).toMatch(/^Eight short lessons/);
     expect((intro[0] + intro[1]).replace(/\b3D\b/g, '')).not.toMatch(/\d/);
     expect(intro[1]).toMatch(/quiz/);
-    expect(LESSONS).toHaveLength(6);
-    // …and it names what the lessons open, as the kit does
+    expect(LESSONS).toHaveLength(8);
+    // …and it names what the lessons open, as the kit does, and the two new stops of the story
     expect(intro[1]).toMatch(/Simulation/);
+    expect(intro[0]).toMatch(/génératrice/);
+    expect(intro[0]).toMatch(/local technique/);
+    expect(intro[1]).toMatch(/generator/);
+    expect(intro[1]).toMatch(/powerhouse/);
+    // only some of the lessons come with a scenario (four of eight): the intro says « parfois / sometimes », not « souvent / often »
+    expect(intro[0]).toMatch(/parfois avec un scénario/);
+    expect(intro[1]).toMatch(/sometimes with a scenario/);
   });
 
   it('keeps the existing template intro unchanged (it is the lead’s)', () => {

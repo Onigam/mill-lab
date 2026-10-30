@@ -84,6 +84,8 @@ export const MODEL = {
   qBucketLs: 170, // L/s that really go through the pockets (170.2)
   qGapLs: 9, // L/s that leak through the gap (9.0)
   protoW: 206, // W from the prototype's head and flow (1 m, 31 L/s): the research's own circular derivation, not a result about the video
+  genResistance: 0.09, // ohm: the resistance the model gives to the circuit seen by the rectified current, windings and cables (0.093)
+  genK: 0.86, // V per rad/s, which is also N·m per ampere: the generator's constant (k = 0.856), the model's winding
 } as const;
 
 export const FIG = {
@@ -158,6 +160,8 @@ export const FIG = {
   qBucketLs: [MODEL.qBucketLs, 0],
   qGapLs: [MODEL.qGapLs, 0],
   protoW: [MODEL.protoW, 0],
+  genResistance: [MODEL.genResistance, 2],
+  genK: [MODEL.genK, 2],
   // ---- derived from the published sizing rules and the model's geometry (the dimensions of the 3D model are in dims.ts)
   rectFactor: [1.35, 2], // 3√2/π: the rectified voltage of a three-phase bridge, in line voltages
   ratio: [10.9, 1], // 3.3 × 3.3 (the ratios that bring the generator to its rated speed at the design speed)
@@ -175,6 +179,13 @@ export const FIG = {
   diameter: [0.86, 2], // m: outer diameter, sized so that full pockets at the speed rule carry 180 L/s
   inner: [0.46, 2], // m: core diameter, 0.5357 × D (the optimum of the published rule for three threads)
   pitch: [0.86, 2], // m: advance of a thread per turn, equal to the diameter (the built proportion of the published rule)
+  // ---- derived from the model's generator and the design point (completion wave A: the generator opened and the powerhouse)
+  genLineV: [39.8, 1], // V (rms) between two phases at 600 rpm: the rectified 53.7 V divided by 1.35
+  genPhaseV: [23, 0], // V (rms) of one phase of a star winding: the line voltage divided by √3 (22.98)
+  genPhaseA: [37, 0], // A (rms) in each phase when the bridge delivers 45.8 A: √(2/3) of the direct current (37.4)
+  freeRunForce: [11, 0], // times the centrifugal force on the rotor at the racing speed: (180 / 55)² = 10.6
+  dumpOhm: [1.05, 2], // ohm: battery volts divided by the current of the design point, the resistance that swallows the whole electric power (48 / 45.8)
+  invA: [63, 0], // A drawn from a 48 V battery by a 3 kW inverter before its losses (62.5)
   // ---- assumptions of the model (src/sim/machine.ts)
   genRpm: [600, 0], // rpm: rated speed of the generator (research K7: "several hundred rpm")
   busVolts: [48, 0], // V: the battery bank
@@ -197,6 +208,17 @@ export const FIG = {
   meanBrookLs: [60, 0], // L/s: mean flow of the lab's small brook
   meanRaceLs: [300, 0], // L/s: mean flow of the lab's mill race
   meanRiverM3: [3, 0], // m³/s: mean flow of the lab's river
+  // the generator opened and the powerhouse (completion wave A): the design of the machine and the ratings of the equipment are the lab's
+  // estimates; the sources give none of them (the video shows a bought generator and says nothing of the electrical cabinet)
+  genPoles: [16, 0], // magnets on the rotor, north and south alternating
+  genSlots: [24, 0], // teeth (and slots) of the stator, one coil on each
+  genCoilsPerPhase: [8, 0], // 24 coils / 3 phases
+  genFreq: [80, 0], // Hz: poles × rpm / 120 = 16 × 600 / 120
+  breakerA: [63, 0], // A: rating of the DC breaker, above the 46 A of service
+  fuseA: [80, 0], // A: rating of the battery fuse, above the breaker's and below what the cable carries
+  batCableMm2: [25, 0], // mm²: section of the battery cables
+  earthMm2: [16, 0], // mm²: section of the bonding conductor
+  invKw: [3, 0], // kW: rated power of the inverter
 } as const satisfies Record<string, readonly [number, number]>;
 
 export type FigName = keyof typeof FIG;
@@ -269,6 +291,8 @@ export const MODEL_KEYS: ReadonlySet<string> = new Set([
   'kaplanM',
   'kaplanTimes',
   'protoW',
+  'genResistance',
+  'genK',
 ]);
 export const DERIVED_KEYS: ReadonlySet<string> = new Set([
   'cmW',
@@ -289,6 +313,12 @@ export const DERIVED_KEYS: ReadonlySet<string> = new Set([
   'diameter',
   'inner',
   'pitch',
+  'genLineV',
+  'genPhaseV',
+  'genPhaseA',
+  'freeRunForce',
+  'dumpOhm',
+  'invA',
 ]);
 export const ASSUMED_KEYS: ReadonlySet<string> = new Set([
   'head',
@@ -314,4 +344,13 @@ export const ESTIMATE_KEYS: ReadonlySet<string> = new Set([
   'meanBrookLs',
   'meanRaceLs',
   'meanRiverM3',
+  'genPoles',
+  'genSlots',
+  'genCoilsPerPhase',
+  'genFreq',
+  'breakerA',
+  'fuseA',
+  'batCableMm2',
+  'earthMm2',
+  'invKw',
 ]);

@@ -14,8 +14,10 @@ import {
   DRIVE,
   ELECTRONICS,
   GENERATOR,
+  GENERATOR_DESIGN,
   MODULES_PER_TURN,
   POOLS,
+  POWERROOM,
   SCREW,
   SITE,
   TROUGH,
@@ -32,6 +34,9 @@ import { nEn, nFr } from '../units';
 
 const D = SCREW.outerDiameter;
 const chainSmallTeeth = smallTeeth(DESIGN.chainRatio);
+const GD = GENERATOR_DESIGN;
+/** Outer radius of the rotor, magnets included: the stator's bore less the air gap. derived from dims.ts. */
+const rotorRadius = GD.stator.boreRadius - GD.gap;
 
 export const DIM_SPECS: Record<string, Spec[]> = {
   // ---- site
@@ -232,5 +237,118 @@ export const DIM_SPECS: Record<string, Spec[]> = {
       'Drawn type',
       tagged('estimate', `bloc au lithium de ${DESIGN.busVolts} V`, `${DESIGN.busVolts} V lithium pack`),
     ),
+  ],
+
+  // ---- generator (the machine opened: the frame, shaft and terminal box are the outside of the blue generator, GENERATOR; GENERATOR_DESIGN adds the inside)
+  'gen-frame': [
+    sp(
+      'Corps dessiné (diamètre × longueur)',
+      'Drawn body (diameter × length)',
+      lenM('estimate', 2 * GENERATOR.bodyRadius, GENERATOR.bodyLength),
+    ),
+    sp('Paroi de la virole', 'Wall of the shell', lenMm('estimate', GD.shellWall)),
+    sp(
+      'Ailettes de refroidissement',
+      'Cooling ribs',
+      tagged('estimate', `${GD.ribs.count} autour du corps`, `${GD.ribs.count} round the body`),
+    ),
+  ],
+  'gen-stator': [
+    sp('Diamètre extérieur des tôles', 'Outer diameter of the plates', lenMm('estimate', 2 * GD.stator.outerRadius)),
+    sp('Alésage (pointes des dents)', 'Bore (tooth tips)', lenMm('estimate', 2 * GD.stator.boreRadius)),
+    sp('Longueur du paquet de tôles', 'Length of the stack', lenMm('estimate', GD.stator.stack)),
+  ],
+  'gen-coils': [
+    sp('Épaisseur d’une bobine', 'Thickness of a coil', lenMm('estimate', GD.coil.build)),
+    sp('Tête de bobine hors du paquet', 'End turn beyond the stack', lenMm('estimate', GD.coil.overhang)),
+  ],
+  'gen-rotor': [
+    sp('Diamètre, aimants compris', 'Diameter, magnets included', lenMm('estimate', 2 * rotorRadius)),
+    sp('Longueur du paquet', 'Length of the stack', lenMm('estimate', GD.rotor.stack)),
+  ],
+  'gen-magnets': [
+    sp('Épaisseur radiale', 'Radial thickness', lenMm('estimate', GD.rotor.magnetThickness)),
+    sp(
+      'Part du pas polaire couverte',
+      'Share of the pole pitch covered',
+      tagged('estimate', `${nFr(GD.rotor.magnetArc * 100)} %`, `${nEn(GD.rotor.magnetArc * 100)}%`),
+    ),
+    sp('Entrefer dessiné', 'Drawn air gap', lenMm('estimate', GD.gap)),
+  ],
+  'gen-shaft': [
+    sp('Diamètre', 'Diameter', lenMm('estimate', 2 * GENERATOR.shaftRadius)),
+    sp('Bout d’arbre devant le corps', 'Shaft stub in front of the body', lenM('estimate', GENERATOR.stub)),
+    sp(
+      'Clavette (longueur × largeur)',
+      'Key (length × width)',
+      lenMm('estimate', GD.shaft.keyLength, GD.shaft.keyWidth),
+    ),
+  ],
+  'gen-bearings': [
+    sp(
+      'Roulement dessiné (diamètre extérieur × largeur)',
+      'Drawn bearing (outer diameter × width)',
+      lenMm('estimate', 2 * GD.bearing.outerRadius, GD.bearing.width),
+    ),
+  ],
+  'gen-terminals': [
+    sp(
+      'Boîte dessinée (largeur × hauteur × profondeur)',
+      'Drawn box (width × height × depth)',
+      lenMm('estimate', ...GENERATOR.box),
+    ),
+  ],
+
+  // ---- powerroom (the wall of the powerhouse, in the order the current goes; the three pieces moved from the screw keep their sizes below)
+  'dc-breaker': [
+    sp(
+      'Appareil dessiné (largeur × hauteur × profondeur)',
+      'Drawn device (width × height × depth)',
+      lenMm('estimate', ...POWERROOM.breaker.size),
+    ),
+  ],
+  'fuse-box': [
+    sp(
+      'Boîte dessinée (largeur × hauteur × profondeur)',
+      'Drawn box (width × height × depth)',
+      lenMm('estimate', ...POWERROOM.fuseBox.size),
+    ),
+  ],
+  'dump-load': [
+    sp(
+      'Appareil dessiné (largeur × hauteur × profondeur)',
+      'Drawn device (width × height × depth)',
+      lenMm('estimate', ...POWERROOM.dumpLoad.size),
+    ),
+  ],
+  inverter: [
+    sp(
+      'Appareil dessiné (largeur × hauteur × profondeur)',
+      'Drawn device (width × height × depth)',
+      lenMm('estimate', ...POWERROOM.inverter.size),
+    ),
+  ],
+  'energy-meter': [
+    sp(
+      'Appareil dessiné (largeur × hauteur × profondeur)',
+      'Drawn device (width × height × depth)',
+      lenMm('estimate', ...POWERROOM.meter.size),
+    ),
+  ],
+  switchboard: [
+    sp(
+      'Plaque de montage dessinée (largeur × hauteur)',
+      'Drawn mounting plate (width × height)',
+      lenM('estimate', 2 * POWERROOM.board.halfWidth, POWERROOM.board.y1 - POWERROOM.board.y0),
+    ),
+    sp(
+      'Local dessiné (largeur × profondeur)',
+      'Drawn room (width × depth)',
+      lenM('estimate', POWERROOM.width, POWERROOM.depth),
+    ),
+  ],
+  earthing: [
+    sp('Piquet dessiné (longueur)', 'Drawn rod (length)', lenM('estimate', POWERROOM.rod.length)),
+    sp('Diamètre du piquet', 'Diameter of the rod', lenMm('estimate', 2 * POWERROOM.rod.radius)),
   ],
 };

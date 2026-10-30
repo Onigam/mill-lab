@@ -1,25 +1,33 @@
-// The six lessons of the lab (the owner chose Lite, docs/research.md §8; docs/lessons.md): from water to watts, why a screw works,
-// why a speed multiplier, which turbine for my site, a wheel or a screw, the year of the mill. Each one opens a world, a part and a
-// starting point (and offers a scenario) of the simulation, ends with two or three quiz questions, and quotes only numbers that
-// come from a source, from the simulation or from the dimensions, said as such (lessons-fig.ts explains the kinds of figure).
+// The eight lessons of the lab, in the order of the energy (the owner chose Lite, docs/research.md §8, six lessons; completion wave B added
+// 4 and 5 when the generator and the powerhouse became worlds of their own; docs/lessons.md): 1 from water to watts, 2 why a screw works,
+// 3 why a speed multiplier, 4 from rotation to volts (the generator), 5 protect, regulate, store (the powerhouse), 6 which turbine for my
+// site, 7 a wheel or a screw, 8 the year of the mill. Each one opens a world, a part and a starting point (and sometimes offers a
+// scenario) of the simulation, ends with two or three quiz questions, and quotes only numbers that come from a source, from the
+// simulation or from the dimensions, said as such (lessons-fig.ts explains the kinds of figure).
 //
 // Shape (lessons.test.ts pins it): 3 or 4 paragraphs of at most 85 words and 4 sentences, sentences of at most 36 words, about 200
 // to 250 words a lesson; every term is defined once, in bold, in the first lesson that needs it (power, flow, head, efficiency in
-// 1; pocket, rpm in 2; torque, ratio in 3; zones, lines of equal power, crossflow and Pelton turbines in 4; overshot, undershot and
-// breastshot wheels in 5; water right, reserved flow, low water, flood, kilowatt-hour, capacity factor in 6); a quiz question has
+// 1; pocket, rpm in 2; torque, ratio in 3; voltage, three-phase, rectifier, pole, frequency in 4; breaker, fuses, short circuit,
+// charge controller, dump load, earthing in 5; zones, lines of equal power, crossflow and Pelton turbines in 6; overshot, undershot
+// and breastshot wheels in 7; water right, reserved flow, low water, flood, kilowatt-hour, capacity factor in 8); a quiz question has
 // three choices of about the same length, a wrong one for each misconception the text names.
 //
-// The honest points, said plainly where they matter and not on every sentence (wave 1 findings, docs/research.md §10):
+// The honest points, said plainly where they matter and not on every sentence (wave 1 findings, docs/research.md §10; completion wave A):
 //   - the screw is GENERIC; the video's 200 W (prototype) and 2 kW (aim) are hopes, and the model's 2.2 kW at the flow the lab
 //     worked out from them is a circular derivation: what the model really tests is its efficiency, a point above the hoped 60 to
 //     70 % (lesson 1);
 //   - the lab has NO fish model; the gentleness of the screw is the video's word, not a result (lesson 2);
+//   - the generator is GENERIC too: the video shows a bought one and never opens it, so the poles (16), the frequency (80 Hz) and
+//     every size inside are the lab's estimates; the model takes its voltage as exactly proportional to its speed (lesson 4);
+//   - the powerhouse: the ratings (breaker, fuse) and the cable sections are estimates; the model STOPS AT AN IDEAL BATTERY, so the dump
+//     load, the charge controller, the inverter, the meter and the protections are not simulated, and the lab is not a wiring plan;
+//     earthing, protections and wiring are an electrician's work (lesson 5);
 //   - the wheel's efficiency comes from sources that disagree, and the lab's wheel is anchored on their ranges: it is not an
-//     independent result (lesson 5);
+//     independent result (lesson 7);
 //   - the reserved flow of one tenth, the gate rules and the three yearly hydrologies are the lab's estimates or draws, not
-//     measurements (lesson 6); the edges of the chooser's zones are estimates, except the screw's (lesson 4).
+//     measurements (lesson 8); the edges of the chooser's zones are estimates, except the screw's (lesson 6).
 // Sources are named in words (the video, another video, a published design rule, an encyclopaedia, a review), never by research
-// code, and nobody is named: the one name allowed is the owner's own lab, Pelton Lab, once, in lesson 4.
+// code, and nobody is named: the one name allowed is the owner's own lab, Pelton Lab, once, in lesson 6.
 
 import type { Lesson } from '@onigam/lab-kit/content';
 import { l } from '@onigam/lab-kit/i18n';
@@ -185,8 +193,8 @@ export const LESSONS: Lesson[] = [
         ],
         answer: 1,
         explain: lx(
-          'Entre deux poches voisines, l’eau diffère d’environ {stepCm} cm de hauteur (dérivé) : la pression est plus forte sur une face de la pale que sur l’autre. Il n’y a pas de jet (une roue par-dessous en utilise un, leçon 5), et la vis ne glisse pas : ses paliers la tiennent.',
-          'Between two neighbouring pockets the water differs by about {stepCm} cm in height (derived): the pressure is greater on one face of the blade than on the other. There is no jet (an undershot wheel uses one, lesson 5), and the screw does not slide: its bearings hold it.',
+          'Entre deux poches voisines, l’eau diffère d’environ {stepCm} cm de hauteur (dérivé) : la pression est plus forte sur une face de la pale que sur l’autre. Il n’y a pas de jet (une roue par-dessous en utilise un, leçon 7), et la vis ne glisse pas : ses paliers la tiennent.',
+          'Between two neighbouring pockets the water differs by about {stepCm} cm in height (derived): the pressure is greater on one face of the blade than on the other. There is no jet (an undershot wheel uses one, lesson 7), and the screw does not slide: its bearings hold it.',
         ),
       },
       {
@@ -354,7 +362,241 @@ export const LESSONS: Lesson[] = [
     ],
   },
 
-  // ------------------------------------------------------------------------------------------------ 4. which turbine for my site
+  // ------------------------------------------------------------------------------------------------ 4. from rotation to volts
+  {
+    id: 'rotation-to-volts',
+    title: l('De la rotation aux volts', 'From rotation to volts'),
+    summary: l(
+      'Un aimant qui passe devant une bobine y fait naître une tension, d’autant plus haute qu’il va vite. D’où une génératrice à plusieurs centaines de tr/min.',
+      'A magnet passing a coil raises a voltage in it, the higher the faster it goes. That is why the generator turns at several hundred rpm.',
+    ),
+    body: [
+      lx(
+        'Faites passer un aimant devant une bobine de fil de cuivre : une **tension** apparaît dans le fil, la poussée qui fait circuler un courant, comptée en volts. Plus l’aimant passe vite, plus la tension est haute, en proportion exacte. Pour la génératrice du labo, c’est environ {voltPer100} V par centaine de tours par minute (dérivé).',
+        'Pass a magnet in front of a coil of copper wire and a **voltage** appears in the wire: the push that drives a current, counted in volts. The faster the magnet passes, the higher the voltage, in strict proportion. For the lab’s generator it is about {voltPer100} V for every hundred turns a minute (derived).',
+      ),
+      lx(
+        'La batterie est à {busVolts} V (hypothèse) : la génératrice doit dépasser cette tension avant que le moindre courant passe. Tournée directement par la vis à {rpm} tr/min, la même machine ne donnerait que {voltScrew} V (dérivé). À {genRpm} tr/min (hypothèse), elle donne {voc} V à vide (résultat du modèle) et commence à charger dès {cutInRpm} tr/min : d’où le multiplicateur de vitesse.',
+        'The battery sits at {busVolts} V (assumption), so the generator must exceed that before any current flows. Turned directly by the screw at {rpm} rpm, the same machine would give only {voltScrew} V (derived). At {genRpm} rpm (assumption) it gives {voc} V open-circuit (model result) and starts to charge at {cutInRpm} rpm: hence the speed multiplier.',
+      ),
+      lx(
+        'La génératrice a trois bobinages dont les tensions alternatives passent l’une après l’autre par leur maximum, à un tiers de période d’écart : c’est du courant **triphasé**. Une batterie, elle, n’accepte le courant que dans un seul sens. Le **redresseur**, un pont de six diodes (des clapets à sens unique), change donc les trois phases en courant continu.',
+        'The generator has three windings whose alternating voltages peak one after the other, a third of a cycle apart: that is **three-phase** current. A battery takes current in one direction only, so the **rectifier**, a bridge of six diodes (one-way valves for current), turns the three phases into direct current.',
+      ),
+      lx(
+        'Chaque aimant du rotor est un **pôle**, nord et sud en alternance : le labo en dessine {genPoles} au total (estimation). Une paire de pôles fait osciller la tension une fois par tour. La **fréquence**, le nombre d’oscillations par seconde, en hertz (Hz), vaut donc pôles × tr/min / 120 : {genFreq} Hz à {genRpm} tr/min supposés (estimation). La vidéo montre une génératrice du commerce sans l’ouvrir : celle-ci est générique.',
+        'Each magnet on the rotor is a **pole**, north and south in turn: the lab draws {genPoles} of them (estimate). A pair of poles makes the voltage swing once per turn. The **frequency**, the number of swings a second, in hertz (Hz), is therefore poles × rpm / 120: {genFreq} Hz at the assumed {genRpm} rpm (estimate). The video shows a generator from the trade and never opens it: this one is generic.',
+      ),
+    ],
+    figures: [
+      chip('Tension à vide, vitesse nominale (modèle)', 'Open-circuit voltage, rated speed (model)', '{voc} V'),
+      chip('Couple · courant de charge (modèle)', 'Torque · charging current (model)', '{torqueGen} N·m · {current} A'),
+      chip('Pôles · fréquence (estimation)', 'Poles · frequency (estimate)', '{genPoles} · {genFreq} Hz'),
+    ],
+    formula: 'V = k · ω',
+    focus: { scene: 'generator', part: 'gen-magnets', preset: 'full-size' },
+    video: '35:43',
+    quiz: [
+      {
+        q: lx(
+          'La génératrice du labo donne {voc} V à vide à sa vitesse nominale (résultat du modèle). À la moitié de cette vitesse, combien donne-t-elle à peu près ?',
+          'The lab’s generator gives {voc} V open-circuit at its rated speed (model result). At half that speed, about how much does it give?',
+        ),
+        choices: [
+          lx(
+            'La même chose, {voc} V : les aimants seuls fixent la tension',
+            'The same, {voc} V: the magnets alone set the voltage',
+          ),
+          lx(
+            'À peu près {voltHalf} V : la tension suit la vitesse',
+            'About {voltHalf} V: the voltage follows the speed',
+          ),
+          l(
+            'Un quart seulement : la tension suit le carré de la vitesse',
+            'Only a quarter: the voltage follows the square of the speed',
+          ),
+        ],
+        answer: 1,
+        explain: lx(
+          'La tension est proportionnelle à la vitesse : moitié de la vitesse, moitié des volts, soit {voltHalf} V (dérivé). C’est moins que les {busVolts} V de la batterie (hypothèse) : rien ne chargerait, la génératrice ne démarre qu’à {cutInRpm} tr/min. À {genRpm} tr/min, la batterie prend {current} A, soit {elecKw1} kW (résultats du modèle).',
+          'Voltage is proportional to speed: half the speed, half the volts, that is {voltHalf} V (derived). That is less than the battery’s {busVolts} V (assumption): nothing would charge, as the generator starts at {cutInRpm} rpm. At {genRpm} rpm the battery takes {current} A, that is {elecKw1} kW (model results).',
+        ),
+      },
+      {
+        q: l(
+          'Pourquoi place-t-on un redresseur entre la génératrice et la batterie ?',
+          'Why is a rectifier placed between the generator and the battery?',
+        ),
+        choices: [
+          l(
+            'Parce que la tension change sans cesse de sens, alors qu’une batterie ne se charge que dans un sens',
+            'Because the voltage keeps reversing, while a battery can only be charged in one direction',
+          ),
+          l(
+            'Pour élever la tension de la génératrice au-dessus de celle de la batterie et laisser passer le courant',
+            'To raise the generator’s voltage above the battery’s, so that current can start to flow',
+          ),
+          l(
+            'Pour freiner la génératrice chaque fois que la batterie est déjà pleine et ne peut plus rien prendre',
+            'To slow the generator down whenever the battery is already full and cannot take more',
+          ),
+        ],
+        answer: 0,
+        explain: l(
+          'Les trois phases changent sans cesse de sens, et une batterie ne se charge que dans un sens : les six diodes du redresseur ne laissent passer le courant que dans un sens. Il n’élève pas la tension ; freiner la génératrice quand la batterie est pleine est le travail du régulateur de charge, dans la leçon suivante.',
+          'The three phases keep reversing, and a battery only charges in one direction: the rectifier’s six diodes let current through one way only. It does not raise the voltage; braking the generator when the battery is full is the work of the charge controller, in the next lesson.',
+        ),
+      },
+      {
+        q: lx(
+          'La génératrice du labo a {genPoles} pôles et fait {genFreq} Hz. D’où viennent ces deux nombres ?',
+          'The lab’s generator has {genPoles} poles and makes {genFreq} Hz. Where do these two figures come from?',
+        ),
+        choices: [
+          l(
+            'Ils ont été mesurés sur la génératrice de la vidéo, qu’on y voit ouverte et démontée',
+            'They were measured on the video’s generator, which is shown opened and taken apart',
+          ),
+          l(
+            'Ils viennent de la règle publiée qui dimensionne la vis d’après son diamètre et sa pente',
+            'They come from the published rule that sizes the screw from its diameter and its slope',
+          ),
+          l(
+            'Ce sont des estimations du labo : la fréquence découle des pôles et de la vitesse',
+            'They are the lab’s estimates: the frequency follows from the poles and the speed',
+          ),
+        ],
+        answer: 2,
+        explain: lx(
+          'La vidéo montre une génératrice du commerce sans jamais l’ouvrir, et les règles de dimensionnement concernent la vis. Les pôles sont une estimation du labo ; la fréquence vaut pôles × tr/min / 120, soit {genFreq} Hz pour {genPoles} pôles à {genRpm} tr/min supposés (estimation).',
+          'The video shows a generator from the trade and never opens it, and the sizing rules are about the screw. The poles are the lab’s estimate; the frequency is poles × rpm / 120, that is {genFreq} Hz for {genPoles} poles at the assumed {genRpm} rpm (estimate).',
+        ),
+      },
+    ],
+  },
+
+  // ------------------------------------------------------------------------------------------------ 5. protect, regulate, store
+  {
+    id: 'protect-regulate-store',
+    title: l('Protéger, régler, stocker', 'Protect, regulate, store'),
+    summary: l(
+      'De la génératrice à la maison, le courant croise des protections, un régulateur, une batterie et un onduleur. Le labo les montre, mais n’est pas un plan de câblage.',
+      'From the generator to the house, the current meets protections, a controller, a battery and an inverter. The lab shows them, but is not a wiring plan.',
+    ),
+    body: [
+      lx(
+        'Le courant rencontre d’abord le **disjoncteur**, un interrupteur qui isole tout et s’ouvre seul sur une surcharge, puis les **fusibles**, des fils calibrés qui fondent en un éclair. Une batterie peut débiter des centaines d’ampères dans un **court-circuit**, un chemin presque sans résistance. Un courant continu, contrairement à l’alternatif, ne passe jamais par zéro : son arc ne s’éteint pas de lui-même, et le disjoncteur doit l’étirer et le souffler.',
+        'The current first meets the **breaker**, a switch that isolates everything and trips by itself on an overload, then the **fuses**, calibrated wires that melt in a flash. A battery can deliver hundreds of amps in a **short circuit**, a path with almost no resistance. A direct current, unlike an alternating one, never passes through zero: its arc does not go out by itself, and the breaker must stretch and blow it out.',
+      ),
+      lx(
+        'Après le redresseur, le **régulateur de charge** gère ce que reçoit la batterie. L’eau ne s’arrête pas quand la batterie est pleine : le surplus part dans la **charge de délestage**, une résistance d’environ {dumpOhm} Ω (dérivé) qui peut avaler les {elecKw1} kW. Sans aucune charge, le modèle trouve la vis emballée à {freeRunRpm} tr/min et {freeRunVolts} V à la génératrice (résultats du modèle).',
+        'After the rectifier, the **charge controller** manages what the battery receives. The water does not stop when the battery is full: the surplus goes to the **dump load**, a resistor of about {dumpOhm} Ω (derived) that can swallow all {elecKw1} kW. With no load at all, the model finds the screw racing at {freeRunRpm} rpm and {freeRunVolts} V at the generator (model results).',
+      ),
+      lx(
+        'La batterie stocke l’énergie. L’onduleur la change en alternatif à la tension du secteur, mortelle, pour la maison, et le compteur d’énergie compte la production. Le modèle s’arrête à une batterie idéale de {busVolts} V (hypothèse), sans charge de délestage, sans régulateur ni onduleur.',
+        'The battery stores the energy. The inverter turns it into alternating current at mains voltage, lethal, for the house, and the energy meter counts what is produced. The model stops at an ideal {busVolts} V battery (assumption), without dump load, controller or inverter.',
+      ),
+      lx(
+        'Enfin la **mise à la terre**, un piquet planté dans le sol et relié à chaque carcasse métallique, offre un chemin à un courant de défaut. La protection déclenche alors et aucune carcasse ne reste sous tension. Une terre absente ou un mauvais calibre ne se voient qu’au jour où il le faut : un électricien qualifié les choisit et les mesure. Les calibres dessinés sont des estimations, et ce labo n’est pas un plan de câblage.',
+        'Last, the **earthing**, a rod in the ground bonded to every metal frame, gives a fault current an easy path, so the protection trips and no frame stays live. A missing earth or a wrong rating shows nothing until the day it is needed: a qualified electrician chooses and measures them. The ratings drawn here are estimates, and this lab is not a wiring plan.',
+      ),
+    ],
+    figures: [
+      chip(
+        'Disjoncteur · fusible, calibres (estimation)',
+        'Breaker · fuse, ratings (estimate)',
+        '{breakerA} A · {fuseA} A',
+      ),
+      chip('Résistance de la charge de délestage (dérivé)', 'Resistance of the dump load (derived)', '≈ {dumpOhm} Ω'),
+      chip(
+        'Sans aucune charge : tension de la génératrice (modèle)',
+        'With no load at all: generator voltage (model)',
+        '{freeRunVolts} V',
+      ),
+    ],
+    formula: 'I = U / R',
+    focus: { scene: 'powerroom', part: 'fuse-box', preset: 'full-size' },
+    video: '22:03',
+    quiz: [
+      {
+        q: l(
+          'Une batterie est à basse tension. Pourquoi reste-t-elle la pièce la plus dangereuse du local ?',
+          'A battery bank is low voltage. Why is it still the most dangerous part of the room?',
+        ),
+        choices: [
+          l(
+            'En court-circuit, elle débite des centaines d’ampères, de quoi fondre du métal et allumer un feu',
+            'In a short circuit it delivers hundreds of amps, enough to melt metal and start a fire',
+          ),
+          l(
+            'Sa tension monte toute seule pendant qu’elle repose, jusqu’à un niveau qui peut tuer',
+            'Its voltage rises by itself while it rests, until it reaches a level that can kill',
+          ),
+          l(
+            'Elle n’est dangereuse que surchargée, et le régulateur de charge l’évite toujours',
+            'It is dangerous only when overcharged, and the charge controller always prevents that',
+          ),
+        ],
+        answer: 0,
+        explain: lx(
+          'Un court-circuit est un chemin presque sans résistance : le courant n’est limité que par la batterie et les câbles, des centaines d’ampères, bien plus que les {current} A de service (résultat du modèle). Un fusible contre la batterie le coupe ; le régulateur, lui, n’empêche pas un court-circuit.',
+          'A short circuit is a path with almost no resistance: the current is limited only by the battery and the cables, hundreds of amps, far more than the {current} A of service (model result). A fuse against the battery cuts it; the controller does not prevent a short circuit.',
+        ),
+      },
+      {
+        q: l(
+          'Pourquoi un disjoncteur pour le courant continu est-il construit autrement que pour l’alternatif ?',
+          'Why must a breaker for direct current be built differently from one for alternating current?',
+        ),
+        choices: [
+          l(
+            'Parce que le continu transporte plus de puissance que l’alternatif sous la même tension',
+            'Because direct current carries more power than alternating current at the same voltage',
+          ),
+          l(
+            'Parce que le continu chauffe davantage les contacts, qui doivent donc être bien plus gros',
+            'Because direct current heats the contacts faster, so they have to be far larger',
+          ),
+          l(
+            'Parce que l’arc d’un courant continu ne s’éteint pas de lui-même et doit être étiré',
+            'Because the arc of a direct current does not go out by itself and has to be stretched',
+          ),
+        ],
+        answer: 2,
+        explain: lx(
+          'Un courant alternatif passe par zéro des dizaines de fois par seconde, ce qui éteint souvent l’arc. Un courant continu, jamais : le disjoncteur doit étirer l’arc et le souffler. Sa tension nominale doit aussi dépasser la plus haute du circuit, {freeRunVolts} V quand la vis s’emballe (résultat du modèle).',
+          'An alternating current passes through zero dozens of times a second, which often puts an arc out. A direct current never does: the breaker has to stretch the arc and blow it out. Its rated voltage must also exceed the highest the circuit can see, {freeRunVolts} V when the screw races (model result).',
+        ),
+      },
+      {
+        q: l(
+          'La batterie est pleine et l’eau continue de couler. Que font les centrales réelles, et que fait le modèle du labo ?',
+          'The battery is full and the water keeps flowing. What do real plants do, and what does the lab’s model do?',
+        ),
+        choices: [
+          l(
+            'Elles ouvrent le disjoncteur ; le régulateur du modèle le fait seul quand la batterie est pleine',
+            'They open the breaker; the model’s controller does so by itself when the battery is full',
+          ),
+          l(
+            'Elles détournent le surplus vers une charge de délestage ; le modèle n’en a pas, sa batterie prend tout',
+            'They divert the surplus to a dump load; the model has none, its battery takes everything',
+          ),
+          l(
+            'Elles laissent la vis s’emballer pour se défaire de l’énergie ; le modèle le montre aussi',
+            'They let the screw race to shed the energy; the model shows that as well',
+          ),
+        ],
+        answer: 1,
+        explain: l(
+          'Une charge de délestage est une résistance qui prend le surplus, pour que la génératrice reste toujours freinée. Le modèle du labo n’a ni charge de délestage ni régulateur : sa batterie est idéale et prend tout. Les centrales réelles en ont une, et une seconde protection : la vanne qui coupe l’eau.',
+          'A dump load is a resistor that takes the surplus, so that the generator is always braked. The lab’s model has no dump load and no controller: its battery is ideal and takes everything. Real plants have one, and a second protection: the gate that cuts the water.',
+        ),
+      },
+    ],
+  },
+
+  // ------------------------------------------------------------------------------------------------ 6. which turbine for my site
   {
     id: 'which-turbine',
     title: l('Quelle turbine pour mon site ?', 'Which turbine for my site?'),
@@ -441,7 +683,7 @@ export const LESSONS: Lesson[] = [
     ],
   },
 
-  // ------------------------------------------------------------------------------------------------ 5. a wheel or a screw
+  // ------------------------------------------------------------------------------------------------ 7. a wheel or a screw
   {
     id: 'wheel-or-screw',
     title: l('Une roue ou une vis ?', 'A wheel or a screw?'),
@@ -541,7 +783,7 @@ export const LESSONS: Lesson[] = [
     ],
   },
 
-  // ------------------------------------------------------------------------------------------------ 6. the year of the mill
+  // ------------------------------------------------------------------------------------------------ 8. the year of the mill
   {
     id: 'mill-year',
     title: l('L’année du moulin', 'The year of the mill'),

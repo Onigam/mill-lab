@@ -1,6 +1,7 @@
 // Parts of the `screw` world, first half (ids frozen in src/part-ids.ts): the water that is the lesson (`trapped-water`, `inlet-sill`,
 // `outlet-pool`) and the turning machine in its trough (`trough`, `screw-core`, `blade-module`, `blade-fastener`, the two bearings).
-// The drive (chain, belt) is in ./drive.ts and the generator with its electronics in ./electric.ts. Conventions: see ./site.ts.
+// The drive (chain, belt) is in ./drive.ts and the generator at the end of the belt in ./electric.ts (the electronics are in ./powerroom.ts).
+// Conventions: see ./site.ts.
 //
 // The screw is GENERIC. What the video gives: three threads wound on a core, the screw inclined and half immersed, wooden parts bolted
 // together and repairable by the owner (long wooden pieces on the core, sets of three blades screwed on top), a round trough with a very

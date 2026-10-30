@@ -29,6 +29,10 @@ export const LESSON_FIG = {
   water200m: [39, 0, 'derived'], // kW of water power of 20 L/s over 200 m (another video: 30 kW at 200 m)
   crossWater: [40.7, 1, 'derived'], // kW of water power of the crossflow plant: 1000 × 9.81 × 0.45 × 9.22
   crossEta: [74, 0, 'derived'], // %: 30 kW out of those 40.7 kW (0.737)
+  // the generator: its voltage is its constant times its speed (V = k·ω, k = 0.856 V per rad/s: the model's winding, docs/physics.md §1.8)
+  voltPer100: [9, 0, 'derived'], // V of open-circuit voltage for every 100 rpm of the generator: k × 2π/60 × 100 = 8.96
+  voltScrew: [4.9, 1, 'derived'], // V the same generator would give if the screw turned it directly, at the screw's 55.1 rpm (4.94)
+  voltHalf: [27, 0, 'derived'], // V at half the rated speed, 300 rpm: half of the 53.7 V (26.9)
   // ---- model results (default machine, full-size preset, unless the comment says otherwise)
   elecKw1: [2.2, 1, 'model'], // kW into the battery, at one decimal, to stand beside the wheels' 1.8 and 1.1 and the wrong ratio's 1.3 and 1.2
   batt1: [700, 0, 'model'], // W into the battery out of 100 L/s over 1 m at the model's 71.1 %: 981 × 0.711 = 697

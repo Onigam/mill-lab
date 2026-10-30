@@ -33,11 +33,15 @@ import {
   DESIGN,
   DRIVE,
   ELECTRONICS,
+  GENERATOR,
+  GENERATOR_DESIGN,
   MODULES_PER_TURN,
   POOLS,
+  POWERROOM,
   SCREW,
   SITE,
   TROUGH,
+  electricalFrequency,
   largeSprocketRadius,
   smallPulleyRadius,
   smallTeeth,
@@ -52,8 +56,8 @@ import { PARTS } from './parts';
 import { DIM_SPECS } from './parts/dim-specs';
 import { nEn } from './units';
 
-// Content checks of the data role: the catalogue and the two guides against the frozen ids of src/part-ids.ts, FR/EN parity, the rules of
-// the visitor texts (no research code, no internal word, no name, British English, French apostrophes), the timestamps of the main video, the
+// Content checks of the data role (four worlds since completion wave A: site, screw, generator, powerroom): the catalogue and the two guides
+// against the frozen ids of src/part-ids.ts, FR/EN parity, the rules of the visitor texts (no research code, no internal word, no name, British English, French apostrophes), the timestamps of the main video, the
 // numbers that the prose repeats against their sources, every model result quoted in a text against the simulation (a change of src/sim cannot
 // go unnoticed), and the sheets against src/three/dims.ts, the single source of lengths.
 
@@ -118,6 +122,14 @@ const UI_KEYS = [
   'legal',
   'chapters',
   'sourcesNoCopy',
+  'sceneGenerator',
+  'scenePowerroom',
+  'goGenerator',
+  'goPowerroom',
+  'groupGenerator',
+  'groupPowerroom',
+  'noticeElectric',
+  'safetyElectric',
 ] as const;
 
 /** Every bilingual text of the data role, labelled. */
@@ -156,15 +168,18 @@ describe('parts catalogue', () => {
     const ids = PARTS.map((p) => p.id);
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toEqual(WORLDS.flatMap((w) => partIds(w)));
-    expect(ids.length).toBe(32);
+    expect(ids.length).toBe(47);
   });
 
   it('gives every part the frozen scene and category', () => {
     for (const world of WORLDS) {
       expect(PARTS.filter((p) => p.scene === world).length, world).toBe(partIds(world).length);
     }
+    expect(WORLDS).toEqual(['site', 'screw', 'generator', 'powerroom']);
     expect(partIds('site').length).toBe(12);
-    expect(partIds('screw').length).toBe(20);
+    expect(partIds('screw').length).toBe(17);
+    expect(partIds('generator').length).toBe(8);
+    expect(partIds('powerroom').length).toBe(10);
     for (const p of PARTS) {
       expect(CATEGORIES, p.id).toContain(p.category);
       expect(p.scene, p.id).toBe(FROZEN[p.id]?.scene);
@@ -213,8 +228,29 @@ describe('parts catalogue', () => {
         last = seconds(ts);
       }
     }
-    // the parts the video does not show have no link: it is no source for them
-    expect(PARTS.filter((p) => !p.video).map((p) => p.id)).toEqual(['rectifier']);
+    // the parts the video neither shows nor discusses have no link: it is no source for them (it never opens the generator, and it shows no cabinet)
+    expect(PARTS.filter((p) => !p.video).map((p) => p.id)).toEqual([
+      'gen-stator',
+      'gen-coils',
+      'gen-rotor',
+      'gen-magnets',
+      'gen-bearings',
+      'rectifier',
+      'inverter',
+      'energy-meter',
+      'switchboard',
+      'earthing',
+    ]);
+    // …and the new links are where the video speaks of the thing
+    const at = (id: string) => PARTS.find((p) => p.id === id)!.video;
+    expect(at('gen-frame')).toEqual(['35:43']); // the generator installed behind the turbine
+    expect(at('gen-shaft')).toEqual(['36:15']); // the belt-and-pulley system
+    expect(at('gen-terminals')).toEqual(['14:31']); // the generator connected, no load yet
+    expect(at('dc-breaker')).toEqual(['28:22']); // "electrical protections, of course"
+    expect(at('fuse-box')).toEqual(['28:22']);
+    expect(at('dump-load')).toEqual(['14:35']); // an electrical load lets the turbine be braked
+    expect(at('charge-controller')).toEqual(['14:29', '14:41']);
+    expect(at('battery')).toEqual(['22:21']);
   });
 
   it('puts a timestamp on the parts that deserve one: the heart of the lesson and the whole drive', () => {
@@ -233,6 +269,12 @@ describe('parts catalogue', () => {
       'intake-gate',
       'water-chamber',
       'powerhouse',
+      'gen-frame',
+      'gen-terminals',
+      'dc-breaker',
+      'charge-controller',
+      'battery',
+      'dump-load',
     ])
       expect(PARTS.find((p) => p.id === id)?.video?.length, id).toBeGreaterThan(0);
   });
@@ -306,6 +348,149 @@ describe('the sheets of the heart of the lesson say what they must', () => {
     expect(en('battery')).toMatch(/short circuit/);
     expect(en('battery')).toMatch(/hydrogen/);
   });
+
+  // ---- completion wave A: the generator opened
+  const spec = (id: string, label: RegExp): L => {
+    const row = PARTS.find((p) => p.id === id)!.specs.find((x) => label.test(x.label.en));
+    expect(row, `${id}: a spec like ${label}`).toBeDefined();
+    return isL(row!.value) ? row!.value : { fr: row!.value, en: row!.value };
+  };
+
+  it('the generator opened is generic, and says that the video shows a bought generator without opening it', () => {
+    expect(en('gen-frame')).toMatch(/generic/);
+    expect(fr('gen-frame')).toMatch(/générique/);
+    expect(en('gen-frame')).toMatch(/The video shows the whole generator/);
+    expect(en('gen-terminals')).toMatch(/The video says only that the generator was connected before the load was/);
+    expect(en('gen-rotor')).toMatch(/slow machine was chosen to keep the transmission simple/);
+    expect(LAB_STRINGS.noticeElectric![1]).toMatch(/generic/);
+    expect(LAB_STRINGS.noticeElectric![1]).toMatch(/estimates/);
+    expect(LAB_STRINGS.noticeElectric![1]).toMatch(/says nothing of its inside/);
+    expect(LAB_STRINGS.noticeElectric![0]).toMatch(/génériques/);
+    expect(LAB_STRINGS.noticeElectric![0]).toMatch(/estimations/);
+  });
+
+  it('the pole count, the slots and the electrical frequency are estimates, said in both languages on the sheets that give them', () => {
+    for (const [id, label] of [
+      ['gen-rotor', /^Poles$/],
+      ['gen-rotor', /^Electrical frequency$/],
+      ['gen-magnets', /^Number$/],
+      ['gen-stator', /^Slots and teeth$/],
+      ['gen-coils', /^Coils$/],
+    ] as const) {
+      const v = spec(id, label);
+      expect(v.en, `${id}: ${label}`).toMatch(/\(estimate\)$/);
+      expect(v.fr, `${id}: ${label}`).toMatch(/\(estimation\)$/);
+    }
+    expect(en('gen-rotor')).toMatch(/poles \(estimate\)/);
+    expect(en('gen-rotor')).toMatch(/times a second \(estimate\)/);
+    expect(en('gen-rotor')).toMatch(/the number of poles times the speed in rpm, divided by 120/);
+    expect(fr('gen-rotor')).toMatch(/pôles \(estimation\)/);
+    expect(en('gen-stator')).toMatch(/slots \(estimate\)/);
+    expect(en('gen-magnets')).toMatch(/no source gives it/);
+    expect(en('gen-magnets')).toMatch(/the sizes drawn are estimates/);
+    expect(spec('gen-rotor', /^Rated speed$/).en).toMatch(/\(model assumption\)$/);
+  });
+
+  it('the model results of the generator are said to be the model’s: 39 N·m, 46 A, 53.7 V, a resistance of 0.09 ohm, 0.86 N·m per ampere', () => {
+    expect(spec('gen-shaft', /^Torque transmitted$/).en).toMatch(/\(model result\)$/);
+    expect(spec('gen-coils', /^Circuit resistance$/).en).toMatch(/\(model result\)$/);
+    expect(spec('gen-magnets', /^Machine constant$/).en).toMatch(/\(model result\)$/);
+    expect(en('gen-coils')).toMatch(/resistance of 0\.09 Ω/);
+    expect(en('gen-coils')).toMatch(/\(model result\)/);
+    expect(en('gen-magnets')).toMatch(/N·m per ampere, which is also 0\.86 V per rad\/s \(model result\)/);
+    expect(en('gen-stator')).toMatch(/iron are not calculated/);
+    expect(en('gen-bearings')).toMatch(/does not calculate their friction/);
+  });
+
+  it('a permanent-magnet generator cannot be switched off, and strong magnets are dangerous: both said where they matter', () => {
+    expect(en('gen-terminals')).toMatch(/magnets cannot be switched off/);
+    expect(en('gen-terminals')).toMatch(/live as soon as the shaft turns, even by hand/);
+    expect(fr('gen-terminals')).toMatch(/sous tension dès que l’arbre tourne, même à la main/);
+    expect(en('gen-magnets')).toMatch(/they cannot be switched off|cannot be switched off/);
+    expect(en('gen-magnets')).toMatch(/pinches skin and can shatter/);
+    expect(en('gen-magnets')).toMatch(/pacemakers/);
+    expect(en('gen-rotor')).toMatch(/never to leave the generator without a load/);
+    expect(en('gen-frame')).toMatch(/reaction torque/);
+    expect(en('gen-shaft')).toMatch(/belt’s pull/);
+    expect(en('gen-bearings')).toMatch(/sealed and greased for life \(estimate\)/);
+  });
+
+  // ---- completion wave A: the powerhouse
+  it('the three pieces moved from the screw stand in the powerhouse now, and say so', () => {
+    for (const id of ['rectifier', 'charge-controller', 'battery']) {
+      expect(PARTS.find((p) => p.id === id)!.scene, id).toBe('powerroom');
+      expect(en(id), id).not.toMatch(/by the generator|beside the generator|near the generator/);
+      expect(fr(id), id).not.toMatch(/près de la génératrice|à côté de la génératrice/);
+    }
+    expect(en('rectifier')).toMatch(/into the powerhouse/);
+    expect(en('rectifier')).toMatch(/cable leaving its terminal box/);
+    expect(en('charge-controller')).toMatch(/between the rectifier and the battery/);
+    expect(en('charge-controller')).toMatch(/dump load/);
+    expect(en('battery')).toMatch(/In the room it rests on a solid, ventilated shelf/);
+    expect(en('powerhouse')).toMatch(/go in to see each device/);
+    expect(en('powerhouse')).toMatch(/dump load/);
+  });
+
+  it('the dump load is not simulated, and the sheet says so; real plants have one', () => {
+    expect(spec('dump-load', /^In the model$/).en).toMatch(/^not simulated: the model has no dump load$/);
+    expect(spec('dump-load', /^In the model$/).fr).toMatch(/^non simulée/);
+    expect(en('dump-load')).toMatch(/The lab does not simulate it/);
+    expect(en('dump-load')).toMatch(/its battery is ideal and takes everything; real plants have one/);
+    expect(PARTS.find((p) => p.id === 'dump-load')!.short.en).toMatch(/Not simulated\.$/);
+    expect(PARTS.find((p) => p.id === 'dump-load')!.short.fr).toMatch(/Non simulée\.$/);
+    expect(en('dump-load')).toMatch(/keeps a brake|keep a brake|always keeps a brake/);
+    expect(en('dump-load')).toMatch(/the screw does not race/);
+    expect(en('dump-load')).toMatch(/a dump load that does not heat up|A dump load that does not heat up/);
+    expect(spec('dump-load', /^To absorb/).en).toMatch(/\(model result\)$/);
+    expect(spec('dump-load', /^Resistance$/).en).toMatch(/\(derived\).*\(assumption\)$/);
+    // the other devices that the model does not have
+    expect(spec('charge-controller', /^In the model$/).en).toMatch(/^not simulated/);
+    expect(spec('inverter', /^In the model$/).en).toMatch(/^not modelled/);
+    expect(en('energy-meter')).toMatch(/the lab’s meter follows the simulation/);
+    expect(spec('battery', /^Capacity$/).en).toMatch(/not modelled/);
+  });
+
+  it('the powerhouse’s ratings and cable sections are estimates, in both languages; the protections say why they are made for direct current', () => {
+    for (const [id, label] of [
+      ['fuse-box', /^Section of the battery cable$/],
+      ['earthing', /^Section of the conductor$/],
+      ['inverter', /^Drawn power$/],
+    ] as const) {
+      expect(spec(id, label).en, id).toMatch(/\(estimate\)$/);
+      expect(spec(id, label).fr, id).toMatch(/\(estimation\)$/);
+    }
+    expect(spec('dc-breaker', /^Rating$/).en).toMatch(/\(estimate\).*\(model result\)$/);
+    expect(spec('fuse-box', /^Rating of the battery fuse$/).en).toMatch(/\(estimate\).*\(model result\)$/);
+    expect(spec('inverter', /drawn from the battery/).en).toMatch(/\(derived\)$/);
+    expect(en('dc-breaker')).toMatch(/arc does not go out/);
+    expect(en('dc-breaker')).toMatch(/not only the battery’s/);
+    expect(en('dc-breaker')).toMatch(/the place of each protection is an electrician’s choice/);
+    expect(en('dc-breaker')).toMatch(
+      /draws it at the head of the wall, before the rectifier, so that it is found first/,
+    );
+    expect(en('fuse-box')).toMatch(/in reality the battery’s sits right against it/);
+    expect(fr('dc-breaker')).toMatch(/choix d’un électricien/);
+    expect(en('dc-breaker')).toMatch(/not a restart button/);
+    expect(en('fuse-box')).toMatch(/Never replace a blown fuse with a bigger one/);
+    expect(en('fuse-box')).toMatch(/protects the cable, not the device/);
+    expect(en('fuse-box')).toMatch(/hundreds of amps/);
+    expect(en('fuse-box')).toMatch(/short as possible/);
+    expect(en('inverter')).toMatch(/lethal/);
+    expect(en('inverter')).toMatch(/qualified electrician/);
+    expect(en('earthing')).toMatch(/qualified electrician/);
+    expect(en('earthing')).toMatch(/depends on the installation and the country’s rules/);
+    expect(en('earthing')).toMatch(/surge/);
+    expect(en('earthing')).toMatch(/only a measurement says it exists/);
+    expect(en('switchboard')).toMatch(/residual-current device/);
+    expect(en('energy-meter')).toMatch(/kilowatt-hour is one kilowatt for one hour/);
+    expect(en('battery')).toMatch(/hydrogen/);
+  });
+
+  it('no brand, product or company is named in the new sheets, guides and overviews', () => {
+    const brands =
+      /\b(Tesla|Victron|Schneider|Siemens|ABB|Enphase|Fronius|Morningstar|Outback|Xantrex|Renogy|EPEver|Bosch|Legrand|Hager|Eaton|Mersen|Anderson|Powerwall|Pylontech|Growatt|Huawei|Sungrow|Midnite|Studer|SMA|Mean Well|Arduino|Raspberry)\b/i;
+    for (const [label, v] of allTexts()) expect(v.fr + ' ' + v.en, label).not.toMatch(brands);
+  });
 });
 
 // ------------------------------------------------------------------------------------------------ the rules of the visitor texts
@@ -362,8 +547,9 @@ describe('the visitor texts', () => {
   });
 
   it('are in British English', () => {
+    // "meter" is the measuring device in British English too (energy meter, multimeter); only a length in meters is American
     const american =
-      /\b(colors?|centers?|meters?|liters?|grays?|analyz\w*|behaviors?|fibers?|aluminum|favors?|honors?|labor|neighbors?|catalogs?|defense|license|plow|sulfur|gasoline|molds?|tons|mom|realiz\w*|organiz\w*|recogniz\w*|minimiz\w*|maximiz\w*|optimiz\w*|utiliz\w*|standardiz\w*)\b/i;
+      /\b(colors?|centers?|(?<=\d[ \u00a0]?)meters?|liters?|grays?|analyz\w*|behaviors?|fibers?|aluminum|favors?|honors?|labor|neighbors?|catalogs?|defense|license|plow|sulfur|gasoline|molds?|tons|mom|realiz\w*|organiz\w*|recogniz\w*|minimiz\w*|maximiz\w*|optimiz\w*|utiliz\w*|standardiz\w*)\b/i;
     for (const [label, v] of allTexts()) expect(v.en, label).not.toMatch(american);
   });
 
@@ -416,23 +602,39 @@ describe('the visitor texts', () => {
 const guideIds = (steps: GuideStep[]) => steps.flatMap((s) => s.parts);
 
 describe('assembly guide', () => {
-  it('has 20 steps, unique ids, a world each, from the delivery of the kit in the site to the first filling in the screw', () => {
-    expect(ASSEMBLY.length).toBe(20);
+  const step = (id: string) => ASSEMBLY.find((s) => s.id === id)!;
+  const at = (id: string) => ASSEMBLY.findIndex((s) => s.id === id);
+
+  it('has at least 30 steps (34), unique ids, a world each: from the delivery of the kit in the site, through the screw, the generator opened, the screw again and the powerroom, to the first filling', () => {
+    expect(ASSEMBLY.length).toBeGreaterThanOrEqual(30);
+    expect(ASSEMBLY.length).toBe(34);
     expect(new Set(ASSEMBLY.map((s) => s.id)).size).toBe(ASSEMBLY.length);
     expect(ASSEMBLY.every((s) => typeof s.scene === 'string')).toBe(true);
     const runs = ASSEMBLY.map((s) => s.scene).filter((s, i, a) => s !== a[i - 1]);
-    expect(runs).toEqual(['site', 'screw']);
+    expect(runs).toEqual(['site', 'screw', 'generator', 'screw', 'powerroom', 'screw']);
     expect(ASSEMBLY[0]!.id).toBe('bring-kit');
     expect(ASSEMBLY[ASSEMBLY.length - 1]!.id).toBe('first-water');
+    for (const w of ['generator', 'powerroom'] as const)
+      expect(ASSEMBLY.filter((s) => s.scene === w).length, w).toBeGreaterThanOrEqual(6);
   });
 
-  it('installs every id of the screw exactly once, nothing else, each in the world of its step', () => {
-    expect(guideIds(ASSEMBLY).sort()).toEqual([...partIds('screw')].sort());
+  it('installs every id of the screw, the generator and the powerroom exactly once, nothing else, each in the world of its step', () => {
+    const ids = (w: WorldId) => ASSEMBLY.filter((s) => s.scene === w).flatMap((s) => s.parts);
+    expect(ids('site')).toEqual([]);
+    for (const w of ['screw', 'generator', 'powerroom'] as const)
+      expect(ids(w).sort(), w).toEqual([...partIds(w)].sort());
+    expect(guideIds(ASSEMBLY).sort()).toEqual(
+      [...partIds('screw'), ...partIds('generator'), ...partIds('powerroom')].sort(),
+    );
     for (const s of ASSEMBLY) for (const id of s.parts) expect(FROZEN[id]?.scene, `${s.id}: ${id}`).toBe(s.scene);
   });
 
-  it('has exactly two steps that install nothing: the delivery of the kit and the turn by hand', () => {
-    expect(ASSEMBLY.filter((s) => s.parts.length === 0).map((s) => s.id)).toEqual(['bring-kit', 'turn-by-hand']);
+  it('has exactly three steps that install nothing: the delivery of the kit, the turn by hand and the first test of the room', () => {
+    expect(ASSEMBLY.filter((s) => s.parts.length === 0).map((s) => s.id)).toEqual([
+      'bring-kit',
+      'turn-by-hand',
+      'first-test',
+    ]);
   });
 
   it('keeps every step text within 80 words in both languages, tips and warnings short, a tool list, a rough duration and no torque', () => {
@@ -448,8 +650,7 @@ describe('assembly guide', () => {
     }
   });
 
-  it('puts a warning where the gesture is risky: ladder, weight, wood dust, the rotating screw, chain and belt, the battery, the first water', () => {
-    const step = (id: string) => ASSEMBLY.find((s) => s.id === id)!;
+  it('puts a warning where the gesture is risky: ladder, weight, wood dust, the rotating screw, chain and belt, magnets, the electrician, the battery, the arc, the heat, the first water', () => {
     expect(step('bring-kit').warning?.en).toMatch(/Confined space/);
     expect(step('bring-kit').warning?.en).toMatch(/ladder/);
     expect(step('lower-bearing').warning?.en).toMatch(/dust/);
@@ -459,14 +660,35 @@ describe('assembly guide', () => {
     expect(step('turn-by-hand').warning?.en).toMatch(/snatches/);
     expect(step('chain').warning?.en).toMatch(/snatches/);
     expect(step('belt').warning?.en).toMatch(/snatches/);
-    expect(step('electronics').warning?.en).toMatch(/electrician/);
+    // the generator opened
+    expect(step('gen-magnets').warning?.en).toMatch(/Powerful magnets/);
+    expect(step('gen-magnets').warning?.en).toMatch(/pacemakers/);
+    expect(step('gen-stator-coils').warning?.en).toMatch(/snap shut/);
+    expect(step('gen-terminals').warning?.en).toMatch(/cannot be switched off/);
+    expect(step('gen-terminals').warning?.en).toMatch(/even by hand/);
+    // the powerroom
+    expect(step('board').warning?.en).toMatch(/no electrical line or pipe/);
+    expect(step('protections').warning?.en).toMatch(/does not go out by itself/);
+    expect(step('rectifier').warning?.en).toMatch(/qualified electrician/);
+    expect(step('rectifier').warning?.en).toMatch(/even by hand/);
+    expect(step('controller').warning?.en).toMatch(/overcharge/);
     expect(step('battery').warning?.en).toMatch(/short circuit/);
-    expect(step('battery').text.en).toMatch(/load before opening the water/);
+    expect(step('battery').warning?.en).toMatch(/hydrogen/);
+    expect(step('dump-load').warning?.en).toMatch(/very hot/);
+    expect(step('dump-load').warning?.en).toMatch(/no longer braked/);
+    expect(step('inverter').warning?.en).toMatch(/lethal voltage/);
+    expect(step('inverter').warning?.en).toMatch(/qualified electrician/);
+    expect(step('meter').warning?.en).toMatch(/without a fuse/);
+    expect(step('earthing').warning?.en).toMatch(/never during a storm/);
+    expect(step('first-test').warning?.en).toMatch(/never alone/);
     expect(step('first-water').warning?.en).toMatch(/safety gate/);
+    // a text, a tip or a warning, as the steps need
+    expect(step('battery').text.en).toMatch(/the last connection is made only at the first test/);
+    expect(step('dump-load').text.en).toMatch(/The lab does not simulate it/);
+    expect(step('controller').text.en).toMatch(/which does not simulate the controller/);
   });
 
-  it('runs through the machine in a sensible order: bearings, core, modules, trough, then the drive from the screw to the generator, then the water', () => {
-    const at = (id: string) => ASSEMBLY.findIndex((s) => s.id === id);
+  it('runs through the machine in a sensible order: bearings, core, modules, trough, the drive, the generator built and mounted, the electrics, then the water', () => {
     for (const [a, b] of [
       ['bring-kit', 'lower-bearing'],
       ['lower-bearing', 'core'],
@@ -480,39 +702,79 @@ describe('assembly guide', () => {
       ['countershaft', 'counter-sprocket'],
       ['counter-sprocket', 'chain'],
       ['chain', 'pulley-large'],
-      ['pulley-large', 'belt'],
+      ['pulley-large', 'gen-frame'],
+      // the generator opened: the frame and the bearings, the rotor, its magnets, the stator brought to it, the terminals
+      ['gen-frame', 'gen-bearings'],
+      ['gen-bearings', 'gen-rotor-shaft'],
+      ['gen-rotor-shaft', 'gen-magnets'],
+      ['gen-magnets', 'gen-stator-coils'],
+      ['gen-stator-coils', 'gen-terminals'],
+      ['gen-terminals', 'generator'],
       ['generator', 'belt'],
-      ['belt', 'electronics'],
-      ['electronics', 'battery'],
-      ['battery', 'first-water'],
+      ['pulley-large', 'belt'],
+      // the powerroom: board, protections open, rectifier, controller, battery, dump load, inverter, meter, earthing, first test
+      ['belt', 'board'],
+      ['board', 'protections'],
+      ['protections', 'rectifier'],
+      ['rectifier', 'controller'],
+      ['controller', 'battery'],
+      ['battery', 'dump-load'],
+      ['dump-load', 'inverter'],
+      ['inverter', 'meter'],
+      ['meter', 'earthing'],
+      ['earthing', 'first-test'],
+      ['first-test', 'first-water'],
     ] as const)
       expect(at(a), `${a} before ${b}`).toBeLessThan(at(b));
+  });
+
+  it('builds the generator in the order that makes sense: the magnets go on the rotor before it meets the stator, the protections go in open before anything is wired', () => {
+    expect(step('gen-magnets').text.en).toMatch(/Check the polarity of each before the glue sets/);
+    expect(step('gen-stator-coils').text.en).toMatch(/the gap is closed slowly, with a guide tube/);
+    expect(step('gen-bearings').text.en).toMatch(/outer ring only/);
+    expect(step('protections').text.en).toMatch(/with the breaker open and the fuses out/);
+    expect(step('protections').text.en).toMatch(/not only the battery’s/);
+    expect(step('battery').text.en).toMatch(/with the fuse out and the breaker open/);
+    expect(step('first-test').text.en).toMatch(/the battery’s fuse, the breaker, the inverter last/);
+    expect(step('first-test').text.en).toMatch(/The water goes in only if everything is right/);
+    expect(step('earthing').tip?.en).toMatch(/the rod is driven before any wiring/);
   });
 
   it('says what each step is FOR: no step is a bare list of gestures', () => {
     for (const s of ASSEMBLY) expect(s.text.en.length, s.id).toBeGreaterThan(200);
   });
+
+  it('keeps the screw generic and the generator a bought machine opened for the lesson', () => {
+    expect(step('gen-frame').text.en).toMatch(/bought model, delivered assembled/);
+    expect(step('gen-frame').text.fr).toMatch(/livré tout assemblé/);
+    expect(step('generator').text.en).toMatch(/Closed again/);
+  });
 });
 
 describe('installation guide', () => {
-  it('has 11 steps with unique ids, each in a world, from the water right to the stop procedure', () => {
-    expect(INSTALL.length).toBe(11);
+  const step = (id: string) => INSTALL.find((s) => s.id === id)!;
+  const at = (id: string) => INSTALL.findIndex((s) => s.id === id);
+
+  it('has at least 13 steps (16) with unique ids, each in a world, from the water right to the stop procedure', () => {
+    expect(INSTALL.length).toBeGreaterThanOrEqual(13);
+    expect(INSTALL.length).toBe(16);
     expect(new Set(INSTALL.map((s) => s.id)).size).toBe(INSTALL.length);
-    expect(INSTALL.every((s) => s.scene === 'site' || s.scene === 'screw')).toBe(true);
+    expect(INSTALL.every((s) => s.scene === 'site' || s.scene === 'screw' || s.scene === 'powerroom')).toBe(true);
     expect(INSTALL[0]!.id).toBe('rights');
     expect(INSTALL[INSTALL.length - 1]!.id).toBe('stop');
+    expect(INSTALL.filter((s) => s.scene === 'powerroom').length).toBeGreaterThanOrEqual(5);
   });
 
-  it('installs every id of the site exactly once, and in the screw only the three ids the site decides', () => {
-    const site = INSTALL.filter((s) => s.scene === 'site').flatMap((s) => s.parts);
-    expect(site.sort()).toEqual([...partIds('site')].sort());
-    const screw = INSTALL.filter((s) => s.scene === 'screw').flatMap((s) => s.parts);
-    expect(screw.sort()).toEqual(['inlet-sill', 'outlet-pool', 'trapped-water']);
+  it('installs every id of the site and of the powerroom exactly once, and in the screw only the three ids the site decides', () => {
+    const of = (w: WorldId) => INSTALL.filter((s) => s.scene === w).flatMap((s) => s.parts);
+    expect(of('site').sort()).toEqual([...partIds('site')].sort());
+    expect(of('powerroom').sort()).toEqual([...partIds('powerroom')].sort());
+    expect(of('screw').sort()).toEqual(['inlet-sill', 'outlet-pool', 'trapped-water']);
+    expect(of('generator')).toEqual([]);
     for (const s of INSTALL) for (const id of s.parts) expect(FROZEN[id]?.scene, `${s.id}: ${id}`).toBe(s.scene);
   });
 
-  it('has the steps of a real project in order: right first, the water works, the chamber, the levels, the drive, the load, the tailrace, the start, the stop', () => {
-    const at = (id: string) => INSTALL.findIndex((s) => s.id === id);
+  it('has the steps of a real project in order: right first, the water works, the chamber, the levels, the drive, the building, the earth, the protections, the wiring, the battery last, the tailrace, the check, the start, the stop', () => {
     for (const [a, b] of [
       ['rights', 'flow-and-fish'],
       ['flow-and-fish', 'weir-canal'],
@@ -521,12 +783,17 @@ describe('installation guide', () => {
       ['chamber', 'levels'],
       ['levels', 'drive'],
       ['drive', 'powerhouse'],
-      ['powerhouse', 'tailrace'],
-      ['tailrace', 'first-start'],
+      ['powerhouse', 'earth-and-board'],
+      ['earth-and-board', 'protections'],
+      ['protections', 'wire-chain'],
+      ['wire-chain', 'battery-last'],
+      ['battery-last', 'tailrace'],
+      ['tailrace', 'electrical-check'],
+      ['electrical-check', 'first-start'],
       ['first-start', 'stop'],
     ] as const)
       expect(at(a), `${a} before ${b}`).toBeLessThan(at(b));
-    expect(INSTALL.filter((s) => s.parts.length === 0).map((s) => s.id)).toEqual(['drive', 'stop']);
+    expect(INSTALL.filter((s) => s.parts.length === 0).map((s) => s.id)).toEqual(['drive', 'electrical-check', 'stop']);
   });
 
   it('keeps every step text within 80 words in both languages, tips and warnings short, a rough duration in hours and no torque', () => {
@@ -556,8 +823,7 @@ describe('installation guide', () => {
     expect(rights.text.en).toMatch(/years/);
   });
 
-  it('puts safety where it matters: drowning, the confined space, the rotating parts, the battery, the lock-out and the stop order', () => {
-    const step = (id: string) => INSTALL.find((s) => s.id === id)!;
+  it('puts safety where it matters: drowning, the confined space, the rotating parts, the battery, the arc, the lock-out and the stop order', () => {
     expect(step('weir-canal').warning?.en).toMatch(/never work alone/);
     expect(step('weir-canal').warning?.en).toMatch(/life jacket/);
     expect(step('chamber').warning?.en).toMatch(/Confined space/);
@@ -568,10 +834,39 @@ describe('installation guide', () => {
     expect(step('tailrace').warning?.en).toMatch(/flood/);
     expect(step('first-start').warning?.en).toMatch(/race/);
     expect(step('gate-rack').tip?.en).toMatch(/hand operation/);
-    // the stop procedure: water first, load last, then lock
-    expect(step('stop').text.en).toMatch(/shut the head gate.*then open the battery/);
+    // the powerhouse's own steps
+    expect(step('earth-and-board').warning?.en).toMatch(/no buried cable or pipe/);
+    expect(step('earth-and-board').warning?.en).toMatch(/never during a storm/);
+    expect(step('protections').warning?.en).toMatch(/arc of a break does not go out by itself/);
+    expect(step('protections').warning?.en).toMatch(/never a bigger fuse/);
+    expect(step('protections').tip?.en).toMatch(/padlock and a tag/);
+    expect(step('wire-chain').warning?.en).toMatch(/qualified electrician/);
+    expect(step('wire-chain').warning?.en).toMatch(/live as soon as the shaft turns, even by hand/);
+    expect(step('battery-last').warning?.en).toMatch(/spit molten metal/);
+    expect(step('battery-last').warning?.en).toMatch(/lethal voltage/);
+    expect(step('electrical-check').warning?.en).toMatch(/by two/);
+    // the stop procedure: water first, load last, then isolate, lock and test dead
+    expect(step('stop').text.en).toMatch(/shut the head gate.*then open the DC breaker/);
     expect(step('stop').text.en).toMatch(/if you cut the load first, the screw races/);
+    expect(step('stop').text.en).toMatch(/Take out the fuses/);
+    expect(step('stop').text.en).toMatch(/Check that nothing is live before touching anything/);
     expect(step('stop').warning?.en).toMatch(/lock the gate mechanically/);
+  });
+
+  it('wires the powerhouse in the right order: earth first, protections open, the dump load before the battery, the battery last of the sources, the inverter last of all', () => {
+    expect(step('earth-and-board').text.en).toMatch(/Earth first/);
+    expect(step('earth-and-board').text.en).toMatch(/Before any wire carries current/);
+    expect(step('protections').text.en).toMatch(/open and with the fuses out/);
+    expect(step('wire-chain').text.en).toMatch(/The battery, a source of energy, is left for last/);
+    expect(step('wire-chain').text.en).toMatch(/the brake must exist before the power does/);
+    expect(step('wire-chain').parts).toContain('dump-load');
+    expect(step('wire-chain').parts).not.toContain('battery');
+    expect(step('battery-last').parts[0]).toBe('battery');
+    expect(step('battery-last').text.en).toMatch(/connected last of the sources/);
+    expect(step('battery-last').text.en).toMatch(/the inverter, closed last/);
+    expect(step('battery-last').text.en).toMatch(/The house is connected afterwards, by the electrician/);
+    expect(step('electrical-check').tip?.en).toMatch(/the inverter last\. The order of stopping is the reverse/);
+    expect(step('powerhouse').text.en).toMatch(/The house is connected last, by an electrician/);
   });
 
   it('says that no fine rack is needed for a screw, with the honest caveat', () => {
@@ -585,6 +880,12 @@ describe('installation guide', () => {
     expect(start.text.en).toMatch(/Do not expect the lab’s figures/);
     expect(start.text.en).toMatch(/hopes/);
     expect(start.text.en).toMatch(/model result/);
+    expect(start.text.en).toMatch(/battery voltage/);
+  });
+
+  it('says that the electrical steps are the general rule, not a wiring plan: it names the qualified electrician', () => {
+    for (const id of ['earth-and-board', 'protections', 'wire-chain', 'battery-last', 'powerhouse'])
+      expect(step(id).warning?.en, id).toMatch(/qualified electrician/);
   });
 });
 
@@ -607,6 +908,8 @@ describe('chapters and overviews', () => {
     // the six chapters of docs/research.md §1
     const stamps = CHAPTERS.map((c) => c[0]);
     for (const ts of ['00:34', '05:06', '12:36', '15:01', '24:05', '38:52']) expect(stamps, ts).toContain(ts);
+    // completion wave A: where the generator or the electrics appear (read in the private transcript for the timestamps only)
+    for (const ts of ['14:01', '22:03', '22:36', '30:31', '35:43', '49:37']) expect(stamps, ts).toContain(ts);
   });
 
   it('gives an overview to each world: a title and two or three short paragraphs with the parts in bold', () => {
@@ -659,13 +962,109 @@ describe('chapters and overviews', () => {
           'courroie',
           'arbre intermédiaire',
           'génératrice',
+        ],
+        generator: [
+          'génératrice',
+          'carcasse',
+          'stator',
+          'bobines',
+          'rotor',
+          'arbre',
+          'roulements',
+          'aimants',
+          'boîte à bornes',
+        ],
+        powerroom: [
+          'local technique',
+          'disjoncteur continu',
+          'boîte à fusibles',
           'redresseur',
           'régulateur de charge',
           'batterie',
+          'charge de délestage',
+          'onduleur',
+          'compteur d’énergie',
+          'tableau électrique',
+          'mise à la terre',
         ],
       };
       for (const word of mustFr[w]) expect(bold.join(' | '), `${w}: ${word}`).toContain(word);
     }
+  });
+});
+
+describe('the overviews of the four worlds', () => {
+  const en = (w: WorldId) => OVERVIEWS[w].text.en;
+  const fr = (w: WorldId) => OVERVIEWS[w].text.fr;
+
+  it('the generator overview names every part in the two languages, says where to start, and says what is estimated and what is dangerous', () => {
+    const mustEn = ['generator', 'frame', 'stator', 'coils', 'rotor', 'shaft', 'bearings', 'magnets', 'terminal box'];
+    const bold = [...en('generator').matchAll(/\*\*([^*]+)\*\*/g)].map((m) => m[1]!.toLowerCase()).join(' | ');
+    for (const word of mustEn) expect(bold, word).toContain(word);
+    expect(en('generator')).toMatch(/\*\*To start\*\*/);
+    expect(en('generator')).toMatch(/\*\*Section\*\*/);
+    expect(en('generator')).toMatch(/\*\*Explode\*\*/);
+    expect(fr('generator')).toMatch(/\*\*Pour commencer\*\*/);
+    expect(fr('generator')).toMatch(/\*\*Coupe\*\*/);
+    expect(fr('generator')).toMatch(/\*\*Éclaté\*\*/);
+    expect(en('generator')).toMatch(/the lab’s estimates, not those of a real machine/);
+    expect(en('generator')).toMatch(/without opening it/);
+    expect(en('generator')).toMatch(/poles \(estimate\)/);
+    expect(en('generator')).toMatch(/\(model result\)/);
+    expect(en('generator')).toMatch(/never off/);
+    expect(fr('generator')).toMatch(/ne s’éteint jamais/);
+  });
+
+  it('the powerroom overview names every device in order, says where to start, and says what is not simulated and what is dangerous', () => {
+    const mustEn = [
+      'powerhouse',
+      'dc breaker',
+      'fuse box',
+      'rectifier',
+      'charge controller',
+      'battery',
+      'dump load',
+      'inverter',
+      'energy meter',
+      'switchboard',
+      'earthing',
+    ];
+    const bold = [...en('powerroom').matchAll(/\*\*([^*]+)\*\*/g)].map((m) => m[1]!.toLowerCase());
+    for (const word of mustEn) expect(bold.join(' | '), word).toContain(word);
+    // read in the order the current goes
+    const order = [
+      'dc breaker',
+      'fuse box',
+      'rectifier',
+      'charge controller',
+      'battery',
+      'dump load',
+      'inverter',
+      'energy meter',
+    ];
+    const pos = order.map((w) => bold.indexOf(w));
+    expect(pos.every((x) => x >= 0)).toBe(true);
+    expect([...pos].sort((a, b) => a - b)).toEqual(pos);
+    expect(en('powerroom')).toMatch(/\*\*To start\*\*/);
+    expect(en('powerroom')).toMatch(/\*\*Flows\*\*/);
+    expect(fr('powerroom')).toMatch(/\*\*Flux\*\*/);
+    expect(en('powerroom')).toMatch(/not a wiring diagram/);
+    expect(fr('powerroom')).toMatch(/pas un schéma de câblage/);
+    expect(en('powerroom')).toMatch(/the dump load, the controller, the inverter and the meter are not simulated/);
+    expect(en('powerroom')).toMatch(/the ratings of the devices and the cable sections drawn are the lab’s estimates/);
+    expect(en('powerroom')).toMatch(/hundreds of amps/);
+    expect(en('powerroom')).toMatch(/qualified electrician/);
+    expect(en('powerroom')).toMatch(/\(assumption\)/);
+    expect(en('powerroom')).toMatch(/\(model result\)/);
+  });
+
+  it('the screw overview no longer draws the electronics (they moved to the powerhouse) and sends to the generator; the site overview sends to the powerhouse', () => {
+    expect(en('screw')).not.toMatch(/rectifier|charge controller|battery/);
+    expect(fr('screw')).not.toMatch(/redresseur|régulateur|batterie/);
+    expect(en('screw')).toMatch(/a cable leaves for the powerhouse/);
+    expect(en('screw')).toMatch(/Click the \*\*generator\*\* to open it/);
+    expect(en('site')).toMatch(/or the \*\*powerhouse\*\* to see the electrics/);
+    expect(fr('site')).toMatch(/ou le \*\*local technique\*\* pour voir l’électricité/);
   });
 });
 
@@ -716,6 +1115,41 @@ describe('interface strings added by the data role', () => {
     expect(legal[1]).not.toMatch(/fond/);
   });
 
+  it('has the callouts of completion wave A, in both languages: the safety of the electrics and the honesty about the estimates', () => {
+    const safety = LAB_STRINGS.safetyElectric!;
+    for (const re of [
+      /short circuit/,
+      /does not go out by itself/,
+      /lock/,
+      /live/,
+      /magnets/,
+      /dump load/,
+      /lethal/,
+      /qualified electrician/,
+      /not a wiring diagram/,
+    ])
+      expect(safety[1], String(re)).toMatch(re);
+    for (const re of [
+      /court-circuit/,
+      /ne s’éteint pas de lui-même/,
+      /verrouillez/,
+      /sous tension/,
+      /aimants/,
+      /charge de délestage/,
+      /mortelle/,
+      /électricien qualifié/,
+      /pas un schéma de câblage/,
+    ])
+      expect(safety[0], String(re)).toMatch(re);
+    const notice = LAB_STRINGS.noticeElectric!;
+    for (const re of [/generic/, /poles/, /air gap/, /estimates/, /not simulated/, /perfect battery/])
+      expect(notice[1], String(re)).toMatch(re);
+    for (const re of [/génériques/, /pôles/, /entrefer/, /estimations/, /ne sont pas simulés/, /batterie parfaite/])
+      expect(notice[0], String(re)).toMatch(re);
+    expect(LAB_STRINGS.scenePowerroom![1]).toBe('Powerhouse');
+    expect(LAB_STRINGS.sceneGenerator![1]).toBe('Generator');
+  });
+
   it('keeps the template keys that the panel and the lead use unchanged', () => {
     expect(LAB_STRINGS.tagline).toBeDefined();
     expect(LAB_STRINGS.disclaimer).toBeDefined();
@@ -759,6 +1193,8 @@ const REPORTED: Record<string, string> = {
   '90': 'rack blocked at 90 % (model input of the debris scenario, presets.ts)',
   '95': 'multipliers above 95 % (published, Dellinger 2015 citing Nuernbergk 2012; machine.ts CHAIN_EFFICIENCY)',
   '100': 'the tailrace of the video’s mill is about 100 m (video, research §3)',
+  '120':
+    'the constant of the electrical frequency of a synchronous machine, f = poles × rpm / 120 (physics, not a source’s figure; GENERATOR_DESIGN in dims.ts has the same formula)',
   '200': 'the prototype’s 200 W (video, research K3), the 200 to 300 W possible',
   '300': 'the 200 to 300 W possible of the prototype (video, research K3)',
   '380': 'turbine of 380 rpm → generator 990 rpm of a 30 kW crossflow plant (another video, research K11)',
@@ -809,12 +1245,11 @@ describe('numbers in the texts', () => {
   });
 
   it('uses every figure of figures.ts in at least one text', () => {
-    const files = import.meta.glob(['./parts/{site,machine,drive,electric}.ts', './{assembly,install,overviews}.ts'], {
-      query: '?raw',
-      import: 'default',
-      eager: true,
-    }) as Record<string, string>;
-    expect(Object.keys(files).length).toBe(7);
+    const files = import.meta.glob(
+      ['./parts/{site,machine,drive,electric,generator,powerroom}.ts', './{assembly,install,overviews}.ts'],
+      { query: '?raw', import: 'default', eager: true },
+    ) as Record<string, string>;
+    expect(Object.keys(files).length).toBe(9);
     const sources = Object.values(files).join('\n');
     const unused = Object.keys(FIG).filter((k) => !sources.includes(`{${k}}`));
     expect(unused).toEqual([]);
@@ -896,6 +1331,23 @@ describe('the figures of the texts are what the simulation finds', () => {
     rounds('ratio', p.chainRatio * p.beltRatio);
   });
 
+  it('the generator opened: its constant, its resistance, its line and phase voltages and currents, the force when it races', () => {
+    const g = plant.generator;
+    rounds('genK', g.voltsPerRad);
+    rounds('genResistance', g.resistance);
+    expect(Math.abs(g.voltsPerRad * op.current - op.generatorTorque)).toBeLessThan(1e-6); // torque = k × current: 0.86 N·m per ampere
+    const line = op.openCircuitVolts / BRIDGE_FACTOR; // the rectified 53.7 V is 1.35 × the voltage between two phases
+    rounds('genLineV', line);
+    rounds('genPhaseV', line / Math.sqrt(3));
+    rounds('genPhaseA', op.current * Math.sqrt(2 / 3));
+    expect(FIG.rectFactor[0]).toBeCloseTo(BRIDGE_FACTOR, 1);
+    // the books of the generator close with the numbers of the sheets: Voc I = battery I + diodes I + R I²
+    const closes =
+      op.openCircuitVolts * op.current -
+      (BUS_VOLTS * op.current + DIODE_DROP * op.current + g.resistance * op.current ** 2);
+    expect(Math.abs(closes)).toBeLessThan(1e-6);
+  });
+
   it('a screw with no load races: about 180 rpm, 3.3 times its speed, the generator near 1,960 rpm and 176 V open-circuit', () => {
     let lo = 1;
     let hi = 40;
@@ -909,6 +1361,8 @@ describe('the figures of the texts are what the simulation finds', () => {
     rounds('freeRunFactor', rpm / plant.designRpm);
     rounds('freeRunGenRpm', rpm * p.chainRatio * p.beltRatio, 10);
     rounds('freeRunVolts', plant.generator.voltsPerRad * lo * p.chainRatio * p.beltRatio);
+    // the centrifugal force on the rotor follows the square of the speed: 10.6 times, said "about 11"
+    rounds('freeRunForce', (rpm / plant.designRpm) ** 2);
   });
 
   it('the gap and the roughness: a gap twice or four times the rule, a rougher wall', () => {
@@ -1044,6 +1498,28 @@ describe('the figures of the texts are what the simulation finds', () => {
     expect(BEARING_RADIUS_FRAC).toBeCloseTo(0.05, 6);
   });
 
+  it('the design of the generator and the ratings of the powerhouse (estimates) are those of dims.ts and are coherent with the model', () => {
+    // the counts the 3D role draws are the counts the sheets give
+    expect(FIG.genPoles[0]).toBe(GENERATOR_DESIGN.poles);
+    expect(FIG.genSlots[0]).toBe(GENERATOR_DESIGN.slots);
+    expect(FIG.genCoilsPerPhase[0]).toBe(GENERATOR_DESIGN.slots / GENERATOR_DESIGN.phases);
+    expect(FIG.genFreq[0]).toBe(electricalFrequency(GEN_RATED_RPM));
+    expect(FIG.genFreq[0]).toBe((GENERATOR_DESIGN.poles * GEN_RATED_RPM) / 120);
+    // 24 slots on 16 poles is a usual concentrated winding: three phases share the teeth, and the magnets come in north-south pairs
+    expect(GENERATOR_DESIGN.slots % GENERATOR_DESIGN.phases).toBe(0);
+    expect(GENERATOR_DESIGN.poles % 2).toBe(0);
+    // the ratings: the breaker above the service current with a margin, the fuse above the breaker, the inverter drawing more than the charge
+    expect(FIG.breakerA[0]).toBeGreaterThan(1.25 * FIG.current[0]);
+    expect(FIG.fuseA[0]).toBeGreaterThan(FIG.breakerA[0]);
+    expect(FIG.invA[0]).toBe(Math.round((FIG.invKw[0] * 1000) / FIG.busVolts[0]));
+    expect(FIG.invA[0]).toBeGreaterThan(FIG.current[0]);
+    expect(FIG.batCableMm2[0]).toBeGreaterThanOrEqual(FIG.earthMm2[0]);
+    // the dump load swallows the whole electric power at the bus voltage: R = V / I, and V² / P gives the same
+    const pOut = op.electricPower;
+    rounds('dumpOhm', (BUS_VOLTS * BUS_VOLTS) / pOut);
+    rounds('dumpOhm', BUS_VOLTS / op.current);
+  });
+
   it('the MODEL record holds only what FIG prints', () => {
     for (const [key, value] of Object.entries(MODEL)) expect(FIG[key as keyof typeof FIG][0], key).toBe(value);
   });
@@ -1145,6 +1621,69 @@ describe('the sheets agree with src/three/dims.ts, the single source of lengths'
     has('rectifier', ELECTRONICS.rectifier.map((x) => nEn(x * 1000)).join(' × '));
     has('charge-controller', ELECTRONICS.controller.map((x) => nEn(x * 1000)).join(' × '));
     has('battery', ELECTRONICS.battery.map((x) => nEn(x * 1000)).join(' × '), `${DESIGN.busVolts} V lithium pack`);
+  });
+
+  it('the generator opened: the frame, the stator, the coils, the rotor, the magnets, the shaft, the bearings and the box are those of dims.ts', () => {
+    const GD = GENERATOR_DESIGN;
+    has(
+      'gen-frame',
+      `${mStr(2 * GENERATOR.bodyRadius)} × ${mStr(GENERATOR.bodyLength)} m`,
+      mmStr(GD.shellWall),
+      `${GD.ribs.count} round the body`,
+    );
+    has('gen-stator', mmStr(2 * GD.stator.outerRadius), mmStr(2 * GD.stator.boreRadius), mmStr(GD.stator.stack));
+    has('gen-coils', mmStr(GD.coil.build), mmStr(GD.coil.overhang));
+    has('gen-rotor', mmStr(2 * (GD.stator.boreRadius - GD.gap)), mmStr(GD.rotor.stack));
+    has('gen-magnets', mmStr(GD.rotor.magnetThickness), mmStr(GD.gap), `${nEn(GD.rotor.magnetArc * 100)}%`);
+    has(
+      'gen-shaft',
+      mmStr(2 * GENERATOR.shaftRadius),
+      mStr(GENERATOR.stub),
+      `${mmStr(GD.shaft.keyLength)} × ${mmStr(GD.shaft.keyWidth)} mm`,
+    );
+    has('gen-bearings', `${mmStr(2 * GD.bearing.outerRadius)} × ${mmStr(GD.bearing.width)} mm`);
+    has('gen-terminals', GENERATOR.box.map((x) => nEn(x * 1000)).join(' × '));
+    // the same machine as the blue generator of the screw: the same body, shaft and box, nothing retyped
+    expect(
+      sheet('generator').specs.some(
+        (x) =>
+          isL(x.value) && x.value.en.includes(`${mStr(2 * GENERATOR.bodyRadius)} × ${mStr(GENERATOR.bodyLength)} m`),
+      ),
+    ).toBe(true);
+    // the bearings fit the shaft, the magnets sit inside the bore with a thin air gap, the rotor is shorter than nothing it should not be
+    expect(GD.bearing.outerRadius).toBeGreaterThan(GENERATOR.shaftRadius);
+    expect(GD.gap).toBeLessThan(0.005);
+    expect(GD.rotor.stack).toBeLessThanOrEqual(GD.stator.stack);
+  });
+
+  it('the powerroom: the devices, the board, the room and the rod are those of dims.ts, the three moved pieces keep the sizes they had on the screw', () => {
+    const box = (size: readonly number[]) => size.map((x) => nEn(x * 1000)).join(' × ');
+    has('dc-breaker', box(POWERROOM.breaker.size));
+    has('fuse-box', box(POWERROOM.fuseBox.size));
+    has('dump-load', box(POWERROOM.dumpLoad.size));
+    has('inverter', box(POWERROOM.inverter.size));
+    has('energy-meter', box(POWERROOM.meter.size));
+    has(
+      'switchboard',
+      `${mStr(2 * POWERROOM.board.halfWidth)} × ${mStr(POWERROOM.board.y1 - POWERROOM.board.y0)} m`,
+      `${mStr(POWERROOM.width)} × ${mStr(POWERROOM.depth)} m`,
+    );
+    has('earthing', mStr(POWERROOM.rod.length), mmStr(2 * POWERROOM.rod.radius));
+    // the wall is read in the order the current goes, from the cable of the generator on the left
+    const xs = [
+      POWERROOM.breaker.x,
+      POWERROOM.fuseBox.x,
+      POWERROOM.rectifier.x,
+      POWERROOM.controller.x,
+      POWERROOM.battery.x,
+      POWERROOM.dumpLoad.x,
+      POWERROOM.inverter.x,
+      POWERROOM.meter.x,
+    ];
+    expect([...xs].sort((a, b) => a - b)).toEqual(xs);
+    // the room is the powerhouse of the site, less its walls
+    expect(POWERROOM.width).toBeCloseTo(SITE.powerhouse.length - 2 * POWERROOM.wall, 6);
+    expect(POWERROOM.depth).toBeCloseTo(SITE.powerhouse.width - 2 * POWERROOM.wall, 6);
   });
 
   it('the screw is generic: its sheets say that the video gives no dimension, once and where it matters', () => {

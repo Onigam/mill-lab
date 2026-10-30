@@ -693,19 +693,22 @@ export const SITE_PARTS: PartInfo[] = [
     category: 'electrical',
     name: l('Local technique', 'Powerhouse'),
     short: l(
-      'Petit local sec : redresseur, régulateur, batterie et onduleur, en une seule pièce du site.',
-      'Small dry room: rectifier, charge controller, battery and inverter, as ONE part of the site.',
+      'Petit local sec qui abrite toute l’électricité, de la protection à l’onduleur : une seule pièce du site, que l’on peut visiter.',
+      'Small dry room that holds all the electrics, from protection to inverter: ONE part of the site, which can be entered.',
     ),
     description: lf(
-      'Le local technique est la petite pièce sèche où arrive le câble de la génératrice. Il abrite quatre éléments : le redresseur, qui change l’alternatif en continu ; le régulateur de charge, qui protège la batterie ; la batterie, qui garde l’énergie ; et l’onduleur, qui fabrique du courant alternatif pour la maison. Sur le site, ils forment une seule pièce ; dans la vue de la vis, le redresseur, le régulateur et la batterie ont chacun leur place près de la génératrice. Au point de calcul, le modèle envoie {elecKw} kW dans une batterie de {busVolts} V (hypothèse) ; les pertes de l’onduleur et des câbles ne sont pas modélisées.',
-      'The powerhouse is the small dry room where the generator’s cable arrives. It holds four things: the rectifier, which turns alternating current into direct current; the charge controller, which protects the battery; the battery, which keeps the energy; and the inverter, which makes alternating current for the house. On the site they form a single part; in the screw’s view, the rectifier, the controller and the battery each have their own place by the generator. At the design point, the model sends {elecKw} kW into a {busVolts} V battery (assumption); the losses of the inverter and of the cables are not modelled.',
+      'Le local technique est la petite pièce sèche où arrive le câble de la génératrice. Sur son mur, dans l’ordre du courant : des protections, le redresseur, qui change l’alternatif en continu ; le régulateur de charge, qui protège la batterie, avec sa charge de délestage ; la batterie, qui garde l’énergie ; l’onduleur, qui fabrique du courant alternatif pour la maison ; et un compteur d’énergie, le tout sur un tableau relié à la terre. Sur le site, ils forment une seule pièce ; entrez-y pour voir chaque appareil à sa place, dans l’ordre où le courant les traverse. Au point de calcul, le modèle envoie {elecKw} kW dans une batterie de {busVolts} V (hypothèse) ; les pertes de l’onduleur et des câbles ne sont pas modélisées.',
+      'The powerhouse is the small dry room where the generator’s cable arrives. On its wall, in the order of the current: protections, the rectifier, which turns alternating current into direct current; the charge controller, which protects the battery, with its dump load; the battery, which keeps the energy; the inverter, which makes alternating current for the house; and an energy meter, all on a board bonded to the earth. On the site they form a single part; go in to see each device in its place, in the order the current goes through them. At the design point, the model sends {elecKw} kW into a {busVolts} V battery (assumption); the losses of the inverter and of the cables are not modelled.',
     ),
     material: l('Armoire électrique, batterie, câbles', 'Electrical cabinet, battery, cables'),
     specs: [
       sp(
         'Contenu',
         'Contents',
-        l('redresseur, régulateur, batterie, onduleur', 'rectifier, controller, battery, inverter'),
+        l(
+          'protections, redresseur, régulateur, batterie, charge de délestage, onduleur, compteur, tableau, terre',
+          'protections, rectifier, controller, battery, dump load, inverter, meter, board, earthing',
+        ),
       ),
       sp('Tension de la batterie', 'Battery voltage', tf('assumed', '{busVolts} V', '{busVolts} V')),
       sp(

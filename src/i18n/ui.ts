@@ -388,8 +388,18 @@ const LAB = {
   // ---- lessons (lessons role, wave 3): the intro of the Lessons mode, to wire as `lessons: { intro: strL('lessonsIntroMill'), items: LESSONS }`
   // (the template's `lessonsIntro` above is the lead's and stays unchanged)
   lessonsIntroMill: [
-    'Six leçons courtes, de l’eau aux watts jusqu’à l’année du moulin. Chacune ouvre la vue 3D sur la pièce dont elle parle, souvent avec un scénario à lancer dans la Simulation, et finit par un petit quiz.',
-    'Six short lessons, from water to watts to the year of the mill. Each one opens the 3D view on the part it talks about, often with a scenario to run in the Simulation, and ends with a small quiz.',
+    'Huit leçons courtes, de l’eau aux watts jusqu’à l’année du moulin, en passant par la génératrice et le local technique. Chacune ouvre la vue 3D sur la pièce dont elle parle, parfois avec un scénario à lancer dans la Simulation, et finit par un petit quiz.',
+    'Eight short lessons, from water to watts to the year of the mill, by way of the generator and the powerhouse. Each one opens the 3D view on the part it talks about, sometimes with a scenario to run in the Simulation, and ends with a small quiz.',
+  ],
+
+  // ---- completion wave A (data role): the generator opened and the powerhouse. To wire in `about()` after `safety` and `noticeGeneric`
+  noticeElectric: [
+    'La génératrice ouverte et le matériel du local technique sont génériques : le nombre de pôles, les encoches, les aimants, l’entrefer, les calibres des appareils et les sections de câble sont des estimations du labo, pas des mesures ni des plans. La vidéo montre une génératrice du commerce et ne dit rien de son intérieur ni d’un coffret électrique. La charge de délestage, le régulateur, l’onduleur et le compteur ne sont pas simulés : le modèle s’arrête à une batterie parfaite, qui prend tout.',
+    'The opened generator and the powerhouse’s equipment are generic: the number of poles, the slots, the magnets, the air gap, the ratings of the devices and the cable sections are the lab’s estimates, not measurements or plans. The video shows a generator from the trade and says nothing of its inside or of an electrical cabinet. The dump load, the controller, the inverter and the meter are not simulated: the model stops at a perfect battery, which takes everything.',
+  ],
+  safetyElectric: [
+    'Électricité : une batterie débite des centaines d’ampères en court-circuit, et l’arc d’un courant continu ne s’éteint pas de lui-même. Isolez, verrouillez et vérifiez l’absence de tension avant de toucher. Une génératrice à aimants ne s’éteint jamais : ses bornes sont sous tension tant que l’arbre tourne, même à la main. Les aimants puissants pincent et éclatent, la charge de délestage devient très chaude, l’onduleur donne une tension mortelle. Câblage, protections et mise à la terre sont l’affaire d’un électricien qualifié : ce labo n’est pas un schéma de câblage.',
+    'Electrics: a battery delivers hundreds of amps in a short circuit, and the arc of a direct current does not go out by itself. Isolate, lock and check that nothing is live before touching. A magnet generator is never off: its terminals are live as long as the shaft turns, even by hand. Powerful magnets pinch and shatter, the dump load gets very hot, the inverter gives a lethal voltage. Wiring, protections and earthing are a job for a qualified electrician: this lab is not a wiring diagram.',
   ],
 } as const satisfies Record<string, readonly [string, string]>;
 
