@@ -76,9 +76,19 @@ describe('lab definition', () => {
     }
   });
 
-  it('links its part sheets into the main video, and hides the modes that have no content yet', () => {
+  it('links its part sheets into the main video', () => {
     expect(lab.video?.id).toBe('hM4cDkSSsrQ');
-    expect(lab.lessons).toBeUndefined();
-    expect(lab.plans).toBeUndefined();
+  });
+
+  it('draws each sheet of the plans from existing worlds, parts and groups', () => {
+    const groups = (lab.plans?.groups ?? []).map((g) => g.id);
+    expect(lab.plans?.sheets).toHaveLength(3);
+    for (const sheet of lab.plans?.sheets ?? []) {
+      expect(groups, `${sheet.id}: group`).toContain(sheet.group);
+      expect(sheet.scene, `${sheet.id}: world`).toBeDefined();
+      expect(sceneIds, `${sheet.id}: scene`).toContain(sheet.scene);
+      for (const id of sheet.parts ?? [])
+        expect(module(sheet.scene!).registry.get(id), `${sheet.id}: ${id}`).toBeDefined();
+    }
   });
 });

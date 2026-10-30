@@ -1,11 +1,12 @@
 import { configureDrawings } from '@onigam/lab-kit/drawings';
-import { strL } from '@onigam/lab-kit/i18n';
+import { l, strL } from '@onigam/lab-kit/i18n';
 import { h, icon, ICONS, type AppContext, type LabDefinition } from '@onigam/lab-kit/ui';
 import { ASSEMBLY } from './data/assembly';
 import { CHAPTERS } from './data/chapters';
 import { INSTALL } from './data/install';
 import { OVERVIEWS } from './data/overviews';
 import { PARTS } from './data/parts';
+import { SHEETS } from './drawings';
 import { t } from './i18n/ui';
 import { SimPanel } from './panels/sim';
 import { STRIP_SPEEDS, stripAlarms, stripClock, stripValues } from './panels/strip';
@@ -164,6 +165,17 @@ export const lab: LabDefinition<MillSim> = {
     // the assembly starts in the chamber of the site and then plays on the machine; the installation plays on the site
     assembly: { scene: 'screw', steps: ASSEMBLY },
     install: { scene: 'site', steps: INSTALL },
+  },
+  plans: {
+    sheets: SHEETS,
+    groups: [
+      { id: 'site', label: strL('groupSite') },
+      { id: 'screw', label: strL('groupScrew') },
+    ],
+    intro: l(
+      'Trois plans A3 générés à partir des cotes du modèle 3D et de la simulation : le bief du moulin, la vis en coupe, la transmission et l’électricité. Reconstitution pédagogique d’une vis générique, pas un plan de construction.',
+      'Three A3 drawings generated from the 3D model’s dimensions and the simulation: the mill race, the screw in section, the drive and the electricity. Educational reconstruction of a generic screw, not a construction plan.',
+    ),
   },
   simPanel: (ctx: AppContext<MillSim>) => new SimPanel(ctx),
   strip: { values: stripValues, clock: stripClock, alarms: stripAlarms, speeds: STRIP_SPEEDS },
