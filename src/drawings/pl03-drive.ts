@@ -1,4 +1,4 @@
-import { COLORS, Drawing, INK_2, W, type DrawingSheet, type Pt, type View } from '@onigam/lab-kit/drawings';
+import { COLORS, Drawing, INK, INK_2, W, type DrawingSheet, type Pt, type View } from '@onigam/lab-kit/drawings';
 import { getLang, l, type L } from '@onigam/lab-kit/i18n';
 import { PARTS } from '../data/parts';
 import { nEn, nFr } from '../data/units';
@@ -15,13 +15,13 @@ import {
   sprocketRadius,
 } from '../three/dims';
 import { Chart } from './chart';
-import { EDU_NOTE, FILL, arrow, balloon, box, grid, heading, marksLegend, poly } from './draw';
+import { EDU_NOTE, FILL, RED, arrow, balloon, box, grid, heading, marksLegend, modelTag, poly } from './draw';
 import { cat, dim, figLab, lab, labOf, num, scaleText } from './geom';
 import { drivePoint, torqueCurve } from './model';
 import { arcPoints, bandOutline, sprocketOutline } from './wheels';
 
 const NUMBER = 'PL-03';
-const TITLE = l('La transmission et l’électricité', 'The drive and the electricity');
+const TITLE = l('La transmission et la génératrice', 'The drive and the generator');
 
 /** The parts of the `screw` world that this sheet shows, in the order of its item numbers. */
 export const ITEMS = [
@@ -33,9 +33,6 @@ export const ITEMS = [
   'belt',
   'pulley-small',
   'generator',
-  'rectifier',
-  'charge-controller',
-  'battery',
 ];
 const n = (id: string): number => ITEMS.indexOf(id) + 1;
 const partOf = (id: string) => PARTS.find((p) => p.id === id)!;
@@ -50,20 +47,6 @@ export const LAYOUT = {
 const m = (v: number): number => v * 1000;
 const rad = (deg: number): number => deg * (Math.PI / 180);
 const STEEL = FILL.steel;
-const RED = COLORS.red;
-
-/** The red tag of what the simulation gives, as the Piggott lab draws it: a box with its own words. */
-function modelTag(d: Drawing, x: number, y: number, w: number): void {
-  const p = d.paper();
-  p.rect([x, y], [x + w, y + 5.2], { w: W.medium, color: RED, fill: COLORS.paper });
-  p.text([x + w / 2, y + 2.7], l('RÉSULTAT DU MODÈLE · pas une mesure', 'MODEL RESULT · not a measurement'), {
-    size: 1.75,
-    weight: 'bold',
-    color: RED,
-    anchor: 'middle',
-    baseline: 'middle',
-  });
-}
 
 const fmtNum =
   (digits: number) =>
@@ -374,64 +357,19 @@ function charts(d: Drawing): void {
   cp.text(82, 2.5, l('plus vite, les poches se vident', 'faster, the pockets empty'), { size: 1.8, color: INK_2 });
 }
 
-// ------------------------------------------------------------------------------------------------ D: one-line electrical diagram
+// ------------------------------------------------------------------------------------------------ D: from the generator to the powerhouse
 
-function electrical(d: Drawing): void {
+/** The generator and what leaves it: a small sketch that points to the sheets of the powerhouse (PL-05, PL-06), where the electronics stand now. */
+function towardsPowerhouse(d: Drawing): void {
   const p = d.paper();
   const dp = drivePoint();
   const cx = 312;
-  const bw = 42;
-  const line = (a: Pt, b: Pt, color: string = COLORS.ink, w: number = W.medium, dash?: 'hidden'): void => {
-    p.line(a, b, { w, color, dash });
-  };
-  const block = (y0: number, h: number, label: L, dashed = false): void => {
-    p.rect([cx - bw / 2, y0], [cx + bw / 2, y0 + h], {
-      w: W.medium,
-      fill: COLORS.paper,
-      dash: dashed ? 'hidden' : undefined,
-    });
-    p.text([cx, y0 + h / 2], label, { size: 1.9, anchor: 'middle', baseline: 'middle', weight: 'bold' });
-  };
-  // generator
-  p.circle([cx, 29], 7.5, { w: W.thick, fill: COLORS.paper });
-  p.text([cx, 27.6], 'G', { size: 3.6, weight: 'bold', anchor: 'middle', baseline: 'middle' });
-  p.text([cx, 32.4], '3~', { size: 2, anchor: 'middle', baseline: 'middle' });
-  // three-phase link: one line, three slashes
-  line([cx, 36.5], [cx, 49]);
-  for (const dy of [-1.6, 0, 1.6]) p.line([cx - 1.6, 44 + dy + 1.2], [cx + 1.6, 44 + dy - 1.2], { w: W.thin });
-  // rectifier
-  block(49, 12, l('redresseur', 'rectifier'));
-  // DC link and the charge controller
-  line([cx, 61], [cx, 70], COLORS.dcPos);
-  p.text([cx + 3, 65.5], '+ / −', { size: 1.7, mono: true, baseline: 'middle' });
-  block(70, 12, l('régulateur de charge', 'charge controller'));
-  line([cx, 82], [cx, 90], COLORS.dcPos);
-  // battery: three cells
-  for (let i = 0; i < 3; i++) {
-    const y = 90 + i * 4.2;
-    p.line([cx - 6, y], [cx + 6, y], { w: W.thin * 1.6 });
-    p.line([cx - 3, y + 2.1], [cx + 3, y + 2.1], { w: W.thick * 1.6 });
-  }
-  line([cx, 102.6], [cx, 110], COLORS.ink, W.medium, 'hidden');
-  // the powerhouse: inverter and the house
-  block(110, 11, l('onduleur', 'inverter'), true);
-  line([cx, 121], [cx, 128], COLORS.ink, W.medium, 'hidden');
-  p.polyline(
-    [
-      [cx - 12, 141],
-      [cx - 12, 134],
-      [cx, 128],
-      [cx + 12, 134],
-      [cx + 12, 141],
-    ],
-    { w: W.medium, closed: true, fill: COLORS.paper, dash: 'hidden' },
-  );
-  p.text([cx, 137.4], l('maison', 'house'), { size: 1.8, anchor: 'middle', baseline: 'middle' });
-
-  // the numbers of the model, beside what they belong to
-  const x0 = 338;
+  // the generator
+  p.circle([cx, 36], 8.5, { w: W.thick, fill: COLORS.paper });
+  p.text([cx, 34.4], 'G', { size: 3.6, weight: 'bold', anchor: 'middle', baseline: 'middle' });
+  p.text([cx, 39.4], '3~', { size: 2, anchor: 'middle', baseline: 'middle' });
   const at = (y: number, t: L, o: { bold?: boolean; color?: string; mono?: boolean; size?: number } = {}): void => {
-    p.text([x0, y], t, {
+    p.text([338, y], t, {
       size: o.size ?? 1.75,
       baseline: 'middle',
       weight: o.bold ? 'bold' : 'normal',
@@ -439,33 +377,80 @@ function electrical(d: Drawing): void {
       mono: o.mono,
     });
   };
-  at(26.5, cat(lab(dp.generator.rpm, 0, null), l(' tr/min', ' rpm')), { bold: true, mono: true, size: 2 });
-  at(31.5, cat(lab(dp.generator.torque, 0, null), ' N·m'), { mono: true, size: 2 });
-  at(52.5, l('pont de six diodes, triphasé', 'six-diode bridge, three-phase'), { color: INK_2 });
-  at(57, cat(l('perte dans les diodes ', 'loss in the diodes '), lab(dp.diodeLoss, 0, null), ' W'));
-  at(64, cat(lab(dp.voc, 1, null), l(' V à vide', ' V open-circuit')), { bold: true, mono: true, size: 2 });
-  at(72.5, l('règle la charge, détourne le surplus', 'manages the charge, diverts the surplus'), { color: INK_2 });
-  at(76.5, l('vers une charge de délestage', 'to a dump load'), { color: INK_2 });
-  at(80.5, l('(non simulé : batterie idéale)', '(not simulated: ideal battery)'), { color: INK_2 });
-  at(93, cat(lab(dp.bus, 0, 'E', '', ' V'), l(' · banc de batteries', ' · battery bank')), {
-    bold: true,
-    mono: true,
-    size: 2,
+  at(33.5, cat(lab(dp.generator.rpm, 0, null), l(' tr/min', ' rpm')), { bold: true, mono: true, size: 2 });
+  at(38.5, cat(lab(dp.generator.torque, 0, null), ' N·m'), { mono: true, size: 2 });
+  // the three-phase cable leaves for the powerhouse
+  p.line([cx, 44.5], [cx, 62], { w: W.medium, color: COLORS.acL });
+  for (const dy of [-1.6, 0, 1.6])
+    p.line([cx - 1.6, 52 + dy + 1.2], [cx + 1.6, 52 + dy - 1.2], { w: W.thin, color: COLORS.acL });
+  arrow(p, [cx, 58], [cx, 66], COLORS.acL, W.medium);
+  at(54, l('câble triphasé vers le local technique', 'three-phase cable to the powerhouse'), { color: INK_2 });
+  // the powerhouse, dashed: what stands in it, in the order of the current
+  p.rect([286, 66], [402, 132], { w: W.medium, color: INK_2, dash: 'phantom', fill: 'none' });
+  p.text([290, 70.5], l('LOCAL TECHNIQUE', 'POWERHOUSE'), {
+    size: 1.7,
+    weight: 'bold',
+    color: INK_2,
+    baseline: 'middle',
   });
-  at(98, cat(lab(dp.current, 0, null), ' A · ', lab(dp.electric / 1000, 2, null), ' kW'), {
-    bold: true,
-    mono: true,
-    size: 2,
+  const steps: L[] = [
+    l('disjoncteur et fusibles', 'breaker and fuses'),
+    l('redresseur', 'rectifier'),
+    l('régulateur de charge', 'charge controller'),
+    cat(l('batterie de ', 'battery of '), lab(BUS_VOLTS, 0, 'E', '', ' V')),
+    l('onduleur', 'inverter'),
+    l('compteur, puis la maison', 'meter, then the house'),
+  ];
+  steps.forEach((t, i) => {
+    const y = 78 + i * 8.4;
+    p.rect([292, y - 3], [352, y + 3], {
+      w: W.medium,
+      fill: COLORS.paper,
+      dash: i === 4 || i === 5 ? 'hidden' : undefined,
+    });
+    p.text([322, y], t, { size: 1.6, anchor: 'middle', baseline: 'middle', weight: 'bold' });
+    if (i < steps.length - 1) arrow(p, [322, y + 3], [322, y + 5.4], INK, W.thin);
   });
-  at(113, l('dans le local technique', 'in the powerhouse'), { color: INK_2 });
-  at(117.5, l('(non modélisé)', '(not modelled)'), { color: INK_2 });
-  at(136, l('le local technique et la maison : PL-01', 'the powerhouse and the house: PL-01'), { color: INK_2 });
-  // balloons
-  const bl = (id: string, y: number): void => balloon(p, [cx - bw / 2, y], 289, y, n(id));
-  balloon(p, [cx - 7.5, 29], 289, 29, n('generator'));
-  bl('rectifier', 55);
-  bl('charge-controller', 76);
-  balloon(p, [cx - 6, 95], 289, 95, n('battery'));
+  // what the model gives at the rectifier and at the battery, beside the blocks
+  p.text([358, 86.4], cat(lab(dp.voc, 1, null), l(' V à vide', ' V open-circuit')), {
+    size: 1.75,
+    mono: true,
+    color: RED,
+    baseline: 'middle',
+    weight: 'bold',
+  });
+  p.text([358, 90.4], cat(l('pertes des diodes ', 'diode losses '), lab(dp.diodeLoss, 0, null, '', ' W')), {
+    size: 1.5,
+    color: RED,
+    baseline: 'middle',
+  });
+  p.text([358, 94.4], l('après le redresseur', 'after the rectifier'), { size: 1.5, color: INK_2, baseline: 'middle' });
+  p.text([358, 103.2], cat(lab(dp.current, 0, null), ' A · ', lab(dp.electric / 1000, 2, null), ' kW'), {
+    size: 1.75,
+    mono: true,
+    color: RED,
+    baseline: 'middle',
+    weight: 'bold',
+  });
+  p.text([358, 111.6], l('dans la batterie', 'into the battery'), { size: 1.5, color: INK_2, baseline: 'middle' });
+  p.text([358, 120], l('non simulés : onduleur, maison', 'not simulated: inverter, house'), {
+    size: 1.5,
+    color: INK_2,
+    baseline: 'middle',
+  });
+  p.text(
+    [290, 128.4],
+    l(
+      'le mur des appareils : PL-05 · le schéma de câblage : PL-06',
+      'the wall of equipment: PL-05 · the wiring diagram: PL-06',
+    ),
+    {
+      size: 1.55,
+      color: INK_2,
+      baseline: 'middle',
+    },
+  );
+  balloon(p, [cx - 8.5, 36], 289, 36, n('generator'));
 }
 
 // ------------------------------------------------------------------------------------------------ the sheet
@@ -476,8 +461,8 @@ function render(): Drawing {
   d.frame({
     title: TITLE,
     subtitle: l(
-      'De l’arbre de la vis à la batterie : chaîne, courroie, génératrice · résultats du modèle',
-      'From the screw’s shaft to the battery: chain, belt, generator · model results',
+      'De l’arbre de la vis à la génératrice : chaîne, courroie · résultats du modèle',
+      'From the screw’s shaft to the generator: chain, belt · model results',
     ),
     number: NUMBER,
     scale: scaleText(A.scale),
@@ -516,9 +501,9 @@ function render(): Drawing {
     { size: 1.7, color: INK_2 },
   );
 
-  heading(d, 280, 13, l('D · SCHÉMA ÉLECTRIQUE (unifilaire)', 'D · ELECTRICAL DIAGRAM (single line)'), { size: 2.2 });
+  heading(d, 280, 13, l('D · VERS LE LOCAL TECHNIQUE', 'D · TOWARDS THE POWERHOUSE'), { size: 2.2 });
   modelTag(d, 338, 15.6, 68);
-  electrical(d);
+  towardsPowerhouse(d);
 
   // the parts list and the legend of the marks
   heading(d, 280, 148, l('REPÈRES · pièces représentées', 'ITEMS · parts shown'), { size: 2 });
@@ -576,8 +561,8 @@ export const driveElectricity: DrawingSheet = {
   group: 'screw',
   title: TITLE,
   description: l(
-    'Le bout de l’arbre de la vis porte un grand pignon, relié par une chaîne à un petit pignon sur un arbre intermédiaire ; une grande poulie du même arbre entraîne, par courroie, la petite poulie de la génératrice. Les vitesses, les couples et les puissances des trois arbres, la courbe de couple et le schéma électrique jusqu’à la batterie sont des résultats du modèle au point de fonctionnement du labo, pas des mesures.',
-    'The end of the screw’s shaft carries a large sprocket, joined by a chain to a small sprocket on a countershaft; a large pulley on the same shaft drives the generator’s small pulley by belt. The speeds, torques and powers of the three shafts, the torque curve and the electrical diagram up to the battery are model results at the lab’s design point, not measurements.',
+    'Le bout de l’arbre de la vis porte un grand pignon, relié par une chaîne à un petit pignon sur un arbre intermédiaire ; une grande poulie du même arbre entraîne, par courroie, la petite poulie de la génératrice. Les vitesses, les couples et les puissances des trois arbres et la courbe de couple sont des résultats du modèle au point de fonctionnement du labo, pas des mesures. Le courant continue vers le local technique, dessiné sur deux autres planches.',
+    'The end of the screw’s shaft carries a large sprocket, joined by a chain to a small sprocket on a countershaft; a large pulley on the same shaft drives the generator’s small pulley by belt. The speeds, torques and powers of the three shafts and the torque curve are model results at the lab’s design point, not measurements. The current goes on to the powerhouse, drawn on two other sheets.',
   ),
   scene: 'screw',
   parts: ITEMS,

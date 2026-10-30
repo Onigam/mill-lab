@@ -18,6 +18,10 @@ export const PAPER = COLORS.paper;
 export const HEAD_FILL = '#efe6d3';
 /** Parts that turn, in the pose they are drawn in (the screw and the wheels of the drive). */
 export const MOVING = COLORS.copper;
+/** What the simulation gives is boxed and written in this red; a model result is never a measurement. */
+export const RED = COLORS.red;
+/** The three phases of the generator, as the 3D world sleeves them: red, yellow, blue (the yellow is darkened to read on paper). */
+export const PHASE = { A: COLORS.red, B: '#b07d00', C: COLORS.acN } as const;
 
 /** Light tints of the materials (the hatching, when there is one, is drawn on top). */
 export const FILL = {
@@ -225,24 +229,35 @@ export interface LegendRow {
 }
 
 /** The legend of the marks that follow the dimensions (reported, derived, estimate), plus extra rows. Returns the y below it. */
-export function marksLegend(d: Drawing, x: number, y: number, w: number, extra: LegendRow[] = []): number {
+export function marksLegend(
+  d: Drawing,
+  x: number,
+  y: number,
+  w: number,
+  extra: LegendRow[] = [],
+  words: { reported?: Text; derived?: Text; estimate?: Text } = {},
+): number {
   const p = d.paper();
   const mark =
     (m: string): LegendRow['sym'] =>
     (q, sx, sy) =>
       q.text([sx, sy], m, { size: 1.9, baseline: 'middle', mono: true, weight: 'bold' });
   const rows: LegendRow[] = [
-    { sym: mark('123'), text: l('donnée par une source publiée', 'given by a published source') },
+    { sym: mark('123'), text: words.reported ?? l('donnée par une source publiée', 'given by a published source') },
     {
       sym: mark('123†'),
-      text: l(
-        'dérivée des règles de calcul publiées, au point de fonctionnement du labo',
-        'derived by the published design rules at the lab’s design point',
-      ),
+      text:
+        words.derived ??
+        l(
+          'dérivée des règles de calcul publiées, au point de fonctionnement du labo',
+          'derived by the published design rules at the lab’s design point',
+        ),
     },
     {
       sym: mark('123*'),
-      text: l('estimation de la maquette 3D ou hypothèse du modèle', 'estimate of the 3D model or model assumption'),
+      text:
+        words.estimate ??
+        l('estimation de la maquette 3D ou hypothèse du modèle', 'estimate of the 3D model or model assumption'),
     },
     ...extra,
   ];
@@ -270,6 +285,37 @@ export const EDU_NOTE: L = l(
   'Reconstitution pédagogique indépendante. La vis est générique : ses cotes sont dérivées de règles de calcul publiées, aucun constructeur ne publie les siennes. Ce n’est pas un plan de construction.',
   'Independent educational reconstruction. The screw is generic: its dimensions are derived from published design rules, since no maker publishes its own. This is not a construction plan.',
 );
+
+/** The notice of the sheets of the generator: it is generic and its design is the lab's estimate. */
+export const EDU_NOTE_GENERATOR: L = l(
+  'Reconstitution pédagogique indépendante. La génératrice est générique : ni le nombre de pôles et d’encoches, ni les aimants, ni l’entrefer ne sont donnés par une source, ce sont des estimations du labo. Ce n’est pas un plan de construction.',
+  'Independent educational reconstruction. The generator is generic: no source gives the number of poles and slots, the magnets or the air gap, they are the lab’s estimates. This is not a construction plan.',
+);
+
+/** The notice of the sheets of the powerhouse: an example room, estimated ratings, a qualified electrician. */
+export const EDU_NOTE_ROOM: L = l(
+  'Reconstitution pédagogique indépendante. Le local est un exemple : les calibres, les sections de câble et les tailles sont des estimations du labo, à faire valider par un électricien qualifié. Ce n’est pas un plan de construction ni un schéma de câblage.',
+  'Independent educational reconstruction. The room is an example: the ratings, the cable sizes and the dimensions are the lab’s estimates, to be checked by a qualified electrician. This is not a construction plan, nor a wiring plan.',
+);
+
+/** The notice of the chart of turbines: orders of magnitude from the literature, not a tool to size a plant. */
+export const EDU_NOTE_CHART: L = l(
+  'Reconstitution pédagogique indépendante. Les zones sont des ordres de grandeur tirés de la littérature publiée, elles se chevauchent et les sources divergent sur leurs bords. Ce n’est pas un outil de dimensionnement ni un plan de construction.',
+  'Independent educational reconstruction. The zones are orders of magnitude taken from the published literature, they overlap and the sources disagree at their edges. This is not a tool for sizing a plant, nor a construction plan.',
+);
+
+/** The red tag of what the simulation gives, as the Piggott lab draws it: a box with its own words. */
+export function modelTag(d: Drawing, x: number, y: number, w: number): void {
+  const p = d.paper();
+  p.rect([x, y], [x + w, y + 5.2], { w: W.medium, color: RED, fill: COLORS.paper });
+  p.text([x + w / 2, y + 2.7], l('RÉSULTAT DU MODÈLE · pas une mesure', 'MODEL RESULT · not a measurement'), {
+    size: 1.75,
+    weight: 'bold',
+    color: RED,
+    anchor: 'middle',
+    baseline: 'middle',
+  });
+}
 
 // ------------------------------------------------------------------------------------------------ balloons
 
