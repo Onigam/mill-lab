@@ -1,0 +1,355 @@
+// The single source of dimensions of the 3D worlds, in metres (BRIEF §5). The two worlds (`site`, `screw`), the part sheets and the
+// drawings all read these constants; nothing is retyped elsewhere. Whatever the simulation derives from the design point (outer and
+// inner diameter, pitch, length, slope, gap, number of threads, the speed ratios of the drive) is IMPORTED from `src/sim`, never repeated:
+// this file only adds geometry (the trough, the bearings, the drive frame, the site).
+//
+// The machine is GENERIC. The maker of the wooden screw in the video publishes no dimension (research §3): the screw is sized by the
+// published design rules (Nagel, Rorres) at the lab's design point, and every number that is not a result of those rules is an
+// estimate of ours. Provenance of every value, in its comment:
+//   reported (Kn, Sn …)   stated in a source (K-number of research §2, S-number of §1)
+//   derived (…)           computed from reported figures or from the simulation, the computation is given
+//   sim                   read from src/sim (the simulation's own derived or estimated number)
+//   estimate: …           the sources are silent: a guess with its reasoning. Part sheets and drawings must flag these.
+//
+// Frames
+//   world frame     X horizontal, along the screw (the upper end of the screw is on the +X side, the water flows towards -X), Y up,
+//                   Z towards the viewer. Origin on the floor under the lower end of the flights.
+//   screw frame     the world frame tilted by the slope about Z and moved to A0 (the axis at the lower end of the flights): X' along the
+//                   axis towards the UPPER end, Y' perpendicular to it in the vertical plane (up), Z across. The section plane is z = 0.
+//                   Angles ψ are measured from +Y' towards +Z. The thread is RIGHT-HANDED: the axial position of a blade at the angle ψ
+//                   is x' = x0 + pitch·ψ/2π (increasing with ψ), and the turbine turns in the positive sense about +X'.
+//   site frame      X east, Y up, Z south (towards the viewer). The river and the canal flow towards -X; the datum Y = 0 is the design
+//                   level of the headwater (the water upstream of the screw).
+//
+// The partition (docs/3d.md): the 12 parts of `site` and the 20 of `screw` are the ids of src/part-ids.ts.
+
+import {
+  BEARING_RADIUS_FRAC,
+  BLADES,
+  BLADE_THICKNESS_FRAC,
+  BUS_VOLTS,
+  CANAL_SPEED,
+  CORE_WALL_FRAC,
+  GEN_RATED_RPM,
+  PITCH_RATIO,
+  PSI_OPT,
+  RACK_CLEAN_ZETA,
+  RADIUS_RATIO,
+  STAGE_RATIO_MAX,
+} from '../sim/machine';
+import { presetParams } from '../sim/presets';
+import { speedRuleRpm } from '../sim/screw';
+import { plantFor } from '../sim/system';
+
+export const DEG = Math.PI / 180;
+
+// ------------------------------------------------------------------------------------------------ the design point
+
+const PRESET = presetParams('full-size');
+const PLANT = plantFor(PRESET);
+const SIZED = PLANT.screw!;
+
+/** The design point the worlds are first drawn at: the lab's default preset (research §8, decision 3). Every field is read from the simulation. */
+export const DESIGN = {
+  /** Head of the site, m. derived: K5 (1.5 to 2 m on an abandoned mill), 1.75 m is the lab's choice. */
+  head: PRESET.head,
+  /** Flow the screw is sized for, m³/s. derived: 2 kW at 65 % over 1.75 m (research §2, sanity check of K5). */
+  flow: PRESET.designFlow,
+  slopeDeg: PRESET.slope,
+  /** Chain (slow side) and belt (fast side) ratios that bring the generator to its rated speed. sim: derived. */
+  chainRatio: PLANT.defaultChain,
+  beltRatio: PLANT.defaultBelt,
+  /** Speed of the screw at its design flow, rpm (Nagel's rule), and of the generator, rpm. sim. */
+  screwRpm: PLANT.designRpm,
+  generatorRpm: GEN_RATED_RPM,
+  /** Bus voltage of the battery, V. sim: estimate (a 48 V bank). */
+  busVolts: BUS_VOLTS,
+} as const;
+
+// ------------------------------------------------------------------------------------------------ the screw
+
+/** What the 3D scene needs of a screw: the five numbers the state carries (`MillState`). */
+export interface ScrewShape {
+  outerDiameter: number;
+  innerDiameter: number;
+  pitch: number;
+  length: number;
+  slopeDeg: number;
+}
+
+/**
+ * The screw at the design point, as the simulation sizes it. derived: outer diameter from the flow by Nagel's speed rule and
+ * Rorres's bucket (D = 1.80 Q^(3/7)), inner diameter 0.5357 D (Rorres 2000 table 1, N = 3), pitch = D (Nagel), length = head / sin(slope),
+ * gap 0.0045 √D (Nagel). None of these is a dimension of the association's machine.
+ */
+export const SCREW = {
+  threads: BLADES,
+  outerDiameter: SIZED.outerDiameter,
+  innerDiameter: SIZED.innerDiameter,
+  radiusRatio: RADIUS_RATIO,
+  pitch: SIZED.pitch,
+  pitchRatio: PITCH_RATIO,
+  length: SIZED.length,
+  slopeDeg: SIZED.slopeDeg,
+  /** Gap between the blade tips and the trough, m. sim: derived (Nagel 1968, 4.2 mm at 0.86 m). */
+  gap: SIZED.gap,
+  /** Volume of one full bucket (pocket of water between two blades), m³, and the number of buckets in the screw. sim: derived. */
+  bucketVolume: SIZED.bucketVolume,
+  buckets: SIZED.buckets,
+  /** Depth between an empty and a full bucket, m (the head lost when the screw is under-filled). sim: derived. */
+  bucketDepth: SIZED.bucketDepth,
+  /** Axial distance between two successive blades (pitch / threads), m. derived. */
+  bladeSpacing: SIZED.pitch / BLADES,
+  /** Optimal tailwater depth over the lowest point of the trough at the lower end, m: 0.60 D cos(slope). derived: Nuernbergk 2020 as quoted by Simmons & Lubitz 2024 (sim PSI_OPT). */
+  tailDepth: PSI_OPT * SIZED.outerDiameter * Math.cos(SIZED.slope),
+} as const;
+
+/** The screw shape of the design point. */
+export const DESIGN_SHAPE: ScrewShape = {
+  outerDiameter: SCREW.outerDiameter,
+  innerDiameter: SCREW.innerDiameter,
+  pitch: SCREW.pitch,
+  length: SCREW.length,
+  slopeDeg: SCREW.slopeDeg,
+};
+
+/** Thickness of a blade (along the axis), m. sim: estimate, 2.5 % of the outer diameter (BLADE_THICKNESS_FRAC). */
+export const bladeThickness = (d: number): number => BLADE_THICKNESS_FRAC * d;
+/** Wall of the core tube, m. sim: estimate, 4 % of the outer diameter (CORE_WALL_FRAC). */
+export const coreWall = (d: number): number => CORE_WALL_FRAC * d;
+/** Radius of the bearing journal, m. sim: estimate, 5 % of the outer diameter (BEARING_RADIUS_FRAC). */
+export const journalRadius = (d: number): number => BEARING_RADIUS_FRAC * d;
+
+/**
+ * Scale of the hardware (bearings, sprockets, generator, battery, platform, pools) of a screw of outer diameter `d` relative to the
+ * design screw. estimate: the hardware of a bigger machine is bigger, but less than in proportion; clamped to 0.6 .. 2.2 so a 0.4 m prototype
+ * and a 2.5 m river screw still read well. Purely visual.
+ */
+export function hardwareScale(d: number): number {
+  const k = Math.pow(d / DESIGN_SHAPE.outerDiameter, 0.7);
+  return Math.min(2.2, Math.max(0.6, k));
+}
+
+/** The shape to draw for a state: the state's five numbers, or the last valid shape (a wheel scenario carries zeros). */
+export function shapeOf(s: ScrewShape, fallback: ScrewShape = DESIGN_SHAPE): ScrewShape {
+  const ok = s.outerDiameter > 0.05 && s.innerDiameter > 0 && s.pitch > 0 && s.length > 0.3 && s.slopeDeg > 5;
+  return ok ? { ...s } : { ...fallback };
+}
+
+/** The blades are cut in wooden modules bolted on the core: this many per turn of one blade. estimate: S1 shows modules, not their count. */
+export const MODULES_PER_TURN = 4;
+/** Bolts holding one module on the core (two, one near each end of its root). estimate. */
+export const BOLTS_PER_MODULE = 2;
+/** Hex bolt of the blade modules (M16: head 24 mm across flats, 10 mm high). estimate: catalogue size. */
+export const BOLT = { shank: 0.016, acrossFlats: 0.024, head: 0.01, washer: 0.034, washerThickness: 0.003 } as const;
+/** Root angle of the module (steel angle strip along the root of each module, bolted through the core wall). estimate. */
+export const ROOT_STRIP = { width: 0.05, thickness: 0.006 } as const;
+/** End plates of the core tube, m. estimate. */
+export const CORE_PLATE = { thickness: 0.03 } as const;
+
+/** The trough: a concrete channel of semicircular bottom and straight sides. estimate: no source gives it; the wall is a poured wall. */
+export const TROUGH = {
+  /** Wall thickness, m. */
+  wall: 0.07,
+  /** Height of the side walls over the axis, as a multiple of the outer radius (a half-pipe: the water level of a full bucket is about at the axis). */
+  sideHeight: 0.3,
+  /** The trough starts and ends this far beyond the flights, m. */
+  overhang: 0.05,
+  /** Concrete piers under the trough: how many beyond the two ends, their width (along the axis) and breadth, m. */
+  piers: 2,
+  pierWidth: 0.4,
+} as const;
+
+/** Bearings: a pillow block on a pedestal at each end of the shaft. estimate: catalogue pillow blocks scaled to the shaft. */
+export const BEARING = {
+  /** Distance of the lower bearing beyond the lower end of the flights, m (a pier in the outlet pool). */
+  lowerOffset: 0.42,
+  /** Distance of the upper bearing beyond the upper end of the flights, m (on the platform). */
+  upperOffset: 1.0,
+  /** Housing: width across the shaft, height over the shaft axis, length along it, as multiples of the journal radius. */
+  housingWidth: 5.2,
+  housingLength: 4.4,
+  housingHeight: 3.6,
+  /** Foot plate thickness, m. */
+  plate: 0.02,
+} as const;
+
+// ------------------------------------------------------------------------------------------------ the drive
+
+/**
+ * Chain stage (slow side) then belt stage (fast side), research §8 decision 7. The radii are those of the design machine; a
+ * different ratio changes the small wheel only. All shafts are parallel to the screw axis.
+ */
+export const DRIVE = {
+  /** Roller chain pitch, m. estimate: ISO 16B (1 in), a usual size for a few kW at low speed. */
+  chainPitch: 0.0254,
+  /** Teeth of the large sprocket on the screw shaft: pitch radius = pitch / (2 sin(π/z)) = 0.226 m. estimate. */
+  largeTeeth: 56,
+  /** Large pulley (on the countershaft), pitch radius, m. estimate: 0.40 m flat-belt pulley. */
+  largePulleyRadius: 0.2,
+  /** Centre distances in the plane perpendicular to the axis, m: chain stage and belt stage. estimate. */
+  chainCentres: 0.78,
+  beltCentres: 0.84,
+  /** Axial positions beyond the upper end of the flights, m: the chain plane, the belt plane. estimate. */
+  chainPlane: 1.45,
+  beltPlane: 2.05,
+  /** The countershaft runs in two pillow blocks at these axial positions beyond the upper end, m: one between the two wheels, one outboard. estimate. */
+  countershaftBearings: [1.76, 2.34],
+  /** Axial extent of the countershaft beyond the upper end, m: from, to. */
+  countershaftFrom: 1.3,
+  countershaftTo: 2.5,
+  /** Radius of the countershaft, m. estimate: a 44 mm shaft. */
+  countershaftRadius: 0.022,
+  /** Face widths, m: chain sprocket plate, belt (and pulley). estimate. */
+  sprocketThickness: 0.026,
+  beltWidth: 0.07,
+  beltThickness: 0.006,
+  /** Where the centres lie in the section perpendicular to the axis: the countershaft and the generator, as (y', z) from the screw axis, m. estimate. */
+  countershaftAt: [-0.1, 0.78],
+  generatorAt: [-0.12, 1.62],
+  /** Largest ratio of one stage before a second stage would be needed (sim STAGE_RATIO_MAX). */
+  stageRatioMax: STAGE_RATIO_MAX,
+} as const;
+
+/** Radius of the large sprocket (pitch circle), m. derived: pitch / (2 sin(π/z)). */
+export const largeSprocketRadius = (): number => DRIVE.chainPitch / (2 * Math.sin(Math.PI / DRIVE.largeTeeth));
+/**
+ * The ratios the simulation chooses when it sizes the drive for a screw of this diameter: the generator reaches its rated speed when the
+ * screw turns at the speed of the rule. sim: the same arithmetic as `plantFor` (chain up to the stage limit, belt for the rest).
+ */
+export function defaultDriveRatios(outerDiameter: number): { chain: number; belt: number } {
+  const total = Math.max(1, GEN_RATED_RPM / speedRuleRpm(outerDiameter));
+  const chain = Math.max(1, Math.round(Math.min(STAGE_RATIO_MAX, Math.sqrt(total)) * 10) / 10);
+  const belt = Math.max(1, Math.round((total / chain) * 10) / 10);
+  return { chain, belt };
+}
+
+/** Teeth of the small sprocket for a chain ratio. derived: the integer number nearest to z_large / ratio, at least 9. */
+export const smallTeeth = (chainRatio: number): number =>
+  Math.max(9, Math.round(DRIVE.largeTeeth / Math.max(1, chainRatio)));
+/** Pitch radius of a sprocket of z teeth, m. */
+export const sprocketRadius = (teeth: number): number => DRIVE.chainPitch / (2 * Math.sin(Math.PI / teeth));
+/** Radius of the small pulley for a belt ratio, m. derived: large radius / ratio. */
+export const smallPulleyRadius = (beltRatio: number): number => DRIVE.largePulleyRadius / Math.max(1, beltRatio);
+
+/** The generator: a low-speed permanent-magnet machine of the size of the video's "like those of wind turbines" (K7). estimate. */
+export const GENERATOR = {
+  bodyRadius: 0.155,
+  bodyLength: 0.34,
+  /** End bell: a slightly larger disc at each end, thickness, extra radius. */
+  bell: 0.018,
+  bellExtra: 0.012,
+  shaftRadius: 0.014,
+  /** Length of the shaft stub in front of the body (it carries the small pulley), m. */
+  stub: 0.19,
+  /** Terminal box on top, m. */
+  box: [0.14, 0.07, 0.11],
+  /** Mounting feet: width, thickness, length along the axis. */
+  foot: [0.07, 0.02, 0.28],
+} as const;
+
+/** Electronics on a small plywood board beside the generator, and the battery on the platform. estimate: catalogue sizes of a 48 V system. */
+export const ELECTRONICS = {
+  /** Board (plywood), m: width, height, thickness. */
+  board: [0.9, 0.7, 0.018],
+  /** Bridge rectifier in its heat-sink box, charge controller box, m: width, height, depth. */
+  rectifier: [0.2, 0.17, 0.09],
+  controller: [0.25, 0.3, 0.1],
+  /** 48 V lithium battery pack, m: length, height, depth. */
+  battery: [0.5, 0.22, 0.3],
+  /** Height of the board over the platform (legs), m. */
+  boardLift: 0.25,
+} as const;
+
+/** The platform that carries the bearing, the countershaft, the generator and the electronics, and the pools at the two ends. estimate. */
+export const PLATFORM = {
+  /** Slab thickness, posts' breadth, m. */
+  slab: 0.16,
+  post: 0.22,
+  /** Distance from the headwall to the end of the platform, as a length along X (design size), m. */
+  length: 4.2,
+  /** Half width of the platform (Z), m. */
+  halfWidth: 2.1,
+  /** Back extension behind the shaft (towards -Z), m. */
+  back: 1.1,
+} as const;
+
+/** The pool at the lower end (outlet pool) and the basin at the upper end (inlet). estimate: the sources give none. */
+export const POOLS = {
+  /** Outlet pool: length beyond the lower end of the flights (towards -X), width, wall, slab, m. */
+  outletLength: 1.9,
+  outletHalfWidth: 1.15,
+  wall: 0.15,
+  slab: 0.15,
+  /** Floor clearance between the outer bottom of the trough at the lower end and the pool slab, m. */
+  floorClearance: 0.55,
+  /** Freeboard of the pool rim over the design tail level, m (room for a flood rise). */
+  freeboard: 1.7,
+  /** Length of the inlet basin beyond the upper end of the flights (along the axis), m. */
+  inletLength: 0.78,
+  /** Rim of the basin over the design inlet level, m. */
+  inletFreeboard: 0.28,
+} as const;
+
+/** Wood tones of the screw (blade modules alternate the two, so that the module joints read). */
+export const COLOURS = {
+  woodA: 0xc79a5b,
+  woodB: 0xb98a4a,
+  concrete: 0x9d988c,
+  concreteDark: 0x86817a,
+  water: 0x4d9fd1,
+  waterDeep: 0x2f7fb8,
+} as const;
+
+// ------------------------------------------------------------------------------------------------ the site
+
+/**
+ * The mill race at the scale of the place, in the site frame. The real tailrace is about 100 m long (S1 12:36, research §3): it is drawn
+ * COMPRESSED to `tailraceLength` so that the whole race fits in one picture; the river, the weir, the canal and the buildings are at true
+ * scale. Heights are measured from the design headwater level (Y = 0).
+ */
+export const SITE = {
+  /** Top of the ground over the design headwater level, m. estimate. */
+  groundY: 0.55,
+  /** Design tailwater level: the headwater minus the head of the design point. derived. */
+  tailY: -DESIGN.head,
+  /** The world of the site is this wide and deep (the ground tiles), m. */
+  ground: { xMin: -160, xMax: 160, zMin: -180, zMax: 110, bottomY: -3.6 },
+  /** River: z span, x span, bed upstream (above the weir) and downstream. estimate (a small river). */
+  river: { zNorth: 0, zSouth: 12, xWest: -160, xEast: 160, bedUpY: -1.5, bedDownY: -2.9 },
+  /** Weir across the river: crest level, thickness along the flow, x position. The crest is 5 cm under the design headwater. estimate. */
+  weir: { x: 12, thickness: 1.2, crestY: -0.05 },
+  /** The notch in the crest that keeps the reserved flow in the river (the water over the notch is the flow that stays), m. estimate. */
+  notch: { width: 0.5, depth: 0.2, z: 7.5 },
+  /** Fish pass beside the weir, hugging the south bank: a stepped channel of pools, z span, x span, number of pools. estimate: ecological continuity (research §7). */
+  fishPass: { z: 10.6, width: 1.4, pools: 5, xWest: 8.4, xEast: 15.6 },
+  /** Headrace canal: x from the chamber to the intake, z span, bed level. The mouth opens on the river at x >= mouth. estimate. */
+  canal: { xMax: 21.4, xMin: -8, zNorth: -7.2, zSouth: -4.0, bedY: -1.25, wall: 0.3, mouthX: 17.6 },
+  /** Embankment between the canal and the river (the strip of land the canal is cut into), z span. */
+  embankment: { zNorth: -4.0, zSouth: 0 },
+  /** Trash rack at the head of the canal: x, bar spacing and thickness (a coarse rack, 8 cm clear spacing), height, tilt from the vertical. estimate. */
+  rack: { x: 17.6, spacing: 0.08, bar: 0.012, height: 1.7, tilt: 20 },
+  /** Head gate (sluice): x, plate height and thickness. estimate. */
+  gate: { x: 14.6, height: 1.7, thickness: 0.08 },
+  /** The old water chamber where the screw stands: x range of the pit, its floor and walls; the screw's lower end stands `lowerEnd` m from the west wall; the forecourt (quay) in front of the pit is lowered to `quayY` so that the screw can be seen. estimate. */
+  chamber: { wall: 0.3, floorY: -3.2, xWest: -15.5, xEast: -8, lowerEnd: 2.1, quayY: -1.3 },
+  /** Tailrace: COMPRESSED from about 100 m (S1 12:36) to this length (the west run, then the turn to the river), m; width, bed, x of the turn. estimate. */
+  tailrace: { length: 21.1, width: 3.2, bedY: -2.9, xEnd: -36.6 },
+  /** Mill building (stone, two storeys, a tile roof): footprint and heights. estimate. */
+  mill: { length: 11, width: 7.2, wallHeight: 6.4, ridge: 2.6, x: -18, z: -11.4 },
+  /** Small powerhouse by the chamber: ONE part (cabinet, battery, inverter inside). estimate. */
+  powerhouse: { length: 2.8, width: 2.4, wallHeight: 2.4, ridge: 0.7, x: -4.6, z: -11.2 },
+  /** The house the electricity feeds. estimate. */
+  house: { length: 8, width: 5.6, wallHeight: 3.4, ridge: 2, x: 6, z: -22 },
+  /** Level the canal falls to below a closed gate (dead water), m. estimate. */
+  deadCanalY: -1.0,
+  /** Largest drop shown across a clogged rack, m (the real loss can exceed the whole head; the picture is capped). */
+  rackDropMax: 1.0,
+  /** Flow over a weir, Q = C w H^(3/2): coefficient of a broad crest (SI), used only to draw the sheet over the crest. estimate. */
+  weirCoeff: 1.7,
+} as const;
+
+/** Head loss of a clean rack at the canal speed, m. derived: ζ v²/2g with the sim's ζ = 0.3 at 0.8 m/s. */
+export const RACK_CLEAN_LOSS = (RACK_CLEAN_ZETA * CANAL_SPEED * CANAL_SPEED) / (2 * 9.81);
+/** Speed of the water in the canal, m/s (sim). */
+export const CANAL_SPEED_MS = CANAL_SPEED;
