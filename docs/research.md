@@ -36,7 +36,7 @@
 | S8 · Water Power Magazine, "Back to the future"                                        | https://www.waterpowermagazine.com/analysis/back-to-the-future-722/                                                                                   | wheel heads (undershot 0.3 to 2 m, breastshot 1.5 to 3 m, overshot 2.5 to 10 m), flow per metre of width, payback compared with screws and Kaplans                                                                                                         |
 | S9 · Small-hydro selection charts (several, e.g. JICA manual)                          | https://openjicareport.jica.go.jp/pdf/11734134_04.pdf                                                                                                 | head zones: Kaplan / propeller 2 to 40 m, crossflow 8 to 60 m, Francis 25 to 350 m, Pelton 75 to 500 m and above. The sources overlap and disagree at the edges: the chart draws **zones**, not lines                                                      |
 | S10 · Viseta, press article                                                            | https://www.neozone.org/innovation/viseta-une-pico-centrale-hydroelectrique-low-tech-pour-transformer-les-moulins-en-generateur-denergie-4-a-10-kw/   | full-scale target 4 to 10 kW, 1/3-scale bench prototype in 2023, kits planned. No dimensions                                                                                                                                                               |
-| S11 · Design theory (to read in wave 1, **not yet read**)                              | Rorres 2000 (J. Hydraulic Eng. 126), Nuernbergk & Rorres 2013, Lubitz, Lyons & Simmons 2014, Kozyn & Lubitz 2017, Dellinger 2015 (thesis, Strasbourg) | optimal geometry, inflow model, performance at variable fill, power-loss model. The physics role reads them and cites the equations it uses                                                                                                                |
+| S11 · Design theory (read in wave 1, see §10)                                          | Rorres 2000 (J. Hydraulic Eng. 126), Nuernbergk & Rorres 2013, Lubitz, Lyons & Simmons 2014, Kozyn & Lubitz 2017, Dellinger 2015 (thesis, Strasbourg) | optimal geometry, inflow model, performance at variable fill, power-loss model. The physics role reads them and cites the equations it uses                                                                                                                |
 
 The maker's site and funding page were not reachable by search; the owner may have their own contact (§8).
 
@@ -57,7 +57,7 @@ Timestamps are `m:ss` in S1, S3, S4 and `h:mm:ss` in S2. **check** = caption cut
 | K9  | Size compared with a Kaplan                                  | "a screw is big for what it produces"; a Kaplan is much smaller because it turns faster                                                             |                                                        | S1 20:49 to 20:55                       |
 | K10 | Crossflow plant: head, flow, power                           | 9.22 m (9.20 m with the draft tube), 450 L/s, 30 kW                                                                                                 | mill with an asynchronous generator                    | S2 1:33:32 (9.20 m), 1:42:36 to 1:42:54 |
 | K11 | Crossflow plant: speeds                                      | turbine 380 rpm (1 m flywheel) → flat belt → generator about 990 rpm (ratio about 2.6)                                                              | grid-tied at 50 Hz                                     | S2 1:30:27, 1:35:51                     |
-| K12 | Same 30 kW at other heads                                    | 3 m: about 1,500 L/s · 200 m: 10 to 25 L/s                                                                                                          | "the head counts more than the flow"                   | S2 1:43:00 to 1:43:39                   |
+| K12 | Same 30 kW at other heads                                    | 3 m: about 1,500 L/s · 200 m: 10 to 25 L/s (said aloud; 15.3 L/s is the minimum, §10)                                                               | "the head counts more than the flow"                   | S2 1:43:00 to 1:43:39                   |
 | K13 | Hours run in ten years                                       | 64,714 h (about 6,500 h a year); stopped 2 to 4 months in summer                                                                                    | low water                                              | S2 1:36:13, 1:37:45                     |
 | K14 | Cost of rust                                                 | 3 kW lost to rust "pimples" in the turbine; 2 kW of them recovered by sandblasting and repainting                                                   |                                                        | S2 1:32:31                              |
 | K15 | Price of the complete package (turbine, generator, cabinets) | 75,000 € against a 145,000 € quote in France                                                                                                        | 30 kW                                                  | S2 1:34:49 to 1:35:08                   |
@@ -178,3 +178,28 @@ Wave 1 (one physics agent, or me alone if you prefer): `src/sim/**` with the scr
 and K10 to K16, `docs/physics.md`, the simulation panel. Then wave 2 (3D ‖ data), wave 3 (plans ‖ lessons), a light quality pass by
 me, your checkpoint, and only then the spoken guide (decided per lab and per language, the credits being limited). The lab moved
 to the current kit (v0.4.0) on 2026-10-30. I do not start any agent without your go.
+
+## 10. Wave 1 findings (2026-10-30)
+
+Wave 1 (one physics agent) delivered `src/sim/**`, the simulation panel, `docs/physics.md` and `docs/kit-requests.md`; the lead ran the
+gates and looked at the panel in Chrome at three widths. Corrections and additions to the notes above, from `docs/physics.md` §7.5:
+
+- **K12.** The speaker says "10 to 25 L/s" and "a mason's bucket of 10 litres" a second at 200 m: an oral approximation. 10 L/s carries only
+  19.6 kW of water, so it cannot give 30 kW; the minimum at η = 1 is 15.3 L/s, and 20 to 25 L/s work (η 0.76 to 0.61).
+- **K3 and K5 are circular.** The 31 L/s and 180 L/s of §2 and §8 were derived from 200 W and 2 kW at η = 0.65. The model gives 206 W and
+  2.2 kW at those flows because its efficiency is 67.7 % and 71.1 %: what it really tests is the efficiency, about a point above the 60 to 70 %
+  hoped for (K2), and reported good plants reach about 75 % from the river to the wire.
+- **D_O ≈ η·Q^(3/7)** (S5) follows from the speed rule n = 50 / D^(2/3) (a pump rule, verified in Rorres 2000 and Dellinger 2015) and a bucket
+  volume proportional to D³. The model's coefficient is 1.80 (m, m³/s).
+- **S11.** Read: Rorres 2000, Simmons & Lubitz 2022 and 2024 (open access, field data of four screws), Dellinger 2015 (chapter 2). **Not read**
+  (paywalled): Lubitz, Lyons & Simmons 2014, Kozyn & Lubitz 2017, Nuernbergk & Rorres 2013. The lab's friction, inlet and overflow models are
+  therefore its own simpler versions.
+- **K6.** 30 to 60 rpm corresponds to screws of 0.8 to 2 m under that rule; the half-scale prototype (about 0.4 m) would turn at 92 rpm.
+- **Reserved flow.** 10 % of the mean flow is an **estimate**, in no source (K16 gives 64 L/s on one stream only).
+- **K14.** The 10 % lost to rust was on a crossflow turbine; on the slow screw the same roughness costs about 7 %.
+
+Decisions of the lead on the agent's five questions (changeable by the owner): the 10 % reserved flow stays, labelled as an estimate; the
+"mill race" is the full-size preset and the brief's three sites are the three watercourses of the site menu; the prototype's 92 rpm is **not
+capped** (the rule applies, and the panel's text explains that a small screw may turn faster); the generator is the permanent-magnet one on a
+48 V battery of §4, not the grid-tied one of S2; the three yearly hydrologies are generic, drawn, not measured. What the model does **not**
+retrieve is listed in `docs/physics.md` §7.4.
