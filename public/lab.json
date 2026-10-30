@@ -1,9 +1,15 @@
 {
   "id": "mill-lab",
-  "title": { "fr": "Mill Lab", "en": "Mill Lab" },
-  "tagline": { "fr": "Un lab à remplacer", "en": "A lab to replace" },
-  "tags": [],
-  "difficulty": 1,
-  "minutes": 10,
+  "title": {
+    "fr": "Mill Lab",
+    "en": "Mill Lab"
+  },
+  "tagline": {
+    "fr": "Une vis d’Archimède, une petite chute, de l’électricité",
+    "en": "An Archimedes screw, a small head, electricity"
+  },
+  "tags": ["water", "electricity", "off-grid"],
+  "difficulty": 2,
+  "minutes": 20,
   "energyProfile": null
 }
