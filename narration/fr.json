@@ -1,0 +1,379 @@
+{
+  "lang": "fr",
+  "voiceLabel": {
+    "fr": "Voix de synthèse",
+    "en": "Synthetic voice"
+  },
+  "settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.8,
+    "style": 0.35,
+    "speed": 0.95
+  },
+  "segments": [
+    {
+      "id": "intro",
+      "scope": "intro",
+      "title": "Présentation du labo",
+      "scene": "site",
+      "text": "[[home]] Imaginez un vieux moulin de pierre, au bord d’une rivière. Sa roue est partie depuis longtemps… mais l’eau, elle, passe toujours. [[frame:river]] Suivons une poche d’eau. Pour l’instant, ce n’est qu’un peu de rivière, qui arrive [[frame:weir]] devant un seuil et se détourne dans un canal. [[frame:headrace,trash-rack]] Elle croise une grille à gros barreaux : un tronc s’arrête là, une feuille passe. [[frame:water-chamber]] Puis voici la chambre d’eau, sous le moulin. [[scene:screw]] Entrons ! Voici une vis d’Archimède : l’eau n’y tombe pas d’un coup, elle se glisse entre deux pales de bois, et la voilà prisonnière d’une poche. [[frame:trapped-water]] Elle pèse sur la pale, la vis tourne… et la poche descend, comme sur un toboggan. [[frame:chain]] Presque un tour par seconde : bien trop lent pour une génératrice. Alors une chaîne, [[frame:belt]] puis une courroie, l’accélèrent : dix fois plus vite à l’arrivée. [[scene:generator]] Dans la génératrice, des aimants défilent devant des bobines de cuivre : la rotation devient courant ! [[scene:powerroom]] Le courant file au local technique, traverse ses protections, [[frame:battery]] et s’en va dormir dans la batterie. [[scene:site]] Et de retour sur le site, regardez bien la maison : [[frame:house-load]] une lampe s’allume. Voilà toute l’histoire : une poche d’eau qui descend en tournant, et le soir, de la lumière. [[home]] Pour commencer, quelques repères. Il y a quatre vues : le site, la vis, la génératrice ouverte et le local technique. Cliquez sur une pièce : sa fiche s’ouvre, et vous pouvez écouter son histoire. [[mode:assembly]] Le guide de montage assemble la vis comme un kit, pièce par pièce. [[mode:install]] Le guide d’installation va de la rivière à la première mise en route. [[mode:sim]] La simulation vous laisse changer le débit, la chute, le jeu de la vis, et traverser une crue. [[mode:lessons]] Des leçons, avec des quiz, expliquent la physique. [[mode:plans]] Les plans réunissent les dessins techniques. [[mode:explore]] Une dernière chose : ce laboratoire est une reconstitution pédagogique indépendante, inspirée d’une vidéo publique. [[scene:site]] Ce n’est pas un plan de construction : la vis est générique, car l’association de la vidéo ne publie aucune dimension. Sauf quand je cite la vidéo, les chiffres viennent de la simulation. [[select:none]] À vous de jouer !"
+    },
+    {
+      "id": "scene-site",
+      "scope": "scene:site",
+      "title": "Le site : du seuil à la maison",
+      "scene": "site",
+      "text": "[[home]] Voici le site, à l’échelle : une rivière, un vieux moulin, une maison. [[flows:on]] [[frame:river]] Notre poche d’eau quitte la rivière, [[frame:weir]] bute sur le seuil, puis prend le bief. [[frame:headrace]] Un canal presque plat, qui garde toute la chute. [[frame:trash-rack,intake-gate]] Une grille à gros barreaux, une vanne qui ferme la porte, [[frame:water-chamber]] et la voici dans la chambre d’eau, sous le moulin. [[frame:tailrace]] Elle ressort par le canal de fuite, [[frame:reserved-flow-notch,fish-pass]] pendant que la rivière garde sa part, avec une passe pour les poissons. [[frame:powerhouse]] L’électricité, elle, file au local technique, [[frame:house-load]] puis à la maison, où une lampe l’attend. [[flows:off]] [[home]] Une précaution : prendre l’eau d’une rivière demande un droit d’eau, et une part doit toujours y rester. Renseignez-vous avant tout projet."
+    },
+    {
+      "id": "scene-screw",
+      "scope": "scene:screw",
+      "title": "La vis dans sa chambre",
+      "scene": "screw",
+      "text": "[[home]] Voici la vis dans sa chambre, avec son eau. [[flows:on]] [[frame:inlet-sill]] L’eau entre par le seuil d’entrée, [[frame:trapped-water]] se range en poches entre les pales, [[frame:trough]] puis descend l’auge en faisant tourner la vis. [[frame:blade-module,screw-core]] Trois filets de bois sur un noyau central, [[frame:upper-bearing,lower-bearing]] portés par deux paliers, un en haut, un en bas. [[frame:outlet-pool]] Au pied de la pente, l’eau repart par le bassin de sortie. [[frame:chain]] Cette rotation lente, une chaîne la reprend, [[frame:belt]] puis une courroie l’accélère encore. [[frame:generator]] Elle arrive enfin à la génératrice, qui en fera du courant. [[flows:off]] [[home]] [[cutaway:on]] En coupe, on voit les poches d’eau descendre comme un escalier. [[cutaway:off]] [[explode:0.6]] Écartons maintenant les couches, du tube jusqu’aux boulons. [[explode:0]] Suivez une poche, du haut jusqu’en bas : c’est tout le secret !"
+    },
+    {
+      "id": "scene-generator",
+      "scope": "scene:generator",
+      "title": "La génératrice ouverte",
+      "scene": "generator",
+      "text": "[[home]] Voici la génératrice, ouverte. La vidéo en montre une du commerce, sans l’ouvrir : cet intérieur est une image générique. [[frame:gen-frame]] La carcasse, ronde et fermée, tient le stator : [[frame:gen-stator,gen-coils]] des tôles à dents, et sur chaque dent une bobine de cuivre. [[frame:gen-rotor,gen-magnets]] Au centre, le rotor et ses aimants, nord et sud en alternance. [[frame:gen-shaft,gen-bearings]] Il tourne avec l’arbre, sur deux roulements. [[frame:gen-terminals]] Et le courant sort par la boîte à bornes. [[home]] [[cutaway:on]] En coupe, presque rien entre les aimants et les bobines : un entrefer minuscule. [[cutaway:off]] [[xray:on]] En transparence, on voit tout ce que la carcasse cache. [[xray:off]] [[flows:on]] Suivez le courant des trois phases. [[flows:off]] [[explode:0.6]] Puis écartons les pièces, une à une, comme un jeu de construction. [[explode:0]]"
+    },
+    {
+      "id": "scene-powerroom",
+      "scope": "scene:powerroom",
+      "title": "Le local technique, de l’intérieur",
+      "scene": "powerroom",
+      "text": "[[home]] Voici le mur du local technique, lu dans l’ordre du courant. [[flows:on]] [[frame:dc-breaker,fuse-box]] D’abord les protections, qui permettent de tout couper. [[frame:rectifier]] Le redresseur change l’alternatif en continu. [[frame:charge-controller]] Le régulateur décide de ce que reçoit la batterie, [[frame:battery]] qui garde l’énergie pour les jours sans eau. [[frame:dump-load]] Le surplus file vers la charge de délestage. [[frame:inverter]] L’onduleur fabrique l’alternatif de la maison, [[frame:energy-meter]] et le compteur compte les kilowattheures. [[frame:switchboard,earthing]] Le tableau porte l’ensemble, et la terre protège les gens. [[flows:off]] [[home]] [[explode:0.6]] Décollons les appareils du mur, un par un, pour mieux les voir. [[explode:0]] Une remarque : le labo range les protections en tête du mur, pour qu’on les trouve. Sur une vraie installation, leur place est le choix d’un électricien."
+    },
+    {
+      "id": "part-river",
+      "scope": "part:river",
+      "title": "Rivière",
+      "scene": "site",
+      "text": "Notre poche d’eau commence ici, dans la rivière. [[flows:on]] Une centrale n’use pas l’eau : elle l’emprunte, puis la rend plus bas. Entre la prise et le retour, le lit ne reçoit que sa part réservée, plus le surplus des crues. Plantez une échelle graduée dans le lit, et notez le niveau avec la date. En quelques saisons, vous connaîtrez l’année vraie du site. [[flows:off]]"
+    },
+    {
+      "id": "part-weir",
+      "scope": "part:weir",
+      "title": "Seuil",
+      "scene": "site",
+      "text": "Un petit mur en travers de la rivière : à quoi bon ? Eh bien, l’eau monte d’un cran. Ce cran fait une part de la chute, et pousse l’eau vers la prise du canal. Le surplus déborde par la crête. Mais le seuil barre aussi la route aux poissons et aux graviers : d’où l’échancrure et la passe. Sa hauteur fixe la chute : ne la changez jamais à la légère."
+    },
+    {
+      "id": "part-headrace",
+      "scope": "part:headrace",
+      "title": "Bief d’amenée",
+      "scene": "site",
+      "text": "Un canal qui ne descend presque pas : à quoi ça sert ? Justement, c’est sa qualité ! [[flows:on]] Il amène l’eau à la chambre sans lui faire perdre la chute qu’on garde pour la vis. Chaque centimètre perdu en route coûte environ dix-huit watts d’eau. Dans la vidéo, il finit en chenal de bois étanche, glissé dans l’ancien conduit sans rien casser. [[flows:off]]"
+    },
+    {
+      "id": "part-trash-rack",
+      "scope": "part:trash-rack",
+      "title": "Grille grossière",
+      "scene": "site",
+      "text": "Une grille, mais pas n’importe laquelle : à gros barreaux ! Une turbine rapide veut une grille serrée, qu’il faut racler sans cesse. Et une grille qui se bouche mange la chute : bouchée à quatre-vingt-dix pour cent, elle prend plus que la chute entière. La vis, elle, laisse passer feuilles, graviers et poissons. Seuls les troncs s’arrêtent ici. Ne confondez pas : une grille dans l’eau protège la vis, un garde-corps au-dessus protège les gens."
+    },
+    {
+      "id": "part-intake-gate",
+      "scope": "part:intake-gate",
+      "title": "Vanne de tête",
+      "scene": "site",
+      "text": "La porte de la machine : notre poche d’eau attend derrière. Ouverte, l’eau descend le canal ; fermée, la vis s’arrête. On la ferme pour travailler, en crue, et en basses eaux. La vidéo en montre deux : une petite vanne de sécurité, et une vanne de contrôle motorisée, faite maison. Avant tout travail dans le canal ou sur la vis : fermez, et posez un cadenas dont vous gardez la clé. Puis attendez l’arrêt complet."
+    },
+    {
+      "id": "part-reserved-flow-notch",
+      "scope": "part:reserved-flow-notch",
+      "title": "Échancrure du débit réservé",
+      "scene": "site",
+      "text": "Même quand la machine prend presque tout, une part de l’eau doit rester dans la rivière. L’astuce : une simple entaille calibrée dans la crête. Aucune pièce mobile, aucun opérateur : pas de panne, pas d’oubli. En été, dit la vidéo, la machine s’arrête plutôt que de prendre cette eau. Ici, le labo suppose un dixième du débit moyen : trente litres par seconde. Trois seaux de dix litres, chaque seconde !"
+    },
+    {
+      "id": "part-fish-pass",
+      "scope": "part:fish-pass",
+      "title": "Passe à poissons",
+      "scene": "site",
+      "text": "Un poisson ne fait pas que descendre la rivière : il doit aussi la remonter ! La vis aide à la descente. La vidéo la décrit comme un toboggan, où le poisson reste dans sa poche d’eau et descend avec elle. Pour la montée, il faut une passe : de petits bassins en escalier. Les constructeurs de la vidéo en préparent une en bois, et veulent mesurer son effet, avant et après."
+    },
+    {
+      "id": "part-water-chamber",
+      "scope": "part:water-chamber",
+      "title": "Chambre d’eau",
+      "scene": "site",
+      "text": "Voici l’arrivée de notre poche d’eau : la chambre d’eau, la salle de pierre sous le moulin. L’eau y tombait jadis sur la roue ; la vis s’y pose, sans rien casser. L’accès se fait souvent par une échelle, sans engin de levage : la machine arrive donc en kit. Cliquez pour y entrer. Dans une vraie chambre, ne descendez jamais seul : espace confiné, eau, pierre glissante."
+    },
+    {
+      "id": "part-tailrace",
+      "scope": "part:tailrace",
+      "title": "Canal de fuite",
+      "scene": "site",
+      "text": "On pense à la hauteur d’où l’eau tombe ; on oublie celle où elle atterrit. [[flows:on]] Notre poche, elle, repart vers la rivière par le canal de fuite : une centaine de mètres dans le moulin de la vidéo. Quand la rivière monte, il se remplit, et la chute fond. À la fermeture en crue, il n’en reste que cinquante-huit centimètres ! [[flows:off]]"
+    },
+    {
+      "id": "part-mill-building",
+      "scope": "part:mill-building",
+      "title": "Moulin",
+      "scene": "site",
+      "text": "On ne reconstruit pas un moulin pour y mettre une machine : on met la machine dans le moulin. Voici le bâtiment de pierre, vieux de plusieurs siècles, au-dessus de la chambre. La vidéo tient à n’y rien casser. Sa hauteur sous plancher limite la longueur de la vis. Vis en marche, posez la main sur le plancher : il ne doit pas vibrer."
+    },
+    {
+      "id": "part-powerhouse",
+      "scope": "part:powerhouse",
+      "title": "Local technique",
+      "scene": "site",
+      "text": "Une seule pièce sur le site, et pourtant tout un mur d’appareils : le local technique. Il est sec, au-dessus des crues, et près de la maison. En basse tension, le courant est fort et les pertes du câble croissent comme son carré : le câble doit donc être court. Cliquez sur le local pour y entrer : vous suivrez le courant, appareil après appareil."
+    },
+    {
+      "id": "part-house-load",
+      "scope": "part:house-load",
+      "title": "Maison",
+      "scene": "site",
+      "text": "Au bout du fil, la maison : le voyage de notre poche d’eau s’arrête ici, devant une lampe. La vidéo vise l’autoconsommation : chaque kilowattheure produit est un kilowattheure qu’on n’achète pas. Ce qui compte, c’est le nombre d’heures dans l’année, pas la puissance d’un instant. La vis tourne l’hiver et la nuit, quand le solaire se repose. Le prototype de la vidéo annonce environ deux cents watts. La taille réelle en vise environ deux kilowatts : des espoirs, pas des mesures."
+    },
+    {
+      "id": "part-trough",
+      "scope": "part:trough",
+      "title": "Auge",
+      "scene": "screw",
+      "text": "[[cutaway:on]] La vis est la partie facile : le plus dur, c’est le tube qui l’entoure. Il doit être bien rond, avec un jeu minuscule autour des pales : environ quatre millimètres ici. Par ce jeu, l’eau fuit d’une poche vers celle du dessous sans rien produire. Dans la vidéo, c’est la grande difficulté. Tant que la vis tourne, n’entrez jamais dans l’auge. [[cutaway:off]]"
+    },
+    {
+      "id": "part-screw-core",
+      "scope": "part:screw-core",
+      "title": "Noyau central",
+      "scene": "screw",
+      "text": "[[cutaway:on]] Trois filets s’enroulent autour de lui, comme les trois fils d’un filetage géant : le noyau. Les modules de pales se vissent par-dessus. Son diamètre suit une règle publiée : un peu plus de la moitié de celui de la vis. Trop gros, il prend la place de l’eau ; trop fin, il plie. Gardez son bois dans l’eau ou bien sec, pas tantôt l’un, tantôt l’autre. [[cutaway:off]]"
+    },
+    {
+      "id": "part-blade-module",
+      "scope": "part:blade-module",
+      "title": "Module de pales",
+      "scene": "screw",
+      "text": "[[explode:0.6]] Une vis de bois… en kit ! La vidéo la découpe en pièces : des pièces longues sur le noyau, puis des modules de trois pales à visser par-dessus. On monte donc la machine dans la chambre, et on la répare chez soi. Une pale casse ? On dévisse le module, on le change. Chaque pale est une hélice, qui avance de quatre-vingt-six centimètres par tour. Changez un module à la fois, et gardez les trois filets en phase. [[explode:0]]"
+    },
+    {
+      "id": "part-blade-fastener",
+      "scope": "part:blade-fastener",
+      "title": "Fixations des pales",
+      "scene": "screw",
+      "text": "[[explode:0.6]] Pas de colle : des vis et des boulons. La vidéo y insiste, on peut dévisser et revisser. Chaque fixation traverse le bois du module et le serre sur le noyau : par elle passe toute la poussée de l’eau. Elles sont dessinées en acier inoxydable, car un acier nu rouillerait vite. Resserrez en croix après les premières semaines, puis à chaque saison : le bois travaille. [[explode:0]]"
+    },
+    {
+      "id": "part-upper-bearing",
+      "scope": "part:upper-bearing",
+      "title": "Palier haut",
+      "scene": "screw",
+      "text": "Deux roulements, deux métiers. Celui du haut guide l’extrémité haute de la vis. Dans ce dessin, c’est aussi lui qui retient la poussée, car une vis penchée tend à glisser vers le bas. C’est par ce bout que l’arbre sort vers la transmission. Gardez un roulement de rechange identique : on ne le trouve pas toujours le jour où il le faut."
+    },
+    {
+      "id": "part-lower-bearing",
+      "scope": "part:lower-bearing",
+      "title": "Palier bas",
+      "scene": "screw",
+      "text": "En bas, près de l’eau, voici le roulement le plus exposé. Il guide l’extrémité basse sans porter la poussée. Mais il vit éclaboussé, parfois noyé en crue : joints et graisse sont choisis pour l’eau. Les deux paliers doivent tenir la vis sur une même droite : quelques millimètres de défaut font frotter les pales. Une graisse laiteuse, c’est de la graisse qui a pris l’eau."
+    },
+    {
+      "id": "part-inlet-sill",
+      "scope": "part:inlet-sill",
+      "title": "Seuil d’entrée",
+      "scene": "screw",
+      "text": "[[cutaway:on]] Une vis ne fixe pas son débit : elle avale ce qui arrive. L’eau du canal déborde le seuil d’entrée et tombe dans les premières poches. Il en arrive moins ? Le niveau amont baisse un peu, mais la vis garde son rendement, même à un tiers du débit. Quel atout, pour une rivière qui change toute l’année ! À la première mise en eau, montez le niveau peu à peu, génératrice branchée. [[cutaway:off]]"
+    },
+    {
+      "id": "part-outlet-pool",
+      "scope": "part:outlet-pool",
+      "title": "Bassin de sortie",
+      "scene": "screw",
+      "text": "[[cutaway:on]] Ici, notre poche se vide, et c’est la hauteur où l’eau atterrit qui compte. Le bassin de sortie la reçoit. Trop haut, il noie les dernières poches ; trop bas, elles se vident trop tôt, et l’eau tombe pour rien. Si l’eau aval monte d’un demi-mètre, la machine perd un bon tiers de son électricité ! Notez le niveau le jour du réglage : un repère peint sur le mur vaut mieux que la mémoire. [[cutaway:off]]"
+    },
+    {
+      "id": "part-trapped-water",
+      "scope": "part:trapped-water",
+      "title": "Poche d’eau",
+      "scene": "screw",
+      "text": "[[cutaway:on]] Une vis comme celle-ci ne pousse pas l’eau : elle la laisse descendre. [[flows:on]] Voici enfin notre poche : l’eau entre par le haut, et reste prise entre deux filets. Une soixantaine de litres. Chaque poche est onze centimètres plus haute que celle du dessous : un escalier d’eau de seize marches ! Elle pèse sur la pale, la vis tourne, et la poche descend en six secondes environ. Un poisson qui entre reste dedans, dit la vidéo, et fait le trajet avec elle. Regardez la surface : elle reste à plat. [[flows:off]] [[cutaway:off]]"
+    },
+    {
+      "id": "part-drive-sprocket",
+      "scope": "part:drive-sprocket",
+      "title": "Pignon de la vis",
+      "scene": "screw",
+      "text": "C’est par ce grand pignon que la puissance sort de la vis. Il est fixé sur l’arbre, au bout haut, et la chaîne s’y engrène. Il est grand parce qu’il est sur l’arbre lent, là où le couple est le plus fort. Face à lui, un petit pignon fait tourner l’arbre intermédiaire trois virgule trois fois plus vite. Changez toujours pignons et chaîne ensemble."
+    },
+    {
+      "id": "part-chain",
+      "scope": "part:chain",
+      "title": "Chaîne",
+      "scene": "screw",
+      "text": "Elle ne glisse jamais : chaque rouleau tombe dans un creux de denture. Voilà ce qu’il faut au couple énorme de l’arbre lent. Mais ses articulations frottent à chaque passage : elle s’allonge, et réclame graisse et tension juste. À l’arrêt, mesurez la flèche au milieu du brin : trop lâche, elle bat ; trop tendue, elle use les paliers. Et gardez un carter : une chaîne happe doigts, manches et cheveux."
+    },
+    {
+      "id": "part-counter-sprocket",
+      "scope": "part:counter-sprocket",
+      "title": "Pignon de renvoi",
+      "scene": "screw",
+      "text": "Le petit pignon tourne trois virgule trois fois plus vite que la vis. Cent quatre-vingt-deux tours par minute, contre cinquante-cinq. Avec autant de couple en moins. On ne gagne pas de puissance en multipliant la vitesse : on échange du couple contre de la vitesse. Comme il engrène moins de dents, il s’use le premier. Ne montez jamais une chaîne neuve sur un pignon usé."
+    },
+    {
+      "id": "part-countershaft",
+      "scope": "part:countershaft",
+      "title": "Arbre intermédiaire",
+      "scene": "screw",
+      "text": "Pourquoi deux étages plutôt qu’un ? Le rapport total, dix virgule neuf, est le produit des deux : trois virgule trois fois trois virgule trois. Un seul étage demanderait une grande poulie dix fois plus grande que la petite. Cet arbre fait le lien : la chaîne d’un côté, la courroie de l’autre. Une roue de moulin, bien plus lente, en exigerait trente à soixante !"
+    },
+    {
+      "id": "part-pulley-large",
+      "scope": "part:pulley-large",
+      "title": "Grande poulie",
+      "scene": "screw",
+      "text": "Voici le second étage. La grande poulie est trois virgule trois fois plus grande que la petite. Ce quotient de diamètres fait passer la vitesse de cent quatre-vingt-deux à six cents tours par minute. Sur un grand diamètre, la courroie fléchit peu : elle s’use lentement. Avant de changer une poulie, refaites le compte de la vitesse de la génératrice."
+    },
+    {
+      "id": "part-belt",
+      "scope": "part:belt",
+      "title": "Courroie",
+      "scene": "screw",
+      "text": "Elle glisse avant de casser. Si la génératrice se bloquait, la courroie patinerait, ce qui protège un peu la machine. Un mauvais rapport se paie vite. Trop petit, la vis tourne à cent dix-huit tours par minute et ne donne qu’un virgule trois kilowatt. Trop grand, elle est freinée à vingt-huit tours, et donne un virgule deux. Une courroie qui siffle à vide est trop lâche."
+    },
+    {
+      "id": "part-pulley-small",
+      "scope": "part:pulley-small",
+      "title": "Petite poulie",
+      "scene": "screw",
+      "text": "La plus rapide et la plus légère de toute la chaîne mécanique. Elle relie l’eau, lente et lourde, à l’électricité, rapide et légère. Elle tourne à six cents tours par minute, avec plus de dix fois moins de couple que la vis. La même puissance, sous un couple que la génératrice sait prendre. Un défaut d’équilibre, invisible sur la vis, se sentirait ici : elle doit tourner rond."
+    },
+    {
+      "id": "part-generator",
+      "scope": "part:generator",
+      "title": "Génératrice",
+      "scene": "screw",
+      "text": "Au bout de la courroie, l’énergie de notre poche devient enfin électricité ! La vidéo en parle : une génératrice d’éolienne, achetée plutôt que faite sur place. Elle est choisie lente, pour simplifier la transmission. Elle ne charge qu’au-dessus d’une certaine vitesse, quand sa tension dépasse celle de la batterie. Alors le courant la freine : c’est lui qui fixe la vitesse de la vis. Ne débranchez jamais la batterie vis en marche : sans charge, la vis s’emballe. Fermez d’abord la vanne. Cliquez pour ouvrir la génératrice."
+    },
+    {
+      "id": "part-gen-frame",
+      "scope": "part:gen-frame",
+      "title": "Carcasse",
+      "scene": "generator",
+      "text": "[[cutaway:on]] Un simple boîtier rond, qui compte plus qu’il n’y paraît. Il tient le stator et porte les roulements. Il garde tout bien centré : si l’entrefer n’est pas régulier, les aimants tirent le rotor d’un seul côté. Il encaisse aussi la réaction : quand l’arbre est entraîné, la carcasse est poussée en sens inverse. Ses pattes la retiennent. Serrez ses boulons une fois la courroie tendue. [[cutaway:off]]"
+    },
+    {
+      "id": "part-gen-stator",
+      "scope": "part:gen-stator",
+      "title": "Stator",
+      "scene": "generator",
+      "text": "[[cutaway:on]] La partie qui ne bouge jamais : des tôles d’acier minces, empilées et isolées, creusées de vingt-quatre encoches. Entre deux encoches, une dent guide le flux des aimants vers la bobine. Pourquoi des tôles minces ? Dans un bloc plein, le flux qui varie ferait circuler des courants parasites, qui chaufferaient le fer pour rien. Les crans qu’on sent en tournant l’arbre à la main sont normaux : les aimants s’alignent sur les dents. [[cutaway:off]]"
+    },
+    {
+      "id": "part-gen-coils",
+      "scope": "part:gen-coils",
+      "title": "Bobines",
+      "scene": "generator",
+      "text": "[[flows:on]] Du fil de cuivre enroulé autour de chaque dent. Quand un aimant passe, le flux varie dans la bobine, et une tension naît dans le fil : c’est l’induction ! Vingt-quatre bobines, en trois phases de huit : trois fils de sortie. Mesurez, machine à l’arrêt, la résistance entre les trois paires de fils : trois valeurs égales disent trois phases saines. [[flows:off]]"
+    },
+    {
+      "id": "part-gen-rotor",
+      "scope": "part:gen-rotor",
+      "title": "Rotor",
+      "scene": "generator",
+      "text": "Le rotor tourne au centre : un cylindre d’acier, calé sur l’arbre, qui porte les aimants. Il fait six cents tours par minute, soit dix par seconde. Ses seize pôles font osciller la tension quatre-vingts fois par seconde. Beaucoup de pôles, c’est la façon d’avoir de la tension à basse vitesse. Si la vis s’emballe, la force sur le rotor est multipliée par onze, car elle suit le carré de la vitesse !"
+    },
+    {
+      "id": "part-gen-magnets",
+      "scope": "part:gen-magnets",
+      "title": "Aimants",
+      "scene": "generator",
+      "text": "[[xray:on]] Seize aimants, nord et sud en alternance, collés sur le rotor : ils créent le champ sans consommer le moindre courant. Plus le rotor tourne vite, plus la tension monte ; plus la batterie tire de courant, plus il faut de couple. Le prix à payer : on ne peut pas les éteindre. Un aimant puissant pince la peau et peut éclater : un à la fois, gants, lunettes, loin des cartes bancaires. [[xray:off]]"
+    },
+    {
+      "id": "part-gen-shaft",
+      "scope": "part:gen-shaft",
+      "title": "Arbre",
+      "scene": "generator",
+      "text": "Le couple entre par ici. Devant la carcasse, un bout d’arbre dépasse et reçoit la petite poulie, calée par une clavette. À l’intérieur, l’arbre porte le rotor et repose sur deux roulements. Il a deux efforts à tenir : le couple qui le tord, et la traction de la courroie qui le plie. Tracez un trait de peinture en travers de la poulie et du bout d’arbre : s’il se décale, la poulie glisse."
+    },
+    {
+      "id": "part-gen-bearings",
+      "scope": "part:gen-bearings",
+      "title": "Roulements",
+      "scene": "generator",
+      "text": "Un entrefer d’un millimètre ou deux ne pardonne rien. Deux roulements à billes, un dans chaque flasque, gardent le rotor exactement centré. S’ils prennent du jeu, il frotte sur les dents. Côté poulie, ils portent aussi la traction de la courroie. Ce sont en général les premiers à s’user. Un grondement qui grandit, de la chaleur : changez les deux ensemble, avant la panne."
+    },
+    {
+      "id": "part-gen-terminals",
+      "scope": "part:gen-terminals",
+      "title": "Boîte à bornes",
+      "scene": "generator",
+      "text": "Ce qui sort n’est pas du continu. Dans la boîte, les trois fils du bobinage finissent chacun sur une cosse repérée. Une borne de terre, et un presse-étoupe qui tient le câble et empêche l’eau d’entrer. Ce sont trois phases d’alternatif, environ quarante volts entre deux phases : le redresseur en fera du continu. Et comme les aimants ne s’éteignent pas, ces bornes sont sous tension dès que l’arbre tourne, même à la main."
+    },
+    {
+      "id": "part-dc-breaker",
+      "scope": "part:dc-breaker",
+      "title": "Disjoncteur continu",
+      "scene": "powerroom",
+      "text": "Le gros interrupteur du local : on l’ouvre pour travailler, et il s’ouvre seul sur une surcharge. Il est fait pour le continu, et cela change tout. En alternatif, le courant repasse par zéro des dizaines de fois par seconde : l’arc d’une coupure s’éteint de lui-même. En continu, l’arc ne s’éteint pas : il faut l’étirer et le souffler ! Un disjoncteur qui a déclenché n’est pas un bouton de remise en marche : cherchez pourquoi."
+    },
+    {
+      "id": "part-fuse-box",
+      "scope": "part:fuse-box",
+      "title": "Boîte à fusibles",
+      "scene": "powerroom",
+      "text": "Un fil calibré qui fond : la plus simple des protections, et la plus rapide. Pourquoi en faut-il ? Une batterie en court-circuit peut débiter bien plus que ce qu’un disjoncteur sait couper. Et un câble en surcharge chauffe jusqu’à brûler. Le fusible protège le câble. On en met un par branche, le premier tout contre la batterie. Une règle d’or : jamais de fusible plus gros, ni de fil à la place."
+    },
+    {
+      "id": "part-rectifier",
+      "scope": "part:rectifier",
+      "title": "Redresseur",
+      "scene": "powerroom",
+      "text": "[[flows:on]] La génératrice parle en alternatif, à trois phases ; la batterie ne comprend que le continu. Le redresseur est un pont de six diodes, des clapets qui ne laissent passer le courant que dans un sens. Rien ne bouge, rien ne se règle. Le prix : un volt et demi de chute, soit soixante-neuf watts de chaleur. Ne l’enfermez pas dans une boîte étanche : cette chaleur doit partir. [[flows:off]]"
+    },
+    {
+      "id": "part-charge-controller",
+      "scope": "part:charge-controller",
+      "title": "Régulateur de charge",
+      "scene": "powerroom",
+      "text": "[[flows:on]] Que se passe-t-il quand la batterie est pleine ? L’eau, elle, continue de couler. Sans frein électrique, la vis monterait à cent quatre-vingts tours par minute, trois fois sa vitesse normale. Le régulateur surveille la batterie. Quand elle est pleine, il envoie le surplus à la charge voisine : la génératrice garde un frein. La vanne de sécurité est la seconde protection : deux valent mieux qu’une. [[flows:off]]"
+    },
+    {
+      "id": "part-battery",
+      "scope": "part:battery",
+      "title": "Batterie",
+      "scene": "powerroom",
+      "text": "[[flows:on]] La batterie, le réservoir de la maison : l’énergie de notre poche y attend la nuit. Elle la garde quand la vis s’arrête, et la rend en basses eaux. La vis tourne presque sans arrêt tout l’hiver : des charges douces, sans à-coups, qui ménagent la batterie, dit la vidéo. C’est pourtant le composant le plus dangereux du site : des centaines d’ampères en court-circuit, du gaz ou du feu. Pas un outil, pas une chaîne de bijou sur ses bornes, même une seconde : elles projettent du métal fondu. [[flows:off]]"
+    },
+    {
+      "id": "part-dump-load",
+      "scope": "part:dump-load",
+      "title": "Charge de délestage",
+      "scene": "powerroom",
+      "text": "[[flows:on]] La batterie est pleine, l’eau coule toujours : où va l’énergie ? Dans une grosse résistance, à l’air, ou plongée dans l’eau d’un ballon. Le régulateur y envoie ce que la batterie n’accepte plus, et la génératrice garde un frein. Elle doit pouvoir avaler toute l’électricité de la centrale. Le labo ne la simule pas : sa batterie est idéale et prend tout. Les centrales réelles en ont une. Si elle ne chauffe plus, rien ne l’annonce : testez-la. [[flows:off]]"
+    },
+    {
+      "id": "part-inverter",
+      "scope": "part:inverter",
+      "title": "Onduleur",
+      "scene": "powerroom",
+      "text": "[[flows:on]] La batterie donne du continu ; la maison veut du courant du secteur. L’onduleur le fabrique : il découpe le continu très vite, pour en faire une onde alternative. C’est lui qui fait de la batterie une prise de courant. À pleine puissance, un onduleur de trois kilowatts tirerait environ soixante-trois ampères. Sa sortie est mortelle. Choisissez-le d’après ce qu’il doit alimenter : un moteur appelle, au démarrage, bien plus que sa puissance. [[flows:off]]"
+    },
+    {
+      "id": "part-energy-meter",
+      "scope": "part:energy-meter",
+      "title": "Compteur d’énergie",
+      "scene": "powerroom",
+      "text": "Combien a-t-on produit, au juste ? Une puissance est un débit ; le compteur compte ce qui a coulé. Une petite résistance de précision, sur le fil de la batterie, mesure le courant. Le compteur y ajoute la tension, multiplie, et additionne au fil du temps. Sur le bief du labo, l’année tirée donne environ neuf mille huit cents kilowattheures. Notez la lecture à date fixe, chaque mois : en un an, vous aurez la vraie courbe de votre site."
+    },
+    {
+      "id": "part-switchboard",
+      "scope": "part:switchboard",
+      "title": "Tableau électrique",
+      "scene": "powerroom",
+      "text": "Sans lui, un mur de fils. Le tableau est le coffret qui porte les appareils : rails pour les protections, barres de cuivre pour les forts courants. Il sépare les circuits : d’un côté le continu de la batterie, de l’autre l’alternatif de l’onduleur. Une étiquette sur chaque circuit, un schéma sur la porte. Le jour d’une panne, ce n’est pas forcément celui qui a câblé qui interviendra."
+    },
+    {
+      "id": "part-earthing",
+      "scope": "part:earthing",
+      "title": "Mise à la terre",
+      "scene": "powerroom",
+      "text": "La seule protection qu’on ne voit jamais travailler. Un piquet planté dans le sol, dehors. Un conducteur vert et jaune, qui relie toutes les carcasses de métal. Des parafoudres, à l’arrivée du câble de la génératrice. Elle donne à un courant de défaut un chemin facile vers le sol, pour que la protection déclenche. Elle écoule aussi la foudre. Seule une mesure dit qu’elle existe : un électricien qualifié la mesure, et vous notez la valeur."
+    }
+  ]
+}

@@ -1,0 +1,379 @@
+{
+  "lang": "en",
+  "voiceLabel": {
+    "fr": "Voix de synthèse",
+    "en": "Synthetic voice"
+  },
+  "settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.8,
+    "style": 0.35,
+    "speed": 0.95
+  },
+  "segments": [
+    {
+      "id": "intro",
+      "scope": "intro",
+      "title": "Presentation of the lab",
+      "scene": "site",
+      "text": "[[home]] Picture an old stone mill beside a river. Its wheel left long ago… but the water still goes by. [[frame:river]] Let’s follow a pocket of water. For now, it is just a little river, arriving [[frame:weir]] at a weir and turning aside into a canal. [[frame:headrace,trash-rack]] It meets a rack of heavy bars: a log stops there, a leaf slips through. [[frame:water-chamber]] Then comes the water chamber, under the mill. [[scene:screw]] Let’s go in! This is an Archimedes screw: the water does not drop all at once, it slips between two wooden blades, and now it is trapped in a pocket. [[frame:trapped-water]] It leans on the blade, the screw turns… and the pocket slides down, like a playground slide. [[frame:chain]] Almost one turn a second: far too slow for a generator. So a chain, [[frame:belt]] then a belt, speed it up, ten times over by the end. [[scene:generator]] In the generator, magnets sweep past copper coils: the rotation becomes current! [[scene:powerroom]] The current runs to the powerhouse, past its protections, [[frame:battery]] and goes off to sleep in the battery. [[scene:site]] Back on the site, look at the house: [[frame:house-load]] a lamp comes on. That is the whole story: a pocket of water turning its way down, and, by evening, light. [[home]] To begin, a few landmarks. There are four views: the site, the screw, the opened generator and the powerhouse. Click any part: its sheet opens, and you can listen to its story. [[mode:assembly]] The assembly guide builds the screw like a kit, piece by piece. [[mode:install]] The installation guide goes from the river to the first start-up. [[mode:sim]] The simulation lets you change the flow, the head, the clearance, and sit through a flood. [[mode:lessons]] Lessons, with quizzes, explain the physics. [[mode:plans]] The plans gather the technical drawings. [[mode:explore]] One last thing: this lab is an independent educational reconstruction, inspired by a public video. [[scene:site]] It is not a construction plan: the screw is generic, because the association in the video publishes no dimensions. Unless I quote the video, the figures come from the simulation. [[select:none]] Over to you!"
+    },
+    {
+      "id": "scene-site",
+      "scope": "scene:site",
+      "title": "The site: from weir to house",
+      "scene": "site",
+      "text": "[[home]] Here is the site, to scale: a river, an old mill, a house. [[flows:on]] [[frame:river]] Our pocket of water leaves the river, [[frame:weir]] runs into the weir, then takes the headrace. [[frame:headrace]] An almost flat canal that keeps the whole drop. [[frame:trash-rack,intake-gate]] A rack of heavy bars, a gate that shuts the door, [[frame:water-chamber]] and here it is in the water chamber, under the mill. [[frame:tailrace]] Then it flows out by the tailrace canal, [[frame:reserved-flow-notch,fish-pass]] while the river keeps its share, with a pass for the fish. [[frame:powerhouse]] The electricity runs to the powerhouse, [[frame:house-load]] then to the house, where a lamp is waiting. [[flows:off]] [[home]] One precaution: taking water from a river needs a legal right, and a share must always stay in it. Check your local rules before any project."
+    },
+    {
+      "id": "scene-screw",
+      "scope": "scene:screw",
+      "title": "The screw in its chamber",
+      "scene": "screw",
+      "text": "[[home]] Here is the screw in its chamber, with its water. [[flows:on]] [[frame:inlet-sill]] The water comes in over the inlet sill, [[frame:trapped-water]] settles into pockets between the blades. [[frame:trough]] Then it runs down the trough, turning the screw. [[frame:blade-module,screw-core]] Three wooden threads on a central core, [[frame:upper-bearing,lower-bearing]] carried by two bearings, one at the top, one at the bottom. [[frame:outlet-pool]] At the foot of the slope, the water leaves by the outlet pool. [[frame:chain]] That slow rotation is picked up by a chain, [[frame:belt]] then sped up once more by a quiet belt. [[frame:generator]] It reaches the generator at last, which makes current of it. [[flows:off]] [[home]] [[cutaway:on]] In section, you can see the pockets of water going down like a staircase. [[cutaway:off]] [[explode:0.6]] Now let’s pull the layers apart, from the tube to the bolts. [[explode:0]] Follow one pocket, from top to bottom: that is the whole secret!"
+    },
+    {
+      "id": "scene-generator",
+      "scope": "scene:generator",
+      "title": "The generator, opened",
+      "scene": "generator",
+      "text": "[[home]] Here is the generator, opened. The video shows one from the shelf, without opening it: this inside is a generic picture. [[frame:gen-frame]] The frame, round and closed, holds the stator: [[frame:gen-stator,gen-coils]] toothed steel plates, with a copper coil on every tooth. [[frame:gen-rotor,gen-magnets]] At the centre, the rotor and its magnets, north and south alternating. [[frame:gen-shaft,gen-bearings]] It turns with the shaft, on two bearings. [[frame:gen-terminals]] And the current leaves by the terminal box. [[home]] [[cutaway:on]] In section, almost nothing between the magnets and the coils: a tiny air gap. [[cutaway:off]] [[xray:on]] In X-ray, you see everything the frame hides. [[xray:off]] [[flows:on]] Follow the current of the three phases. [[flows:off]] [[explode:0.6]] Then let’s pull the parts apart, one by one, like a construction set. [[explode:0]]"
+    },
+    {
+      "id": "scene-powerroom",
+      "scope": "scene:powerroom",
+      "title": "Inside the powerhouse",
+      "scene": "powerroom",
+      "text": "[[home]] Here is the wall of the powerhouse, read in the order the current goes. [[flows:on]] [[frame:dc-breaker,fuse-box]] First the protections, which let you cut everything. [[frame:rectifier]] The rectifier turns alternating current into direct current. [[frame:charge-controller]] The controller decides what the battery receives, [[frame:battery]] which keeps the energy for the days without water. [[frame:dump-load]] The surplus runs to the dump load. [[frame:inverter]] The inverter makes the alternating current of the house, [[frame:energy-meter]] and the meter counts the kilowatt hours. [[frame:switchboard,earthing]] The switchboard carries the whole, and the earthing protects people. [[flows:off]] [[home]] [[explode:0.6]] Let’s lift the devices off the wall, one by one, to see them better. [[explode:0]] One remark: the lab puts the protections at the head of the wall, so that you find them. In a real installation, their place is an electrician’s choice."
+    },
+    {
+      "id": "part-river",
+      "scope": "part:river",
+      "title": "River",
+      "scene": "site",
+      "text": "Our pocket of water begins here, in the river. [[flows:on]] A power plant does not use up the water: it borrows it, then hands it back downstream. Between the intake and the return, the bed gets only its reserved share, plus the surplus of floods. Plant a graduated gauge in the bed, and note the level with the date. Within a few seasons, you will know the true year of the site. [[flows:off]]"
+    },
+    {
+      "id": "part-weir",
+      "scope": "part:weir",
+      "title": "Weir",
+      "scene": "site",
+      "text": "A little wall across the river: what is it for? Well, the water climbs a notch. That notch makes up part of the drop, and pushes the water towards the canal intake. The surplus spills over the crest. But the weir also blocks the way for fish and gravel: hence the notch and the pass. Its height sets the head: never change it on a whim."
+    },
+    {
+      "id": "part-headrace",
+      "scope": "part:headrace",
+      "title": "Headrace",
+      "scene": "site",
+      "text": "A canal that hardly slopes at all: what is that for? Precisely, it is its virtue! [[flows:on]] It brings the water to the chamber without losing the drop kept for the screw. Every centimetre lost on the way costs about eighteen watts of water power. In the video, it ends as a watertight wooden channel, slid into the old duct without breaking anything. [[flows:off]]"
+    },
+    {
+      "id": "part-trash-rack",
+      "scope": "part:trash-rack",
+      "title": "Coarse rack",
+      "scene": "site",
+      "text": "A rack, but not just any rack: heavy bars! A fast turbine wants a close rack, which must be raked all the time. And a clogging rack eats the head: blocked at ninety per cent, it takes more than the whole drop. The screw lets leaves, gravel and fish go through. Only logs stop here. Do not mix them up: a rack in the water protects the screw, a guard rail above it protects people."
+    },
+    {
+      "id": "part-intake-gate",
+      "scope": "part:intake-gate",
+      "title": "Head gate",
+      "scene": "site",
+      "text": "The door of the machine: our pocket of water waits behind it. Open, the water runs down the canal; shut, the screw stops. It is closed for work, in a flood, and at low water. The video shows two: a small safety gate, and a motorised control gate, home-made. Before any work in the canal or on the screw: shut it, and fit a padlock whose key you keep. Then wait for a complete stop."
+    },
+    {
+      "id": "part-reserved-flow-notch",
+      "scope": "part:reserved-flow-notch",
+      "title": "Reserved-flow notch",
+      "scene": "site",
+      "text": "Even when the machine takes almost everything, a share of the water must stay in the river. The trick: a simple calibrated cut in the crest. No moving part, no operator: no breakdown, no forgetting. In summer, says the video, the machine stops rather than take this water. Here, the lab assumes a tenth of the mean flow: thirty litres a second. Three ten-litre buckets, every second!"
+    },
+    {
+      "id": "part-fish-pass",
+      "scope": "part:fish-pass",
+      "title": "Fish pass",
+      "scene": "site",
+      "text": "A fish must go down the river, but also back up it! The screw helps on the way down: the video describes it as a slide, where the fish stays in its pocket and goes down with it. For the way up, you need a pass: little pools in a staircase. The video’s builders are preparing a wooden one, and want to measure its effect, before and after."
+    },
+    {
+      "id": "part-water-chamber",
+      "scope": "part:water-chamber",
+      "title": "Water chamber",
+      "scene": "site",
+      "text": "Here is where our pocket of water arrives: the water chamber, the stone room under the mill. The water once fell there on the wheel; the screw sits there instead, without breaking anything. You often reach it by a ladder, with no lifting gear: so the machine arrives as a kit. Click to go in. In a real chamber, never go down alone: confined space, water, slippery stone."
+    },
+    {
+      "id": "part-tailrace",
+      "scope": "part:tailrace",
+      "title": "Tailrace",
+      "scene": "site",
+      "text": "We think of the height the water falls from, and forget the one it lands at. [[flows:on]] Our pocket, for its part, heads back to the river by the tailrace: about a hundred metres in the video’s mill. When the river rises, it fills, and the head melts. When the gate shuts in a flood, only fifty-eight centimetres are left! [[flows:off]]"
+    },
+    {
+      "id": "part-mill-building",
+      "scope": "part:mill-building",
+      "title": "Mill",
+      "scene": "site",
+      "text": "You do not rebuild a mill to put a machine in it: you put the machine in the mill. Here is the stone building, centuries old, above the chamber. The video takes care to break nothing. Its height under the floor limits the length of the screw. With the screw running, lay a hand on the floor: it must not shake."
+    },
+    {
+      "id": "part-powerhouse",
+      "scope": "part:powerhouse",
+      "title": "Powerhouse",
+      "scene": "site",
+      "text": "A single piece on the site, and yet a whole wall of devices: the powerhouse. It is dry, above the floods, and close to the house. At low voltage the current is strong and cable losses grow with its square: so the cable must be short. Click the powerhouse to go in: you will follow the current, device after device."
+    },
+    {
+      "id": "part-house-load",
+      "scope": "part:house-load",
+      "title": "House",
+      "scene": "site",
+      "text": "At the end of the wire, the house: the journey of our pocket of water ends here, in front of a lamp. The video aims at self-consumption: every kilowatt hour produced is one you do not buy. What counts is the number of hours in the year, not the power of a moment. The screw turns in winter and at night, when solar is resting. The video’s prototype is announced at about two hundred watts. The full size aims at about two kilowatts: hopes, not measurements."
+    },
+    {
+      "id": "part-trough",
+      "scope": "part:trough",
+      "title": "Trough",
+      "scene": "screw",
+      "text": "[[cutaway:on]] The screw is the easy part: the hard part is the tube around it. It must be perfectly round, with a tiny gap around the blades: about four millimetres here. Through that gap, water leaks from one pocket to the one below without producing anything. In the video, it is the great difficulty. While the screw turns, never step into the trough. [[cutaway:off]]"
+    },
+    {
+      "id": "part-screw-core",
+      "scope": "part:screw-core",
+      "title": "Screw core",
+      "scene": "screw",
+      "text": "[[cutaway:on]] Three threads wind round it, like the three threads of a giant screw: the core. The blade modules are screwed on top. Its diameter follows a published rule: a little more than half that of the screw. Too big, it takes the water’s place; too slim, it bends. Keep its timber in the water or fully dry, not alternately one and the other. [[cutaway:off]]"
+    },
+    {
+      "id": "part-blade-module",
+      "scope": "part:blade-module",
+      "title": "Blade module",
+      "scene": "screw",
+      "text": "[[explode:0.6]] A wooden screw… as a kit! The video cuts it into pieces: long pieces on the core, then modules of three blades, which screw on top. So the machine is built in the chamber, and repaired at home. A blade breaks? Unscrew the module, change it. Each blade is a helix, advancing eighty-six centimetres per turn. Change one module at a time, and keep the three threads in step. [[explode:0]]"
+    },
+    {
+      "id": "part-blade-fastener",
+      "scope": "part:blade-fastener",
+      "title": "Blade fasteners",
+      "scene": "screw",
+      "text": "[[explode:0.6]] No glue: screws and bolts. The video insists, you can unscrew and screw back. Each fastener passes through the timber of the module and clamps it on the core. Through it goes all the push of the water. They are drawn in stainless steel, because bare steel would soon rust. Tighten crosswise after the first weeks, then every season: timber moves. [[explode:0]]"
+    },
+    {
+      "id": "part-upper-bearing",
+      "scope": "part:upper-bearing",
+      "title": "Upper bearing",
+      "scene": "screw",
+      "text": "Two bearings, two jobs. The upper one guides the top end of the screw. In this drawing, it also takes the thrust, because a tilted screw tends to slide down. The shaft leaves by this end towards the drive. Keep an identical spare bearing: you cannot always find one the day you need it."
+    },
+    {
+      "id": "part-lower-bearing",
+      "scope": "part:lower-bearing",
+      "title": "Lower bearing",
+      "scene": "screw",
+      "text": "Down below, close to the water, here is the most exposed bearing. It guides the lower end without taking the thrust. But it lives splashed, sometimes drowned in a flood: seals and grease are chosen for water. The two bearings must hold the screw on one straight line: a few millimetres of error make the blades rub. A milky grease is grease that has taken in water."
+    },
+    {
+      "id": "part-inlet-sill",
+      "scope": "part:inlet-sill",
+      "title": "Inlet sill",
+      "scene": "screw",
+      "text": "[[cutaway:on]] A screw does not set its own flow: it swallows what arrives. The water from the canal spills over the inlet sill into the first pockets. Less arrives? The upstream level drops a little, but the screw keeps its efficiency, even at a third of the flow. What an asset for a river that changes all year! At the first filling, raise the level gradually, with the generator connected. [[cutaway:off]]"
+    },
+    {
+      "id": "part-outlet-pool",
+      "scope": "part:outlet-pool",
+      "title": "Outlet pool",
+      "scene": "screw",
+      "text": "[[cutaway:on]] Here our pocket empties, and it is the height the water lands at that counts. The outlet pool receives it. Too high, it drowns the last pockets; too low, they empty too early, and the water falls for nothing. If the downstream water rises by half a metre, the machine loses a good third of its electricity! Note the level on setting-up day: a mark painted on the wall beats memory. [[cutaway:off]]"
+    },
+    {
+      "id": "part-trapped-water",
+      "scope": "part:trapped-water",
+      "title": "Water pocket",
+      "scene": "screw",
+      "text": "[[cutaway:on]] A screw like this one does not push the water: it lets it go down. [[flows:on]] Here at last is our pocket: the water enters at the top, and stays trapped between two threads. About sixty litres. Each pocket is eleven centimetres higher than the one below: a staircase of water, sixteen steps! It leans on the blade, the screw turns, and the pocket goes down in about six seconds. A fish that enters stays inside, says the video, and rides along. Watch the surface: it stays flat. [[flows:off]] [[cutaway:off]]"
+    },
+    {
+      "id": "part-drive-sprocket",
+      "scope": "part:drive-sprocket",
+      "title": "Drive sprocket",
+      "scene": "screw",
+      "text": "This big sprocket is where the power leaves the screw. It is fixed on the shaft, at the top end, and the chain meshes on it. It is big because it sits on the slow shaft, where the torque is greatest. Facing it, a small sprocket turns the countershaft three point three times faster. Always change sprockets and chain together."
+    },
+    {
+      "id": "part-chain",
+      "scope": "part:chain",
+      "title": "Chain",
+      "scene": "screw",
+      "text": "It never slips: each roller drops into a tooth gap. That is what the enormous torque of the slow shaft needs. But its joints rub at every pass: it stretches, and asks for grease and the right tension. At rest, measure the sag in the middle of the run: too slack, it flaps; too tight, it wears the bearings. And keep a guard on: a chain snatches fingers, sleeves and hair."
+    },
+    {
+      "id": "part-counter-sprocket",
+      "scope": "part:counter-sprocket",
+      "title": "Counter sprocket",
+      "scene": "screw",
+      "text": "The small sprocket turns three point three times faster than the screw. One hundred and eighty-two revolutions per minute, against fifty-five. With as much less torque. You do not gain power by multiplying speed: you trade torque for speed. Because it meshes fewer teeth, it wears first. Never fit a new chain on a worn sprocket."
+    },
+    {
+      "id": "part-countershaft",
+      "scope": "part:countershaft",
+      "title": "Countershaft",
+      "scene": "screw",
+      "text": "Why two stages rather than one? The total ratio, ten point nine, is the product of the two: three point three times three point three. A single stage would need a big pulley ten times bigger than the small one. This shaft links them: the chain on one side, the belt on the other. A mill wheel, much slower, would demand thirty to sixty!"
+    },
+    {
+      "id": "part-pulley-large",
+      "scope": "part:pulley-large",
+      "title": "Large pulley",
+      "scene": "screw",
+      "text": "This is the second stage. The large pulley is three point three times bigger than the small one. That ratio of diameters takes the speed from one hundred and eighty-two to six hundred revolutions per minute. On a large diameter, the belt bends little: it wears slowly. Before changing a pulley, work out the generator’s speed again."
+    },
+    {
+      "id": "part-belt",
+      "scope": "part:belt",
+      "title": "Belt",
+      "scene": "screw",
+      "text": "It slips before it breaks. If the generator jammed, the belt would slip, which protects the machine a little. A wrong ratio is quickly paid for. Too small, and the screw turns at one hundred and eighteen revolutions per minute. It gives only one point three kilowatts. Too big, and it is braked to twenty-eight turns, and gives one point two. A belt that whistles when idle is too slack."
+    },
+    {
+      "id": "part-pulley-small",
+      "scope": "part:pulley-small",
+      "title": "Small pulley",
+      "scene": "screw",
+      "text": "The fastest and lightest wheel of the whole mechanical chain. It links the water, slow and heavy, to the electricity, quick and light. It turns at six hundred revolutions per minute, with more than ten times less torque than the screw. The same power, under a torque the generator can take. An imbalance, invisible on the screw, would be felt here: it must run true."
+    },
+    {
+      "id": "part-generator",
+      "scope": "part:generator",
+      "title": "Generator",
+      "scene": "screw",
+      "text": "At the end of the belt, the energy of our pocket becomes electricity at last! The video talks about it: a wind-turbine generator, bought rather than made on the spot. It is chosen slow, to keep the transmission simple. It charges only above a certain speed, when its voltage exceeds the battery’s. Then the current brakes it: that is what fixes the speed of the screw. Never disconnect the battery with the screw running: with no load, the screw races. Shut the gate first. Click to open the generator."
+    },
+    {
+      "id": "part-gen-frame",
+      "scope": "part:gen-frame",
+      "title": "Frame",
+      "scene": "generator",
+      "text": "[[cutaway:on]] A plain round casing, which matters more than it looks. It holds the stator and carries the bearings. It keeps everything centred: if the air gap is uneven, the magnets pull the rotor to one side. It also takes the reaction: when the shaft is driven, the frame is pushed the other way. Its feet hold it. Tighten its bolts once the belt is tensioned. [[cutaway:off]]"
+    },
+    {
+      "id": "part-gen-stator",
+      "scope": "part:gen-stator",
+      "title": "Stator",
+      "scene": "generator",
+      "text": "[[cutaway:on]] The part that never moves: thin steel plates, stacked and insulated, cut with twenty-four slots. Between two slots, a tooth guides the magnets’ flux towards the coil. Why thin plates? In a solid block, the changing flux would drive stray currents that heat the iron for nothing. The notches you feel when turning the shaft by hand are normal: the magnets line up on the teeth. [[cutaway:off]]"
+    },
+    {
+      "id": "part-gen-coils",
+      "scope": "part:gen-coils",
+      "title": "Coils",
+      "scene": "generator",
+      "text": "[[flows:on]] Copper wire wound round every tooth. When a magnet passes, the flux changes in the coil, and a voltage is born in the wire: that is induction! Twenty-four coils, in three phases of eight: three output wires. With the machine stopped, measure the resistance across the three pairs of wires. Three equal values mean three healthy phases. [[flows:off]]"
+    },
+    {
+      "id": "part-gen-rotor",
+      "scope": "part:gen-rotor",
+      "title": "Rotor",
+      "scene": "generator",
+      "text": "The rotor turns at the centre: a steel cylinder, keyed on the shaft, that carries the magnets. It makes six hundred revolutions per minute, ten a second. Its sixteen poles make the voltage swing eighty times a second. Many poles is the way to get voltage at low speed. If the screw races, the force on the rotor is multiplied by eleven, because it follows the square of the speed!"
+    },
+    {
+      "id": "part-gen-magnets",
+      "scope": "part:gen-magnets",
+      "title": "Magnets",
+      "scene": "generator",
+      "text": "[[xray:on]] Sixteen magnets, north and south alternating, glued on the rotor: they make the field without using a drop of current. The faster the rotor turns, the higher the voltage; the more current the battery draws, the more torque it takes. The price: you cannot switch them off. A strong magnet pinches skin and can shatter: one at a time, gloves, goggles, away from bank cards. [[xray:off]]"
+    },
+    {
+      "id": "part-gen-shaft",
+      "scope": "part:gen-shaft",
+      "title": "Shaft",
+      "scene": "generator",
+      "text": "The torque comes in here. In front of the frame, a stub of shaft sticks out and takes the small pulley, held by a key. Inside, the shaft carries the rotor and rests on two bearings. It has two loads to bear: the torque that twists it, and the belt pull that bends it. Paint a line across the pulley and the shaft end: if it shifts, the pulley is slipping."
+    },
+    {
+      "id": "part-gen-bearings",
+      "scope": "part:gen-bearings",
+      "title": "Bearings",
+      "scene": "generator",
+      "text": "An air gap of a millimetre or two forgives nothing. Two ball bearings, one in each end plate, keep the rotor exactly centred. If they get play, it rubs on the teeth. On the pulley side, they also carry the belt pull. They are usually the first to wear out. A growing rumble, some heat: change both together, before the failure."
+    },
+    {
+      "id": "part-gen-terminals",
+      "scope": "part:gen-terminals",
+      "title": "Terminal box",
+      "scene": "generator",
+      "text": "What comes out is not direct current. In the box, the three wires of the winding each end on a marked lug. An earth terminal, and a cable gland that holds the cable and keeps water out. These are three phases of alternating current, about forty volts between two phases. The rectifier will make direct current of it. And since the magnets never switch off, these terminals are live as soon as the shaft turns, even by hand."
+    },
+    {
+      "id": "part-dc-breaker",
+      "scope": "part:dc-breaker",
+      "title": "DC breaker",
+      "scene": "powerroom",
+      "text": "The big switch of the room: you open it to work, and it opens by itself on an overload. It is made for direct current, and that changes everything. With alternating current, the current crosses zero dozens of times a second: the arc of a break dies out by itself. With direct current, the arc does not go out: it must be stretched and blown! A breaker that has tripped is not a restart button: find out why."
+    },
+    {
+      "id": "part-fuse-box",
+      "scope": "part:fuse-box",
+      "title": "Fuse box",
+      "scene": "powerroom",
+      "text": "A calibrated wire that melts: the simplest protection, and the fastest. Why do you need one? A battery in a short circuit can deliver far more than a breaker can cut. And an overloaded cable heats until it burns. The fuse protects the cable. You fit one per branch, the first right against the battery. A golden rule: never a bigger fuse, never a wire in its place."
+    },
+    {
+      "id": "part-rectifier",
+      "scope": "part:rectifier",
+      "title": "Rectifier",
+      "scene": "powerroom",
+      "text": "[[flows:on]] The generator speaks alternating current, in three phases; the battery understands only direct current. The rectifier is a bridge of six diodes, valves that let the current through in one direction only. Nothing moves, nothing needs adjusting. The price: a volt and a half of drop, that is sixty-nine watts of heat. Do not shut it in a sealed box: that heat has to go. [[flows:off]]"
+    },
+    {
+      "id": "part-charge-controller",
+      "scope": "part:charge-controller",
+      "title": "Charge controller",
+      "scene": "powerroom",
+      "text": "[[flows:on]] What happens when the battery is full? The water keeps flowing all the same. With no electrical brake, the screw would climb to one hundred and eighty revolutions per minute. That is three times its normal speed. The controller watches the battery. When it is full, it sends the surplus to the load next door: the generator keeps a brake. The safety gate is the second protection: two beat one. [[flows:off]]"
+    },
+    {
+      "id": "part-battery",
+      "scope": "part:battery",
+      "title": "Battery",
+      "scene": "powerroom",
+      "text": "[[flows:on]] The battery, the reservoir of the house: the energy of our pocket waits there for the night. It keeps it when the screw stops, and gives it back at low water. The screw turns almost without pause all winter: gentle charges, no jolts, which spare the battery, says the video. Yet it is the most dangerous component on the site: hundreds of amps in a short circuit, gas or fire. No tool, no jewellery chain across its terminals, even for a second: they spit molten metal. [[flows:off]]"
+    },
+    {
+      "id": "part-dump-load",
+      "scope": "part:dump-load",
+      "title": "Dump load",
+      "scene": "powerroom",
+      "text": "[[flows:on]] The battery is full, the water keeps flowing: where does the energy go? Into a big resistor, in the air, or in the water of a tank. The controller sends it what the battery no longer accepts, and the generator keeps a brake. It must be able to swallow all the plant’s electricity. The lab does not simulate it: its battery is ideal and takes everything. Real plants have one. If it stops heating, nothing announces it: test it. [[flows:off]]"
+    },
+    {
+      "id": "part-inverter",
+      "scope": "part:inverter",
+      "title": "Inverter",
+      "scene": "powerroom",
+      "text": "[[flows:on]] The battery gives direct current; the house wants mains power. The inverter makes it: it chops the direct current very fast, to build an alternating wave. It is what turns a battery into a wall socket. At full power, a three-kilowatt inverter would draw about sixty-three amps. Its output is lethal. Choose it for what it must feed: a motor calls, at start-up, for far more than its rated power. [[flows:off]]"
+    },
+    {
+      "id": "part-energy-meter",
+      "scope": "part:energy-meter",
+      "title": "Energy meter",
+      "scene": "powerroom",
+      "text": "How much have we produced, exactly? A power is a flow; the meter counts what has flowed. A small precision resistor, on the battery wire, measures the current. The meter adds the voltage, multiplies, and sums over time. On the lab’s mill race, the drawn year gives about nine thousand eight hundred kilowatt hours. Note the reading on a fixed date, every month: in a year, you will have the true curve of your site."
+    },
+    {
+      "id": "part-switchboard",
+      "scope": "part:switchboard",
+      "title": "Switchboard",
+      "scene": "powerroom",
+      "text": "Without it, a wall of wires. The switchboard is the cabinet that carries the devices: rails for the protections, copper bars for the strong currents. It keeps the circuits apart: on one side the battery’s direct current, on the other the inverter’s alternating current. A label on every circuit, a diagram on the door. On the day of a fault, the person who wired it may not be the one who comes."
+    },
+    {
+      "id": "part-earthing",
+      "scope": "part:earthing",
+      "title": "Earthing",
+      "scene": "powerroom",
+      "text": "The one protection you never see working. A rod driven into the ground outside. A green-and-yellow conductor, bonding every metal casing. Surge arresters, where the generator’s cable arrives. It gives a fault current an easy path to the ground, so that the protection trips. It also carries off lightning. Only a measurement tells you it exists: a qualified electrician measures it, and you note the value."
+    }
+  ]
+}
