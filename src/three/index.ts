@@ -2,13 +2,16 @@ import { lazyModule } from '@onigam/lab-kit/three';
 import type { SceneModule } from '@onigam/lab-kit/three';
 import type { MillState } from '../sim/types';
 import { createScrewScene as buildScrewScene, type ScrewOptions } from './screw/scene';
+import type { SiteOptions } from './site/drive';
 import { createSiteScene as buildSiteScene } from './site/scene';
 
 // The two worlds. Both are `lazyModule`s: nothing is built until the visitor goes there (or something reads the module), so the start-up stays light.
-// Use the result as the `module` of the `SceneDef` (do not wrap it again). The `screw` world takes the live ratios of the drive if the application can
-// give them: `createScrewScene({ ratios: () => ({ chain: sim.params.chainRatio, belt: sim.params.beltRatio }) })`.
+// Use the result as the `module` of the `SceneDef` (do not wrap it again). Both worlds draw the drive train (the `screw` world on its platform, the `site` world
+// at the top end of the screw, on its own supports) and take the live ratios of the drive if the application can give them:
+// `createScrewScene({ ratios: () => ({ chain: sim.params.chainRatio, belt: sim.params.beltRatio }) })`, the same for `createSiteScene`.
 
-export const createSiteScene = (): SceneModule<MillState> => lazyModule<MillState>('site', () => buildSiteScene());
+export const createSiteScene = (opts: SiteOptions = {}): SceneModule<MillState> =>
+  lazyModule<MillState>('site', () => buildSiteScene(opts));
 export const createScrewScene = (opts: ScrewOptions = {}): SceneModule<MillState> =>
   lazyModule<MillState>('screw', () => buildScrewScene(opts));
 

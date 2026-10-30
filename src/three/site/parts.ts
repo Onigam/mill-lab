@@ -14,6 +14,7 @@ import { WaterBody, bump, gridLines, plateau } from '../water/body';
 import { Nappes } from '../water/nappe';
 import type { WaterKit } from './water';
 import { masonryMaterial } from './materials';
+import { SiteDrive, siteFrame, type DriveRatios, type DriveTextures } from './drive';
 
 // The static geometry of the parts of the `site` world (the moving water is `water.ts`, the animation is in `scene.ts`). The site frame: X east,
 // Y up (0 = design headwater), Z south; the water flows towards -X. See dims.SITE for the sizes and for what is compressed.
@@ -480,22 +481,38 @@ export interface ChamberBuild {
   planes: THREE.Plane[];
   /** x of the upper end of the flights (axis) and of the vertical plane that closes the basin on the canal side. */
   xTop: number;
-  /** Where the line of the drive box leaves (site). */
-  driveBox: THREE.Vector3;
+  /** The drive train at the top end of the screw: the screw world's machine and the masonry under it (`site/drive.ts`). Its terminal is where the cable leaves. */
+  drive: SiteDrive;
   /** The pit: x range and the floor. */
   pit: { x0: number; x1: number; floorY: number };
 }
 
-/** The old water chamber: a pit, the trough on piers, the screw (bladed, turning), the basin on the canal side and the pool on the tailrace side. */
-export function buildChamber(shape: ScrewShape, pocket: PocketBuilder, wk: WaterKit): ChamberBuild {
+/** What the chamber needs to draw the drive: the two patterns of the chain and the belt, the ratios now, and the angle of the screw (unwrapped) the wheels start from. */
+export interface ChamberDrive {
+  textures: DriveTextures;
+  ratios: DriveRatios;
+  theta: number;
+}
+
+/**
+ * The old water chamber: a pit, the trough on piers, the screw (bladed, turning), the basin on the canal side and the pool on the tailrace side, and at the top end
+ * of the screw the drive train of the screw world (shaft through the upper bearing to the large sprocket, chain, countershaft, belt, generator), on its supports.
+ */
+export function buildChamber(
+  shape: ScrewShape,
+  pocket: PocketBuilder,
+  wk: WaterKit,
+  driveOpts: ChamberDrive,
+): ChamberBuild {
   const ch = SITE.chamber;
   const c = SITE.canal;
   const l = computeLayout(shape);
   const g = new THREE.Group();
-  const zc = (c.zNorth + c.zSouth) / 2;
-  const xLow = ch.xWest + ch.lowerEnd;
-  // the design tail level is pinned to the site's: the screw is placed so that its pool stands at SITE.tailY
-  const y0 = SITE.tailY + (l.y0 - l.tailY);
+  // the screw world's frame in the site: a translation (the screw is placed so that its pool stands at the design tail level of the site)
+  const fr = siteFrame(l);
+  const zc = fr.dz;
+  const xLow = fr.dx;
+  const y0 = l.y0 + fr.dy;
   const origin = new THREE.Vector3(xLow, y0, zc);
   const sx = (x: number) => x + xLow;
   const sy = (y: number) => y - l.y0 + y0;
@@ -543,7 +560,7 @@ export function buildChamber(shape: ScrewShape, pocket: PocketBuilder, wk: Water
       ),
     );
   }
-  // bearings on piers, and the drive box on a bridge over the end of the canal
+  // the lower bearing on a pier in the pool (the upper one is part of the drive, `site/drive.ts`)
   const rj = l.rj;
   const sLow = l.sLow;
   const lowerAt = new THREE.Vector3(sx(sLow * l.cosB), sy(l.y0 + sLow * l.sinB), zc);
@@ -560,7 +577,8 @@ export function buildChamber(shape: ScrewShape, pocket: PocketBuilder, wk: Water
   // rotating screw: core and blades at a coarse detail
   const rot = new THREE.Group();
   rot.name = 'site-screw';
-  const core = coreGeometry(shape, rj, l.sShaftStart, l.L + 0.85 * l.k);
+  // the shaft goes on through the upper bearing to the large sprocket, as in the screw world
+  const core = coreGeometry(shape, rj, l.sShaftStart, l.sShaftEnd);
   rot.add(mesh(core.tube, new THREE.MeshStandardMaterial({ color: 0xa9793f, roughness: 0.85 })));
   rot.add(mesh(core.plates, MAT.steel()));
   rot.add(mesh(core.journals, MAT.steel()));
@@ -568,27 +586,12 @@ export function buildChamber(shape: ScrewShape, pocket: PocketBuilder, wk: Water
   rot.add(mesh(b.woodA, new THREE.MeshStandardMaterial({ color: COLOURS.woodA, roughness: 0.85 })));
   rot.add(mesh(b.woodB, new THREE.MeshStandardMaterial({ color: COLOURS.woodB, roughness: 0.85 })));
   tilt.add(rot);
-  // the bridge over the end of the canal carries the upper bearing and the drive box; the box stands on the north bank
   const xTop = sx(l.L * l.cosB);
-  const bx = sx((l.L + 0.85 * l.k) * l.cosB);
-  const by = sy(l.y0 + (l.L + 0.85 * l.k) * l.sinB);
-  g.add(box(bx - 0.18, by - 0.35, c.zNorth - 0.3, bx + 0.18, by - 0.2, c.zSouth + 0.3, concrete()));
-  g.add(box(bx - 0.14, by - 0.2, zc - 0.14, bx + 0.14, by - 0.04, zc + 0.14, MAT.steel()));
-  const box0 = new THREE.Vector3(bx, SITE.groundY, c.zNorth - 0.5);
-  g.add(
-    box(
-      bx - 0.35,
-      SITE.groundY,
-      c.zNorth - 0.8,
-      bx + 0.35,
-      SITE.groundY + 0.7,
-      c.zNorth - 0.2,
-      new THREE.MeshStandardMaterial({ color: 0x2f5d7c, roughness: 0.5, metalness: 0.3 }),
-    ),
-  );
-  g.add(box(bx - 0.04, by - 0.04, c.zNorth - 0.3, bx + 0.04, by + 0.04, c.zNorth - 0.2, MAT.steel()));
   mergeStatic(g, { name: 'chamber' });
   g.add(tilt);
+  // the drive train: the machine of the screw world and its supports (merged by part: it is added after the chamber's own merge)
+  const drive = new SiteDrive(l, driveOpts.textures, driveOpts.ratios, concrete, driveOpts.theta);
+  g.add(drive.group);
   mergeStatic(rot, { name: 'site-screw', colours: false });
   // water: pockets (instanced, cut at the ends), the basin on the canal side, the pool on the tailrace side
   const n = pocketCount(shape);
@@ -629,7 +632,7 @@ export function buildChamber(shape: ScrewShape, pocket: PocketBuilder, wk: Water
     pool,
     planes,
     xTop,
-    driveBox: box0,
+    drive,
     pit: { x0: ch.xWest, x1: ch.xEast, floorY: floor },
   };
 }

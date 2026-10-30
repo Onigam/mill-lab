@@ -101,7 +101,11 @@ describe('site world', () => {
     // the chamber holds the screw: the screw's upper end is at the canal, the lower end at the tailrace
     const c = b.get('water-chamber')!;
     expect(c.min.x).toBeCloseTo(SITE.chamber.xWest, 1);
-    expect(c.max.x).toBeCloseTo(SITE.chamber.xEast, 0);
+    // (the part also holds the drive train at the top end of the screw: the shaft, the countershaft and the generator stand on the canal beyond the pit,
+    // about 1.4 m further east: `drive.test.ts` checks them)
+    expect(c.max.x).toBeGreaterThan(SITE.chamber.xEast);
+    expect(c.max.x).toBeLessThan(SITE.chamber.xEast + 2);
+    expect(mod.chamber().pit.x1).toBe(SITE.chamber.xEast);
   });
 
   describe('the water follows the state', () => {

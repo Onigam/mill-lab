@@ -201,7 +201,8 @@ const SCREW_PARTS = [
   'outlet-pool',
   'trapped-water',
 ];
-const DRIVE_PARTS = [
+/** The parts of the machine proper (the `site` world draws these, at the same size, beside the screw's shaft) and the three boxes of the electronics. */
+export const MACHINE_PARTS = [
   'drive-sprocket',
   'chain',
   'counter-sprocket',
@@ -210,10 +211,8 @@ const DRIVE_PARTS = [
   'belt',
   'pulley-small',
   'generator',
-  'rectifier',
-  'charge-controller',
-  'battery',
-];
+] as const;
+const ELECTRONIC_PARTS = ['rectifier', 'charge-controller', 'battery'];
 
 /** Everything but the parts that depend on the ratios of the drive. */
 export function buildScrewParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
@@ -438,11 +437,24 @@ export function buildScrewParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
   }
 }
 
+/** What the machine of the drive needs of a build context (the `site` world builds it without the section kit, the pockets or the water). */
+export type DriveCtx = Pick<BuildCtx, 'roots' | 'ratios' | 'textures'>;
+
 /** Sprockets, chain, countershaft, pulleys, belt, generator, electronics: depends on the two ratios. */
 export function buildDriveParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
-  const { roots, ratios } = ctx;
-  for (const id of DRIVE_PARTS) clearGroup(roots[id]);
   clearGroup(rig.props);
+  const terminal = buildDriveMachine(l, ctx, rig);
+  buildElectronics(l, ctx, rig, terminal);
+}
+
+/**
+ * The machine alone: sprockets, chain, countershaft with its pillow blocks, pulleys, belt, generator (and the numbers of the drive in `rig.drive`), each in the
+ * root of its part, in the world frame of `l`; the wedges under the countershaft and the generator stand on `l.platTop`. Returns the terminal box of the
+ * generator (world frame), where the cable leaves.
+ */
+export function buildDriveMachine(l: Layout, ctx: DriveCtx, rig: Rig): THREE.Vector3 {
+  const { roots, ratios } = ctx;
+  for (const id of MACHINE_PARTS) clearGroup(roots[id]);
   rig.wheels = rig.wheels.filter((w) => w.group !== 'drive');
   const k = l.k;
   const th = DRIVE.sprocketThickness * k;
@@ -653,6 +665,28 @@ export function buildDriveParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
     rig.places.generator.copy(worldPoint(l, l.sGenFront + (GENERATOR.bodyLength * k) / 2, cG.x, cG.y));
   }
 
+  // ---- the drive in numbers (for the tests and the anchors)
+  const P = (s: number, c: THREE.Vector2) => worldPoint(l, s, c.x, c.y);
+  rig.drive = {
+    bigSprocket: { c: P(l.sChain, c0), r: R1 },
+    smallSprocket: { c: P(l.sChain, cC), r: R2 },
+    largePulley: { c: P(l.sBelt, cC), r: R3 },
+    smallPulley: { c: P(l.sBelt, cG), r: R4 },
+    countershaft: { from: P(l.L + DRIVE.countershaftFrom * k, cC), to: P(l.L + DRIVE.countershaftTo * k, cC), r: rjc },
+    shaft: { from: P(l.sShaftStart, c0), to: P(l.sShaftEnd, c0) },
+    chainLength: rig.chain!.length,
+    beltLength: rig.belt!.length,
+    teeth: [DRIVE.largeTeeth, z2],
+    ratios: { chain: chainRatio, belt: ratios.belt },
+  };
+  return genTerminal;
+}
+
+/** The electronics: a plywood board on legs at the far end of the platform, the three boxes on and in front of it, the cables from the generator's terminal. */
+function buildElectronics(l: Layout, ctx: DriveCtx, rig: Rig, genTerminal: THREE.Vector3): void {
+  const { roots } = ctx;
+  for (const id of ELECTRONIC_PARTS) clearGroup(roots[id]);
+  const k = l.k;
   // ---- electronics: a plywood board on legs at the far end of the platform, the battery on the platform in front of it
   const boardX = l.platX1 - 0.75 * k;
   const boardZ = l.platZ0 + 0.35 * k;
@@ -748,19 +782,4 @@ export function buildDriveParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
     new THREE.CatmullRomCurve3(pts, false, 'centripetal', 0.3).getPoints(n);
   rig.paths.current = [...sample(ac, 30), ...sample(dc1, 12).slice(1), ...sample(dc2, 14).slice(1)];
   rig.paths.out = sample(tail, 30);
-
-  // ---- the drive in numbers (for the tests and the anchors)
-  const P = (s: number, c: THREE.Vector2) => worldPoint(l, s, c.x, c.y);
-  rig.drive = {
-    bigSprocket: { c: P(l.sChain, c0), r: R1 },
-    smallSprocket: { c: P(l.sChain, cC), r: R2 },
-    largePulley: { c: P(l.sBelt, cC), r: R3 },
-    smallPulley: { c: P(l.sBelt, cG), r: R4 },
-    countershaft: { from: P(l.L + DRIVE.countershaftFrom * k, cC), to: P(l.L + DRIVE.countershaftTo * k, cC), r: rjc },
-    shaft: { from: P(l.sShaftStart, c0), to: P(l.sShaftEnd, c0) },
-    chainLength: rig.chain!.length,
-    beltLength: rig.belt!.length,
-    teeth: [DRIVE.largeTeeth, z2],
-    ratios: { chain: chainRatio, belt: ratios.belt },
-  };
 }

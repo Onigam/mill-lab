@@ -141,7 +141,7 @@ export const lab: LabDefinition<MillSim> = {
     {
       id: 'site',
       label: strL('sceneSite'),
-      module: createSiteScene(),
+      module: createSiteScene({ ratios: () => ({ chain: sim.params.chainRatio, belt: sim.params.beltRatio }) }),
       ...WORLD.site,
       overview: {
         ...OVERVIEWS.site,

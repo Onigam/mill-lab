@@ -418,3 +418,32 @@ export const SCENERY = {
   trees: { willows: 10, poplars: 25, oaks: 16, conifersNear: 70, conifersFar: 1200, shrubs: 55 },
   homeCorridor: 11,
 } as const;
+
+// ------------------------------------------------------------------------------------------------ the drive train in the site world
+
+/**
+ * What carries the drive train in the `site` world (src/three/site/drive.ts, docs/3d.md). The machine itself is the screw world's, at its true size and in its
+ * true place round the shaft; only the masonry under it is drawn for this place (the screw world's platform cannot stand on the canal). Every number is an
+ * estimate of ours, the sources give none. The heights are not numbers here: they come from the layout (the base planes of the bearings, the lowest point of the
+ * belt, the highest water of the end of the canal).
+ */
+export const SITE_DRIVE = {
+  /** Beam across the canal under the upper bearing: breadth along the canal, depth, the plinth (a wedge of masonry) between its top and the base of the bearing, the length it is let into each wall, m. estimate. */
+  beam: { breadth: 0.34, depth: 0.11, plinth: 0.05, embed: 0.05 },
+  /** Pier that carries the south end of the beam, on the quay beside the pit: how far it reaches towards the south from the inner face of the canal's south wall, m. estimate. */
+  pier: { reach: 0.6 },
+  /** Shelf from the south wall that carries the countershaft's pillow blocks: thickness, depth and reach of the root against the wall, margin round the blocks (along the shaft, across it), the plinth under a block (smallest wedge), the clear space under the belt, m. estimate. */
+  shelf: {
+    thickness: 0.14,
+    rootDepth: 0.22,
+    rootReach: 0.3,
+    endMargin: 0.12,
+    sideMargin: 0.12,
+    plinth: 0.04,
+    belowBelt: 0.1,
+  },
+  /** Gap kept between the underside of any support over the water and the highest water the world draws at the end of the canal, m. estimate. */
+  waterClearance: 0.1,
+  /** The cable that leaves the generator's terminal for the powerhouse: height of its first rise over the terminal, m. estimate. */
+  cableRise: 0.4,
+} as const;

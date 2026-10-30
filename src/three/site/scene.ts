@@ -3,11 +3,22 @@ import { PartRegistry, clamp, damp } from '@onigam/lab-kit/three';
 import type { SceneModule } from '@onigam/lab-kit/three';
 import { partIds } from '../../part-ids';
 import type { MillState } from '../../sim/types';
-import { CANAL_SPEED_MS, DESIGN, DESIGN_SHAPE, RACK_CLEAN_LOSS, SITE, shapeOf, type ScrewShape } from '../dims';
+import {
+  CANAL_SPEED_MS,
+  DESIGN,
+  DESIGN_SHAPE,
+  RACK_CLEAN_LOSS,
+  SITE,
+  SITE_DRIVE,
+  defaultDriveRatios,
+  shapeOf,
+  type ScrewShape,
+} from '../dims';
 import { FlowDots, clearGroup } from '../common';
 import { mergeStatic } from '../merge';
 import { anchor, hotspots, type HotspotDef } from '../world';
 import { PocketBuilder, pocketShift } from '../screw/helix';
+import { dashTexture } from '../screw/drive';
 import { buildHouse, buildMill, buildPowerhouse } from './buildings';
 import {
   buildChamber,
@@ -21,6 +32,7 @@ import {
   buildWeir,
   type ChamberBuild,
 } from './parts';
+import { driveRatiosNow, ratiosChanged, type DriveRatios, type SiteOptions } from './drive';
 import { createSky } from './sky';
 import { WIND, textureStats } from './materials';
 import { buildProps, buildBridges } from './props';
@@ -93,7 +105,7 @@ export interface Levels {
 export interface SiteScene extends SceneModule<MillState> {
   /** The levels drawn now (m, site datum) and the shape of the screw in the chamber. */
   readonly levels: Levels;
-  readonly drawn: { shape: ScrewShape; rebuilds: number; debris: number; theta: number };
+  readonly drawn: { shape: ScrewShape; rebuilds: number; debris: number; theta: number; ratios: DriveRatios };
   readonly chamber: () => ChamberBuild;
   /** The moving water: levels of the look, the spray, the foam (src/three/site/water.ts). */
   readonly water: () => SiteWaterFx;
@@ -118,7 +130,7 @@ const sameShape = (a: ScrewShape, b: ScrewShape): boolean => {
   );
 };
 
-export function createSiteScene(): SiteScene {
+export function createSiteScene(opts: SiteOptions = {}): SiteScene {
   const tBuild = performance.now();
   const scene = new THREE.Scene();
   scene.name = 'site';
@@ -180,10 +192,17 @@ export function createSiteScene(): SiteScene {
   house.group.position.set(SITE.house.x, SITE.groundY, SITE.house.z);
   roots['house-load'].add(house.group);
 
-  // ---- the chamber and the screw in it (rebuilt when the shape changes)
+  // ---- the chamber and the screw in it (rebuilt when the shape changes), and the drive at its top end (its small wheels are redrawn when a ratio changes)
   const pocket = new PocketBuilder();
   let shape: ScrewShape = { ...DESIGN_SHAPE };
-  let chamber: ChamberBuild = buildChamber(shape, pocket, wk);
+  const driveTextures = { chain: dashTexture('chain'), belt: dashTexture('belt') };
+  const driveRatios: DriveRatios = { ...defaultDriveRatios(shape.outerDiameter) };
+  const ratiosNow: DriveRatios = { chain: driveRatios.chain, belt: driveRatios.belt };
+  let chamber: ChamberBuild = buildChamber(shape, pocket, wk, {
+    textures: driveTextures,
+    ratios: driveRatios,
+    theta: 0,
+  });
   roots['water-chamber'].add(chamber.group);
 
   // ---- poles and the lines: chamber -> powerhouse -> house (scenery)
@@ -201,8 +220,30 @@ export function createSiteScene(): SiteScene {
   const phOut = ph.group.localToWorld(ph.out.clone());
   const phIn = ph.group.localToWorld(ph.inn.clone());
   const houseIn = house.group.localToWorld(house.inn.clone());
-  const box0 = chamber.driveBox;
-  const lineA = wire([V(box0.x, box0.y + 0.6, box0.z - 0.1), V(box0.x - 1.2, SITE.groundY + 2.4, box0.z - 2.6), phIn]);
+  // the line from the generator's terminal (the machine of the screw world, at the top end of the screw) to the powerhouse: it crosses the canal over the
+  // drive, so it is rebuilt when the screw is redrawn at another size
+  const lineAPoints = (t: THREE.Vector3): THREE.Vector3[] => [
+    t.clone(),
+    V(t.x + 0.1, t.y + SITE_DRIVE.cableRise, t.z - 0.1),
+    V(t.x + 0.35, SITE.groundY + 2.3, t.z - 1.6),
+    V((t.x + phIn.x) / 2, SITE.groundY + 2.2, (t.z + phIn.z) / 2),
+    phIn,
+  ];
+  const lineAMesh = new THREE.Mesh(
+    new THREE.BufferGeometry(),
+    new THREE.MeshStandardMaterial({ color: 0x17181a, roughness: 0.5 }),
+  );
+  lineAMesh.name = 'line-chamber';
+  lineAMesh.castShadow = false;
+  scene.add(lineAMesh);
+  const setLineA = (): THREE.Vector3[] => {
+    const pts = lineAPoints(chamber.drive.terminal);
+    const curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal', 0.3);
+    lineAMesh.geometry.dispose();
+    lineAMesh.geometry = new THREE.TubeGeometry(curve, Math.max(12, pts.length * 12), 0.012, 5, false);
+    return curve.getPoints(40);
+  };
+  const lineA = setLineA();
   const polesAt = [
     V(phOut.x + 6, 0, phOut.z - 4),
     V(phOut.x + 12, 0, phOut.z - 7.5),
@@ -294,7 +335,7 @@ export function createSiteScene(): SiteScene {
   const pLineB = currentDots.addPath(lineB, 36);
 
   // ---- update
-  const drawn = { shape, rebuilds: 0, debris: 0, theta: 0 };
+  const drawn = { shape, rebuilds: 0, debris: 0, theta: 0, ratios: { ...driveRatios } };
   let lastAngle: number | null = null;
   let unwrapped = 0;
   let lastBuild = -10;
@@ -351,14 +392,41 @@ export function createSiteScene(): SiteScene {
   const setShape = (next: ScrewShape) => {
     shape = shapeOf(next, shape);
     clearGroup(roots['water-chamber']);
-    chamber = buildChamber(shape, pocket, wk);
+    chamber = buildChamber(shape, pocket, wk, { textures: driveTextures, ratios: driveRatios, theta: unwrapped });
     roots['water-chamber'].add(chamber.group);
     refresh('water-chamber');
     drawn.shape = shape;
+    drawn.ratios = { ...driveRatios };
     drawn.rebuilds++;
     fillDrawn = -1;
     waterDots.setPath(pCanal, waterPaths(levels).canal);
+    currentDots.setPath(pLineA, setLineA());
     pathsSig = Number.NaN;
+  };
+
+  /** Only the small wheels, the chain and the belt were redrawn (a ratio moved): register their new meshes in the part and drop the old ones. */
+  const refreshDrive = () => {
+    const e = registry.get('water-chamber');
+    if (!e) return;
+    const root = roots['water-chamber'];
+    const inside = (o: THREE.Object3D) => {
+      for (let p: THREE.Object3D | null = o; p; p = p.parent) if (p === root) return true;
+      return false;
+    };
+    for (let i = e.meshes.length - 1; i >= 0; i--) if (!inside(e.meshes[i])) e.meshes.splice(i, 1);
+    chamber.drive.group.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (m.isMesh && m.userData.ownerPart === undefined) {
+        m.userData.ownerPart = 'water-chamber';
+        m.userData.solidMaterial = m.material;
+        e.meshes.push(m);
+      }
+    });
+    const prev = e.display;
+    if (prev !== 'solid') {
+      e.display = 'solid';
+      registry.setDisplay('water-chamber', prev);
+    }
   };
 
   const mod: SiteScene = {
@@ -394,9 +462,27 @@ export function createSiteScene(): SiteScene {
         },
         shape,
       );
-      if (!sameShape(want, shape) && view.time - lastBuild > 0.2) {
+      const shapeChanged = !sameShape(want, shape);
+      if (isScrew) driveRatiosNow(opts, shape, s, driveRatios, ratiosNow);
+      else {
+        ratiosNow.chain = driveRatios.chain;
+        ratiosNow.belt = driveRatios.belt;
+      }
+      if ((shapeChanged || ratiosChanged(ratiosNow, driveRatios)) && view.time - lastBuild > 0.2) {
         lastBuild = view.time;
-        setShape(want);
+        if (shapeChanged) {
+          // the default ratios depend on the diameter: the new one's
+          if (isScrew) driveRatiosNow(opts, want, s, driveRatios, ratiosNow);
+          driveRatios.chain = ratiosNow.chain;
+          driveRatios.belt = ratiosNow.belt;
+          setShape(want);
+        } else {
+          driveRatios.chain = ratiosNow.chain;
+          driveRatios.belt = ratiosNow.belt;
+          chamber.drive.rebuild(driveRatios, unwrapped);
+          refreshDrive();
+          drawn.ratios = { ...driveRatios };
+        }
       }
       sky.update(s.hour, view.time, s.day);
       WIND.time.value = view.time;
@@ -428,6 +514,9 @@ export function createSiteScene(): SiteScene {
       unwrapped += dTheta;
       drawn.theta = unwrapped;
       chamber.rot.rotation.x = unwrapped;
+      // the drive: every wheel at the screw's angle times its ratio, the chain and the belt run (the blur discs follow the display mode of the part)
+      const rps = isScrew ? Math.abs(s.omega * view.slowMo) / (2 * Math.PI) : 0;
+      chamber.drive.update(dTheta, rps, dt, (registry.get('water-chamber')?.display ?? 'solid') === 'solid');
       const fill = isScrew ? clamp(s.fill, 0, 1) : 0;
       if (Math.abs(fill - fillDrawn) > 0.012 || fillDrawn < 0) {
         fillDrawn = fill;
