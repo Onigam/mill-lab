@@ -11,5 +11,6 @@
   "tags": ["water", "electricity", "off-grid"],
   "difficulty": 2,
   "minutes": 20,
+  "status": "building",
   "energyProfile": null
 }
