@@ -378,6 +378,13 @@ const LAB = {
     'Aucune image ni aucun texte de la vidéo n’est repris : seuls des faits et des chiffres, avec leur horodatage.',
     'No footage or text from the video is reused: only facts and figures, with their timestamps.',
   ],
+
+  // ---- lessons (lessons role, wave 3): the intro of the Lessons mode, to wire as `lessons: { intro: strL('lessonsIntroMill'), items: LESSONS }`
+  // (the template's `lessonsIntro` above is the lead's and stays unchanged)
+  lessonsIntroMill: [
+    'Six leçons courtes, de l’eau aux watts jusqu’à l’année du moulin. Chacune ouvre la vue 3D sur la pièce dont elle parle, souvent avec un scénario à lancer dans la Simulation, et finit par un petit quiz.',
+    'Six short lessons, from water to watts to the year of the mill. Each one opens the 3D view on the part it talks about, often with a scenario to run in the Simulation, and ends with a small quiz.',
+  ],
 } as const satisfies Record<string, readonly [string, string]>;
 
 registerStrings(LAB);
