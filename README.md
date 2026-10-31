@@ -28,6 +28,11 @@ built on the same frame, [lab-kit](https://github.com/Onigam/lab-kit).
 - **Eight A3 design drawings** generated from the same dimensions as the 3D model: the mill race in plan and profile, the screw in
   section, its blade module and core, the drive, the generator in section, the layout and the wiring of the powerhouse, and the
   "which turbine for my site?" chart.
+- **A spoken guide** in French and English: the speaker button in the header plays a short presentation of the lab, each world
+  and each part sheet has a "Listen" button, and the 3D view follows the voice (it flies to the parts being named, opens the
+  section or the exploded view). Subtitles are on by default, the voice is a synthetic one and says so on screen, nothing plays by
+  itself. The scripts are in `narration/fr.json` and `narration/en.json`, the audio and subtitles in `public/audio/<lang>/`
+  (generated with the lab kit's `tools/narration/generate.mjs`); `npm run build` checks that both agree.
 
 ## What is real and what is not
 
@@ -62,7 +67,7 @@ Vercel. `npm run kit:bump` moves to a newer lab-kit.
 
 ## Project layout
 
-- `src/three/` the two worlds and `dims.ts`, the single source of dimensions (metres, each tagged); `src/sim/` the pure physics
+- `src/three/` the four worlds and `dims.ts`, the single source of dimensions (metres, each tagged); `src/sim/` the pure physics
   (including `mech.ts`, the speed multiplier and generator matching); `src/data/` parts, guides, chapters, lessons;
   `src/drawings/` the A3 sheets; `src/panels/` the simulation panel; `src/lab.ts` describes the lab to the kit;
   `src/part-ids.ts` freezes the 47 part ids shared by all of them.
@@ -89,7 +94,8 @@ montre les poches d'eau, flux ; des guides de **montage** (34 étapes) et d'**in
 pièces** ; **huit leçons** avec quiz ; une **simulation** (géométrie de la vis par des règles de conception publiées, remplissage,
 fuites et pertes, transmission et génératrice sur batterie 48 V, roue pour comparaison, graphique chute et débit qui place chaque type
 de turbine, année d'hydrologie avec basses eaux et crues ; quatre préréglages, neuf scénarios) ; **huit plans A3** générés des cotes
-du modèle 3D.
+du modèle 3D ; un **guide parlé** en français et en anglais (présentation du labo, chaque monde et chaque fiche de pièce, la vue 3D
+suit la voix, sous-titres par défaut, voix de synthèse annoncée à l'écran, rien ne se lance tout seul).
 
 **Ce qui est réel, ce qui ne l'est pas.** Reconstitution pédagogique indépendante, aucune image des vidéos reprise. La source
 principale est une vidéo sur une vis d'Archimède en bois construite par une association dans un vieux moulin. **Cette association ne

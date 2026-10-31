@@ -1,0 +1,3214 @@
+{
+  "lang": "fr",
+  "model": "eleven_v4",
+  "generatedAt": "2026-10-31T06:38:10.683Z",
+  "voiceLabel": {
+    "fr": "Voix de synthèse",
+    "en": "Synthetic voice"
+  },
+  "totalSeconds": 1307.2,
+  "segments": [
+    {
+      "id": "intro",
+      "scope": "intro",
+      "title": "Présentation du labo",
+      "scene": "site",
+      "file": "intro.mp3",
+      "duration": 119.68,
+      "chars": 1978,
+      "hash": "71f9bbe0ac425701",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.92,
+          "text": "Imaginez un vieux moulin de pierre, au bord d’une rivière."
+        },
+        {
+          "t0": 3.92,
+          "t1": 5.96,
+          "text": "Sa roue est partie depuis longtemps…"
+        },
+        {
+          "t0": 5.96,
+          "t1": 8.56,
+          "text": "mais l’eau, elle, passe toujours."
+        },
+        {
+          "t0": 8.56,
+          "t1": 10.08,
+          "text": "Suivons une poche d’eau."
+        },
+        {
+          "t0": 10.08,
+          "t1": 15.68,
+          "text": "Pour l’instant, ce n’est qu’un peu de rivière, qui arrive devant un seuil et se détourne dans un canal."
+        },
+        {
+          "t0": 15.68,
+          "t1": 20.88,
+          "text": "Elle croise une grille à gros barreaux : un tronc s’arrête là, une feuille passe."
+        },
+        {
+          "t0": 20.88,
+          "t1": 23.52,
+          "text": "Puis voici la chambre d’eau, sous le moulin."
+        },
+        {
+          "t0": 23.52,
+          "t1": 24.53,
+          "text": "Entrons !"
+        },
+        {
+          "t0": 24.53,
+          "t1": 28.24,
+          "text": "Voici une vis d’Archimède : l’eau n’y tombe pas d’un coup,"
+        },
+        {
+          "t0": 28.32,
+          "t1": 32.64,
+          "text": "elle se glisse entre deux pales de bois, et la voilà prisonnière d’une poche."
+        },
+        {
+          "t0": 32.64,
+          "t1": 35.4,
+          "text": "Elle pèse sur la pale, la vis tourne…"
+        },
+        {
+          "t0": 35.4,
+          "t1": 37.96,
+          "text": "et la poche descend, comme sur un toboggan."
+        },
+        {
+          "t0": 37.96,
+          "t1": 41.88,
+          "text": "Presque un tour par seconde : bien trop lent pour une génératrice."
+        },
+        {
+          "t0": 41.88,
+          "t1": 47.08,
+          "text": "Alors une chaîne, puis une courroie, l’accélèrent : dix fois plus vite à l’arrivée."
+        },
+        {
+          "t0": 47.08,
+          "t1": 53.01,
+          "text": "Dans la génératrice, des aimants défilent devant des bobines de cuivre : la rotation devient courant !"
+        },
+        {
+          "t0": 53.01,
+          "t1": 58.28,
+          "text": "Le courant file au local technique, traverse ses protections, et s’en va dormir dans la batterie."
+        },
+        {
+          "t0": 58.28,
+          "t1": 62.96,
+          "text": "Et de retour sur le site, regardez bien la maison : une lampe s’allume."
+        },
+        {
+          "t0": 62.96,
+          "t1": 69.12,
+          "text": "Voilà toute l’histoire : une poche d’eau qui descend en tournant, et le soir, de la lumière."
+        },
+        {
+          "t0": 69.12,
+          "t1": 71.2,
+          "text": "Pour commencer, quelques repères."
+        },
+        {
+          "t0": 71.2,
+          "t1": 76.96,
+          "text": "Il y a quatre vues : le site, la vis, la génératrice ouverte et le local technique."
+        },
+        {
+          "t0": 76.96,
+          "t1": 81.52,
+          "text": "Cliquez sur une pièce : sa fiche s’ouvre, et vous pouvez écouter son histoire."
+        },
+        {
+          "t0": 81.52,
+          "t1": 85.68,
+          "text": "Le guide de montage assemble la vis comme un kit, pièce par pièce."
+        },
+        {
+          "t0": 85.68,
+          "t1": 89.68,
+          "text": "Le guide d’installation va de la rivière à la première mise en route."
+        },
+        {
+          "t0": 89.68,
+          "t1": 95.44,
+          "text": "La simulation vous laisse changer le débit, la chute, le jeu de la vis, et traverser une crue."
+        },
+        {
+          "t0": 95.44,
+          "t1": 98.64,
+          "text": "Des leçons, avec des quiz, expliquent la physique."
+        },
+        {
+          "t0": 98.64,
+          "t1": 101.36,
+          "text": "Les plans réunissent les dessins techniques."
+        },
+        {
+          "t0": 101.36,
+          "t1": 106.16,
+          "text": "Une dernière chose : ce laboratoire est une reconstitution pédagogique indépendante,"
+        },
+        {
+          "t0": 106.24,
+          "t1": 108.2,
+          "text": "inspirée d’une vidéo publique."
+        },
+        {
+          "t0": 108.2,
+          "t1": 111.52,
+          "text": "Ce n’est pas un plan de construction : la vis est générique,"
+        },
+        {
+          "t0": 111.6,
+          "t1": 115.12,
+          "text": "car l’association de la vidéo ne publie aucune dimension."
+        },
+        {
+          "t0": 115.12,
+          "t1": 118.92,
+          "text": "Sauf quand je cite la vidéo, les chiffres viennent de la simulation."
+        },
+        {
+          "t0": 118.92,
+          "t1": 119.68,
+          "text": "À vous de jouer !"
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 8.56,
+          "do": {
+            "frame": [
+              "river"
+            ]
+          }
+        },
+        {
+          "t": 12.72,
+          "do": {
+            "frame": [
+              "weir"
+            ]
+          }
+        },
+        {
+          "t": 15.68,
+          "do": {
+            "frame": [
+              "headrace",
+              "trash-rack"
+            ]
+          }
+        },
+        {
+          "t": 20.88,
+          "do": {
+            "frame": [
+              "water-chamber"
+            ]
+          }
+        },
+        {
+          "t": 23.52,
+          "do": {
+            "scene": "screw"
+          }
+        },
+        {
+          "t": 32.64,
+          "do": {
+            "frame": [
+              "trapped-water"
+            ]
+          }
+        },
+        {
+          "t": 37.96,
+          "do": {
+            "frame": [
+              "chain"
+            ]
+          }
+        },
+        {
+          "t": 43.16,
+          "do": {
+            "frame": [
+              "belt"
+            ]
+          }
+        },
+        {
+          "t": 47.08,
+          "do": {
+            "scene": "generator"
+          }
+        },
+        {
+          "t": 53.01,
+          "do": {
+            "scene": "powerroom"
+          }
+        },
+        {
+          "t": 56.36,
+          "do": {
+            "frame": [
+              "battery"
+            ]
+          }
+        },
+        {
+          "t": 58.28,
+          "do": {
+            "scene": "site"
+          }
+        },
+        {
+          "t": 61.28,
+          "do": {
+            "frame": [
+              "house-load"
+            ]
+          }
+        },
+        {
+          "t": 69.12,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 81.52,
+          "do": {
+            "mode": "assembly"
+          }
+        },
+        {
+          "t": 85.68,
+          "do": {
+            "mode": "install"
+          }
+        },
+        {
+          "t": 89.68,
+          "do": {
+            "mode": "sim"
+          }
+        },
+        {
+          "t": 95.44,
+          "do": {
+            "mode": "lessons"
+          }
+        },
+        {
+          "t": 98.64,
+          "do": {
+            "mode": "plans"
+          }
+        },
+        {
+          "t": 101.36,
+          "do": {
+            "mode": "explore"
+          }
+        },
+        {
+          "t": 108.2,
+          "do": {
+            "scene": "site"
+          }
+        },
+        {
+          "t": 118.92,
+          "do": {
+            "select": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-site",
+      "scope": "scene:site",
+      "title": "Le site : du seuil à la maison",
+      "scene": "site",
+      "file": "scene-site.mp3",
+      "duration": 35.6,
+      "chars": 639,
+      "hash": "1a53ffc5fc426f1f",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.96,
+          "text": "Voici le site, à l’échelle : une rivière, un vieux moulin, une maison."
+        },
+        {
+          "t0": 4.96,
+          "t1": 9.16,
+          "text": "Notre poche d’eau quitte la rivière, bute sur le seuil, puis prend le bief."
+        },
+        {
+          "t0": 9.16,
+          "t1": 12.08,
+          "text": "Un canal presque plat, qui garde toute la chute."
+        },
+        {
+          "t0": 12.08,
+          "t1": 17.8,
+          "text": "Une grille à gros barreaux, une vanne qui ferme la porte, et la voici dans la chambre d’eau, sous le moulin."
+        },
+        {
+          "t0": 17.8,
+          "t1": 23.32,
+          "text": "Elle ressort par le canal de fuite, pendant que la rivière garde sa part, avec une passe pour les poissons."
+        },
+        {
+          "t0": 23.32,
+          "t1": 28.4,
+          "text": "L’électricité, elle, file au local technique, puis à la maison, où une lampe l’attend."
+        },
+        {
+          "t0": 28.4,
+          "t1": 33.88,
+          "text": "Une précaution : prendre l’eau d’une rivière demande un droit d’eau, et une part doit toujours y rester."
+        },
+        {
+          "t0": 33.88,
+          "t1": 35.6,
+          "text": "Renseignez-vous avant tout projet."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 4.96,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 4.96,
+          "do": {
+            "frame": [
+              "river"
+            ]
+          }
+        },
+        {
+          "t": 6.84,
+          "do": {
+            "frame": [
+              "weir"
+            ]
+          }
+        },
+        {
+          "t": 9.16,
+          "do": {
+            "frame": [
+              "headrace"
+            ]
+          }
+        },
+        {
+          "t": 12.08,
+          "do": {
+            "frame": [
+              "trash-rack",
+              "intake-gate"
+            ]
+          }
+        },
+        {
+          "t": 15.24,
+          "do": {
+            "frame": [
+              "water-chamber"
+            ]
+          }
+        },
+        {
+          "t": 17.8,
+          "do": {
+            "frame": [
+              "tailrace"
+            ]
+          }
+        },
+        {
+          "t": 19.6,
+          "do": {
+            "frame": [
+              "reserved-flow-notch",
+              "fish-pass"
+            ]
+          }
+        },
+        {
+          "t": 23.32,
+          "do": {
+            "frame": [
+              "powerhouse"
+            ]
+          }
+        },
+        {
+          "t": 26,
+          "do": {
+            "frame": [
+              "house-load"
+            ]
+          }
+        },
+        {
+          "t": 28.4,
+          "do": {
+            "flows": false
+          }
+        },
+        {
+          "t": 28.4,
+          "do": {
+            "home": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-screw",
+      "scope": "scene:screw",
+      "title": "La vis dans sa chambre",
+      "scene": "screw",
+      "file": "scene-screw.mp3",
+      "duration": 36.64,
+      "chars": 641,
+      "hash": "62784d2b3fc53a8b",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.72,
+          "text": "Voici la vis dans sa chambre, avec son eau."
+        },
+        {
+          "t0": 2.72,
+          "t1": 6.64,
+          "text": "L’eau entre par le seuil d’entrée, se range en poches entre les pales,"
+        },
+        {
+          "t0": 6.68,
+          "t1": 9.44,
+          "text": "puis descend l’auge en faisant tourner la vis."
+        },
+        {
+          "t0": 9.44,
+          "t1": 14.84,
+          "text": "Trois filets de bois sur un noyau central, portés par deux paliers, un en haut, un en bas."
+        },
+        {
+          "t0": 14.84,
+          "t1": 18.2,
+          "text": "Au pied de la pente, l’eau repart par le bassin de sortie."
+        },
+        {
+          "t0": 18.2,
+          "t1": 22.92,
+          "text": "Cette rotation lente, une chaîne la reprend, puis une courroie l’accélère encore."
+        },
+        {
+          "t0": 22.92,
+          "t1": 26.24,
+          "text": "Elle arrive enfin à la génératrice, qui en fera du courant."
+        },
+        {
+          "t0": 26.24,
+          "t1": 29.76,
+          "text": "En coupe, on voit les poches d’eau descendre comme un escalier."
+        },
+        {
+          "t0": 29.76,
+          "t1": 32.92,
+          "text": "Écartons maintenant les couches, du tube jusqu’aux boulons."
+        },
+        {
+          "t0": 32.92,
+          "t1": 36.64,
+          "text": "Suivez une poche, du haut jusqu’en bas : c’est tout le secret !"
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 2.72,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 2.72,
+          "do": {
+            "frame": [
+              "inlet-sill"
+            ]
+          }
+        },
+        {
+          "t": 4.72,
+          "do": {
+            "frame": [
+              "trapped-water"
+            ]
+          }
+        },
+        {
+          "t": 6.68,
+          "do": {
+            "frame": [
+              "trough"
+            ]
+          }
+        },
+        {
+          "t": 9.44,
+          "do": {
+            "frame": [
+              "blade-module",
+              "screw-core"
+            ]
+          }
+        },
+        {
+          "t": 11.8,
+          "do": {
+            "frame": [
+              "upper-bearing",
+              "lower-bearing"
+            ]
+          }
+        },
+        {
+          "t": 14.84,
+          "do": {
+            "frame": [
+              "outlet-pool"
+            ]
+          }
+        },
+        {
+          "t": 18.2,
+          "do": {
+            "frame": [
+              "chain"
+            ]
+          }
+        },
+        {
+          "t": 20.76,
+          "do": {
+            "frame": [
+              "belt"
+            ]
+          }
+        },
+        {
+          "t": 22.92,
+          "do": {
+            "frame": [
+              "generator"
+            ]
+          }
+        },
+        {
+          "t": 26.24,
+          "do": {
+            "flows": false
+          }
+        },
+        {
+          "t": 26.24,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 26.24,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 29.76,
+          "do": {
+            "cutaway": false
+          }
+        },
+        {
+          "t": 29.76,
+          "do": {
+            "explode": 0.6
+          }
+        },
+        {
+          "t": 32.92,
+          "do": {
+            "explode": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-generator",
+      "scope": "scene:generator",
+      "title": "La génératrice ouverte",
+      "scene": "generator",
+      "file": "scene-generator.mp3",
+      "duration": 35.76,
+      "chars": 619,
+      "hash": "5a242aade62ad7c3",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.48,
+          "text": "Voici la génératrice, ouverte."
+        },
+        {
+          "t0": 2.48,
+          "t1": 7.84,
+          "text": "La vidéo en montre une du commerce, sans l’ouvrir : cet intérieur est une image générique."
+        },
+        {
+          "t0": 7.84,
+          "t1": 14.32,
+          "text": "La carcasse, ronde et fermée, tient le stator : des tôles à dents, et sur chaque dent une bobine de cuivre."
+        },
+        {
+          "t0": 14.32,
+          "t1": 18.16,
+          "text": "Au centre, le rotor et ses aimants, nord et sud en alternance."
+        },
+        {
+          "t0": 18.16,
+          "t1": 20.6,
+          "text": "Il tourne avec l’arbre, sur deux roulements."
+        },
+        {
+          "t0": 20.6,
+          "t1": 22.8,
+          "text": "Et le courant sort par la boîte à bornes."
+        },
+        {
+          "t0": 22.8,
+          "t1": 27.44,
+          "text": "En coupe, presque rien entre les aimants et les bobines : un entrefer minuscule."
+        },
+        {
+          "t0": 27.44,
+          "t1": 30.52,
+          "text": "En transparence, on voit tout ce que la carcasse cache."
+        },
+        {
+          "t0": 30.52,
+          "t1": 32.36,
+          "text": "Suivez le courant des trois phases."
+        },
+        {
+          "t0": 32.36,
+          "t1": 35.76,
+          "text": "Puis écartons les pièces, une à une, comme un jeu de construction."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 7.84,
+          "do": {
+            "frame": [
+              "gen-frame"
+            ]
+          }
+        },
+        {
+          "t": 11.15,
+          "do": {
+            "frame": [
+              "gen-stator",
+              "gen-coils"
+            ]
+          }
+        },
+        {
+          "t": 14.32,
+          "do": {
+            "frame": [
+              "gen-rotor",
+              "gen-magnets"
+            ]
+          }
+        },
+        {
+          "t": 18.16,
+          "do": {
+            "frame": [
+              "gen-shaft",
+              "gen-bearings"
+            ]
+          }
+        },
+        {
+          "t": 20.6,
+          "do": {
+            "frame": [
+              "gen-terminals"
+            ]
+          }
+        },
+        {
+          "t": 22.8,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 22.8,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 27.44,
+          "do": {
+            "cutaway": false
+          }
+        },
+        {
+          "t": 27.44,
+          "do": {
+            "xray": true
+          }
+        },
+        {
+          "t": 30.52,
+          "do": {
+            "xray": false
+          }
+        },
+        {
+          "t": 30.52,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 32.36,
+          "do": {
+            "flows": false
+          }
+        },
+        {
+          "t": 32.36,
+          "do": {
+            "explode": 0.6
+          }
+        },
+        {
+          "t": 35.76,
+          "do": {
+            "explode": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-powerroom",
+      "scope": "scene:powerroom",
+      "title": "Le local technique, de l’intérieur",
+      "scene": "powerroom",
+      "file": "scene-powerroom.mp3",
+      "duration": 37.68,
+      "chars": 669,
+      "hash": "1d41955248f9dccd",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.76,
+          "text": "Voici le mur du local technique, lu dans l’ordre du courant."
+        },
+        {
+          "t0": 3.76,
+          "t1": 6.72,
+          "text": "D’abord les protections, qui permettent de tout couper."
+        },
+        {
+          "t0": 6.72,
+          "t1": 9.6,
+          "text": "Le redresseur change l’alternatif en continu."
+        },
+        {
+          "t0": 9.6,
+          "t1": 14.76,
+          "text": "Le régulateur décide de ce que reçoit la batterie, qui garde l’énergie pour les jours sans eau."
+        },
+        {
+          "t0": 14.76,
+          "t1": 17.8,
+          "text": "Le surplus file vers la charge de délestage."
+        },
+        {
+          "t0": 17.8,
+          "t1": 22.68,
+          "text": "L’onduleur fabrique l’alternatif de la maison, et le compteur compte les kilowattheures."
+        },
+        {
+          "t0": 22.68,
+          "t1": 26.4,
+          "text": "Le tableau porte l’ensemble, et la terre protège les gens."
+        },
+        {
+          "t0": 26.4,
+          "t1": 29.76,
+          "text": "Décollons les appareils du mur, un par un, pour mieux les voir."
+        },
+        {
+          "t0": 29.76,
+          "t1": 34.32,
+          "text": "Une remarque : le labo range les protections en tête du mur, pour qu’on les trouve."
+        },
+        {
+          "t0": 34.32,
+          "t1": 37.68,
+          "text": "Sur une vraie installation, leur place est le choix d’un électricien."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 3.76,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 3.76,
+          "do": {
+            "frame": [
+              "dc-breaker",
+              "fuse-box"
+            ]
+          }
+        },
+        {
+          "t": 6.72,
+          "do": {
+            "frame": [
+              "rectifier"
+            ]
+          }
+        },
+        {
+          "t": 9.6,
+          "do": {
+            "frame": [
+              "charge-controller"
+            ]
+          }
+        },
+        {
+          "t": 12.4,
+          "do": {
+            "frame": [
+              "battery"
+            ]
+          }
+        },
+        {
+          "t": 14.76,
+          "do": {
+            "frame": [
+              "dump-load"
+            ]
+          }
+        },
+        {
+          "t": 17.8,
+          "do": {
+            "frame": [
+              "inverter"
+            ]
+          }
+        },
+        {
+          "t": 20.36,
+          "do": {
+            "frame": [
+              "energy-meter"
+            ]
+          }
+        },
+        {
+          "t": 22.68,
+          "do": {
+            "frame": [
+              "switchboard",
+              "earthing"
+            ]
+          }
+        },
+        {
+          "t": 26.4,
+          "do": {
+            "flows": false
+          }
+        },
+        {
+          "t": 26.4,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 26.4,
+          "do": {
+            "explode": 0.6
+          }
+        },
+        {
+          "t": 29.76,
+          "do": {
+            "explode": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-river",
+      "scope": "part:river",
+      "title": "Rivière",
+      "scene": "site",
+      "file": "part-river.mp3",
+      "duration": 20.08,
+      "chars": 348,
+      "hash": "3c84fb081cce1984",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.96,
+          "text": "Notre poche d’eau commence ici, dans la rivière."
+        },
+        {
+          "t0": 2.96,
+          "t1": 7.12,
+          "text": "Une centrale n’use pas l’eau : elle l’emprunte, puis la rend plus bas."
+        },
+        {
+          "t0": 7.12,
+          "t1": 13,
+          "text": "Entre la prise et le retour, le lit ne reçoit que sa part réservée, plus le surplus des crues."
+        },
+        {
+          "t0": 13,
+          "t1": 17.12,
+          "text": "Plantez une échelle graduée dans le lit, et notez le niveau avec la date."
+        },
+        {
+          "t0": 17.12,
+          "t1": 20.08,
+          "text": "En quelques saisons, vous connaîtrez l’année vraie du site."
+        }
+      ],
+      "cues": [
+        {
+          "t": 2.96,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 20.08,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-weir",
+      "scope": "part:weir",
+      "title": "Seuil",
+      "scene": "site",
+      "file": "part-weir.mp3",
+      "duration": 20.8,
+      "chars": 350,
+      "hash": "f00b74e40860a857",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.12,
+          "text": "Un petit mur en travers de la rivière : à quoi bon ?"
+        },
+        {
+          "t0": 3.12,
+          "t1": 5.28,
+          "text": "Eh bien, l’eau monte d’un cran."
+        },
+        {
+          "t0": 5.28,
+          "t1": 9.48,
+          "text": "Ce cran fait une part de la chute, et pousse l’eau vers la prise du canal."
+        },
+        {
+          "t0": 9.48,
+          "t1": 11.88,
+          "text": "Le surplus déborde par la crête."
+        },
+        {
+          "t0": 11.88,
+          "t1": 17.16,
+          "text": "Mais le seuil barre aussi la route aux poissons et aux graviers : d’où l’échancrure et la passe."
+        },
+        {
+          "t0": 17.16,
+          "t1": 20.8,
+          "text": "Sa hauteur fixe la chute : ne la changez jamais à la légère."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-headrace",
+      "scope": "part:headrace",
+      "title": "Bief d’amenée",
+      "scene": "site",
+      "file": "part-headrace.mp3",
+      "duration": 18.4,
+      "chars": 335,
+      "hash": "5c17d97f8f29b5f0",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.12,
+          "text": "Un canal qui ne descend presque pas : à quoi ça sert ?"
+        },
+        {
+          "t0": 3.12,
+          "t1": 5.15,
+          "text": "Justement, c’est sa qualité !"
+        },
+        {
+          "t0": 5.15,
+          "t1": 9.36,
+          "text": "Il amène l’eau à la chambre sans lui faire perdre la chute qu’on garde pour la vis."
+        },
+        {
+          "t0": 9.36,
+          "t1": 13.08,
+          "text": "Chaque centimètre perdu en route coûte environ dix-huit watts d’eau."
+        },
+        {
+          "t0": 13.08,
+          "t1": 18.4,
+          "text": "Dans la vidéo, il finit en chenal de bois étanche, glissé dans l’ancien conduit sans rien casser."
+        }
+      ],
+      "cues": [
+        {
+          "t": 5.15,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 18.4,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-trash-rack",
+      "scope": "part:trash-rack",
+      "title": "Grille grossière",
+      "scene": "site",
+      "file": "part-trash-rack.mp3",
+      "duration": 24.88,
+      "chars": 446,
+      "hash": "702a276d9dac51c7",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.87,
+          "text": "Une grille, mais pas n’importe laquelle : à gros barreaux !"
+        },
+        {
+          "t0": 3.87,
+          "t1": 7.64,
+          "text": "Une turbine rapide veut une grille serrée, qu’il faut racler sans cesse."
+        },
+        {
+          "t0": 7.64,
+          "t1": 11.44,
+          "text": "Et une grille qui se bouche mange la chute : bouchée à quatre-vingt-dix pour cent,"
+        },
+        {
+          "t0": 11.52,
+          "t1": 13.6,
+          "text": "elle prend plus que la chute entière."
+        },
+        {
+          "t0": 13.6,
+          "t1": 17.16,
+          "text": "La vis, elle, laisse passer feuilles, graviers et poissons."
+        },
+        {
+          "t0": 17.16,
+          "t1": 19.04,
+          "text": "Seuls les troncs s’arrêtent ici."
+        },
+        {
+          "t0": 19.04,
+          "t1": 24.88,
+          "text": "Ne confondez pas : une grille dans l’eau protège la vis, un garde-corps au-dessus protège les gens."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-intake-gate",
+      "scope": "part:intake-gate",
+      "title": "Vanne de tête",
+      "scene": "site",
+      "file": "part-intake-gate.mp3",
+      "duration": 25.52,
+      "chars": 414,
+      "hash": "bbfb181e158a5ff2",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.92,
+          "text": "La porte de la machine : notre poche d’eau attend derrière."
+        },
+        {
+          "t0": 3.92,
+          "t1": 8.4,
+          "text": "Ouverte, l’eau descend le canal ; fermée, la vis s’arrête."
+        },
+        {
+          "t0": 8.4,
+          "t1": 11.72,
+          "text": "On la ferme pour travailler, en crue, et en basses eaux."
+        },
+        {
+          "t0": 11.72,
+          "t1": 17.92,
+          "text": "La vidéo en montre deux : une petite vanne de sécurité, et une vanne de contrôle motorisée, faite maison."
+        },
+        {
+          "t0": 17.92,
+          "t1": 23.8,
+          "text": "Avant tout travail dans le canal ou sur la vis : fermez, et posez un cadenas dont vous gardez la clé."
+        },
+        {
+          "t0": 23.8,
+          "t1": 25.52,
+          "text": "Puis attendez l’arrêt complet."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-reserved-flow-notch",
+      "scope": "part:reserved-flow-notch",
+      "title": "Échancrure du débit réservé",
+      "scene": "site",
+      "file": "part-reserved-flow-notch.mp3",
+      "duration": 23.68,
+      "chars": 404,
+      "hash": "823d284411f58e26",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.4,
+          "text": "Même quand la machine prend presque tout, une part de l’eau doit rester dans la rivière."
+        },
+        {
+          "t0": 4.4,
+          "t1": 7.76,
+          "text": "L’astuce : une simple entaille calibrée dans la crête."
+        },
+        {
+          "t0": 7.76,
+          "t1": 11.92,
+          "text": "Aucune pièce mobile, aucun opérateur : pas de panne, pas d’oubli."
+        },
+        {
+          "t0": 11.92,
+          "t1": 16.08,
+          "text": "En été, dit la vidéo, la machine s’arrête plutôt que de prendre cette eau."
+        },
+        {
+          "t0": 16.08,
+          "t1": 21.12,
+          "text": "Ici, le labo suppose un dixième du débit moyen : trente litres par seconde."
+        },
+        {
+          "t0": 21.12,
+          "t1": 23.68,
+          "text": "Trois seaux de dix litres, chaque seconde !"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-fish-pass",
+      "scope": "part:fish-pass",
+      "title": "Passe à poissons",
+      "scene": "site",
+      "file": "part-fish-pass.mp3",
+      "duration": 21.04,
+      "chars": 373,
+      "hash": "587fc51615789595",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.16,
+          "text": "Un poisson ne fait pas que descendre la rivière : il doit aussi la remonter !"
+        },
+        {
+          "t0": 4.16,
+          "t1": 6.16,
+          "text": "La vis aide à la descente."
+        },
+        {
+          "t0": 6.16,
+          "t1": 11.68,
+          "text": "La vidéo la décrit comme un toboggan, où le poisson reste dans sa poche d’eau et descend avec elle."
+        },
+        {
+          "t0": 11.68,
+          "t1": 15.76,
+          "text": "Pour la montée, il faut une passe : de petits bassins en escalier."
+        },
+        {
+          "t0": 15.76,
+          "t1": 21.04,
+          "text": "Les constructeurs de la vidéo en préparent une en bois, et veulent mesurer son effet, avant et après."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-water-chamber",
+      "scope": "part:water-chamber",
+      "title": "Chambre d’eau",
+      "scene": "site",
+      "file": "part-water-chamber.mp3",
+      "duration": 21.92,
+      "chars": 370,
+      "hash": "670f0c4d00c3bba9",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.2,
+          "text": "Voici l’arrivée de notre poche d’eau : la chambre d’eau, la salle de pierre sous le moulin."
+        },
+        {
+          "t0": 5.2,
+          "t1": 9.68,
+          "text": "L’eau y tombait jadis sur la roue ; la vis s’y pose, sans rien casser."
+        },
+        {
+          "t0": 9.68,
+          "t1": 14.72,
+          "text": "L’accès se fait souvent par une échelle, sans engin de levage : la machine arrive donc en kit."
+        },
+        {
+          "t0": 14.72,
+          "t1": 16.32,
+          "text": "Cliquez pour y entrer."
+        },
+        {
+          "t0": 16.32,
+          "t1": 21.92,
+          "text": "Dans une vraie chambre, ne descendez jamais seul : espace confiné, eau, pierre glissante."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-tailrace",
+      "scope": "part:tailrace",
+      "title": "Canal de fuite",
+      "scene": "site",
+      "file": "part-tailrace.mp3",
+      "duration": 17.04,
+      "chars": 319,
+      "hash": "94d88a2ae6855545",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.16,
+          "text": "On pense à la hauteur d’où l’eau tombe ; on oublie celle où elle atterrit."
+        },
+        {
+          "t0": 4.16,
+          "t1": 10.32,
+          "text": "Notre poche, elle, repart vers la rivière par le canal de fuite : une centaine de mètres dans le moulin de la vidéo."
+        },
+        {
+          "t0": 10.32,
+          "t1": 13.6,
+          "text": "Quand la rivière monte, il se remplit, et la chute fond."
+        },
+        {
+          "t0": 13.6,
+          "t1": 17.04,
+          "text": "À la fermeture en crue, il n’en reste que cinquante-huit centimètres !"
+        }
+      ],
+      "cues": [
+        {
+          "t": 4.16,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 17.04,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-mill-building",
+      "scope": "part:mill-building",
+      "title": "Moulin",
+      "scene": "site",
+      "file": "part-mill-building.mp3",
+      "duration": 18.4,
+      "chars": 334,
+      "hash": "12f2068b06d3f1cb",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.36,
+          "text": "On ne reconstruit pas un moulin pour y mettre une machine : on met la machine dans le moulin."
+        },
+        {
+          "t0": 5.36,
+          "t1": 9.56,
+          "text": "Voici le bâtiment de pierre, vieux de plusieurs siècles, au-dessus de la chambre."
+        },
+        {
+          "t0": 9.56,
+          "t1": 11.68,
+          "text": "La vidéo tient à n’y rien casser."
+        },
+        {
+          "t0": 11.68,
+          "t1": 14.68,
+          "text": "Sa hauteur sous plancher limite la longueur de la vis."
+        },
+        {
+          "t0": 14.68,
+          "t1": 18.4,
+          "text": "Vis en marche, posez la main sur le plancher : il ne doit pas vibrer."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-powerhouse",
+      "scope": "part:powerhouse",
+      "title": "Local technique",
+      "scene": "site",
+      "file": "part-powerhouse.mp3",
+      "duration": 19.36,
+      "chars": 348,
+      "hash": "dd4912b57e2812ee",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.12,
+          "text": "Une seule pièce sur le site, et pourtant tout un mur d’appareils : le local technique."
+        },
+        {
+          "t0": 5.12,
+          "t1": 8.12,
+          "text": "Il est sec, au-dessus des crues, et près de la maison."
+        },
+        {
+          "t0": 8.12,
+          "t1": 14.76,
+          "text": "En basse tension, le courant est fort et les pertes du câble croissent comme son carré : le câble doit donc être court."
+        },
+        {
+          "t0": 14.76,
+          "t1": 19.36,
+          "text": "Cliquez sur le local pour y entrer : vous suivrez le courant, appareil après appareil."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-house-load",
+      "scope": "part:house-load",
+      "title": "Maison",
+      "scene": "site",
+      "file": "part-house-load.mp3",
+      "duration": 26.32,
+      "chars": 481,
+      "hash": "6c5187dd086509d8",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.44,
+          "text": "Au bout du fil, la maison : le voyage de notre poche d’eau s’arrête ici, devant une lampe."
+        },
+        {
+          "t0": 5.44,
+          "t1": 11.12,
+          "text": "La vidéo vise l’autoconsommation : chaque kilowattheure produit est un kilowattheure qu’on n’achète pas."
+        },
+        {
+          "t0": 11.12,
+          "t1": 15.04,
+          "text": "Ce qui compte, c’est le nombre d’heures dans l’année, pas la puissance d’un instant."
+        },
+        {
+          "t0": 15.04,
+          "t1": 18.68,
+          "text": "La vis tourne l’hiver et la nuit, quand le solaire se repose."
+        },
+        {
+          "t0": 18.68,
+          "t1": 21.8,
+          "text": "Le prototype de la vidéo annonce environ deux cents watts."
+        },
+        {
+          "t0": 21.8,
+          "t1": 26.32,
+          "text": "La taille réelle en vise environ deux kilowatts : des espoirs, pas des mesures."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-trough",
+      "scope": "part:trough",
+      "title": "Auge",
+      "scene": "screw",
+      "file": "part-trough.mp3",
+      "duration": 20.88,
+      "chars": 341,
+      "hash": "0e6be603e25082a9",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.56,
+          "text": "La vis est la partie facile : le plus dur, c’est le tube qui l’entoure."
+        },
+        {
+          "t0": 4.56,
+          "t1": 10.72,
+          "text": "Il doit être bien rond, avec un jeu minuscule autour des pales : environ quatre millimètres ici."
+        },
+        {
+          "t0": 10.72,
+          "t1": 15.4,
+          "text": "Par ce jeu, l’eau fuit d’une poche vers celle du dessous sans rien produire."
+        },
+        {
+          "t0": 15.4,
+          "t1": 17.96,
+          "text": "Dans la vidéo, c’est la grande difficulté."
+        },
+        {
+          "t0": 17.96,
+          "t1": 20.88,
+          "text": "Tant que la vis tourne, n’entrez jamais dans l’auge."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 20.88,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-screw-core",
+      "scope": "part:screw-core",
+      "title": "Noyau central",
+      "scene": "screw",
+      "file": "part-screw-core.mp3",
+      "duration": 20.88,
+      "chars": 351,
+      "hash": "cc76501c5b31d662",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.52,
+          "text": "Trois filets s’enroulent autour de lui, comme les trois fils d’un filetage géant : le noyau."
+        },
+        {
+          "t0": 5.52,
+          "t1": 8.08,
+          "text": "Les modules de pales se vissent par-dessus."
+        },
+        {
+          "t0": 8.08,
+          "t1": 12.96,
+          "text": "Son diamètre suit une règle publiée : un peu plus de la moitié de celui de la vis."
+        },
+        {
+          "t0": 12.96,
+          "t1": 16.8,
+          "text": "Trop gros, il prend la place de l’eau ; trop fin, il plie."
+        },
+        {
+          "t0": 16.8,
+          "t1": 20.88,
+          "text": "Gardez son bois dans l’eau ou bien sec, pas tantôt l’un, tantôt l’autre."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 20.88,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-blade-module",
+      "scope": "part:blade-module",
+      "title": "Module de pales",
+      "scene": "screw",
+      "file": "part-blade-module.mp3",
+      "duration": 23.04,
+      "chars": 411,
+      "hash": "2f933724f9d63dee",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.36,
+          "text": "Une vis de bois…"
+        },
+        {
+          "t0": 1.36,
+          "t1": 2.45,
+          "text": "en kit !"
+        },
+        {
+          "t0": 2.45,
+          "t1": 5.92,
+          "text": "La vidéo la découpe en pièces : des pièces longues sur le noyau,"
+        },
+        {
+          "t0": 5.96,
+          "t1": 8.8,
+          "text": "puis des modules de trois pales à visser par-dessus."
+        },
+        {
+          "t0": 8.8,
+          "t1": 12.08,
+          "text": "On monte donc la machine dans la chambre, et on la répare chez soi."
+        },
+        {
+          "t0": 12.08,
+          "t1": 13.15,
+          "text": "Une pale casse ?"
+        },
+        {
+          "t0": 13.15,
+          "t1": 15.32,
+          "text": "On dévisse le module, on le change."
+        },
+        {
+          "t0": 15.32,
+          "t1": 19.68,
+          "text": "Chaque pale est une hélice, qui avance de quatre-vingt-six centimètres par tour."
+        },
+        {
+          "t0": 19.68,
+          "t1": 23.04,
+          "text": "Changez un module à la fois, et gardez les trois filets en phase."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "explode": 0.6
+          }
+        },
+        {
+          "t": 23.04,
+          "do": {
+            "explode": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-blade-fastener",
+      "scope": "part:blade-fastener",
+      "title": "Fixations des pales",
+      "scene": "screw",
+      "file": "part-blade-fastener.mp3",
+      "duration": 21.28,
+      "chars": 367,
+      "hash": "002ea92146715722",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.56,
+          "text": "Pas de colle : des vis et des boulons."
+        },
+        {
+          "t0": 2.56,
+          "t1": 6.16,
+          "text": "La vidéo y insiste, on peut dévisser et revisser."
+        },
+        {
+          "t0": 6.16,
+          "t1": 12.16,
+          "text": "Chaque fixation traverse le bois du module et le serre sur le noyau : par elle passe toute la poussée de l’eau."
+        },
+        {
+          "t0": 12.16,
+          "t1": 16.4,
+          "text": "Elles sont dessinées en acier inoxydable, car un acier nu rouillerait vite."
+        },
+        {
+          "t0": 16.4,
+          "t1": 21.28,
+          "text": "Resserrez en croix après les premières semaines, puis à chaque saison : le bois travaille."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "explode": 0.6
+          }
+        },
+        {
+          "t": 21.28,
+          "do": {
+            "explode": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-upper-bearing",
+      "scope": "part:upper-bearing",
+      "title": "Palier haut",
+      "scene": "screw",
+      "file": "part-upper-bearing.mp3",
+      "duration": 17.92,
+      "chars": 336,
+      "hash": "c6bbbf63b17369d3",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2,
+          "text": "Deux roulements, deux métiers."
+        },
+        {
+          "t0": 2,
+          "t1": 4.96,
+          "text": "Celui du haut guide l’extrémité haute de la vis."
+        },
+        {
+          "t0": 4.96,
+          "t1": 10.64,
+          "text": "Dans ce dessin, c’est aussi lui qui retient la poussée, car une vis penchée tend à glisser vers le bas."
+        },
+        {
+          "t0": 10.64,
+          "t1": 13.6,
+          "text": "C’est par ce bout que l’arbre sort vers la transmission."
+        },
+        {
+          "t0": 13.6,
+          "t1": 17.92,
+          "text": "Gardez un roulement de rechange identique : on ne le trouve pas toujours le jour où il le faut."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-lower-bearing",
+      "scope": "part:lower-bearing",
+      "title": "Palier bas",
+      "scene": "screw",
+      "file": "part-lower-bearing.mp3",
+      "duration": 21.52,
+      "chars": 373,
+      "hash": "58662c0d28d31ab9",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.6,
+          "text": "En bas, près de l’eau, voici le roulement le plus exposé."
+        },
+        {
+          "t0": 3.6,
+          "t1": 6.8,
+          "text": "Il guide l’extrémité basse sans porter la poussée."
+        },
+        {
+          "t0": 6.8,
+          "t1": 12.4,
+          "text": "Mais il vit éclaboussé, parfois noyé en crue : joints et graisse sont choisis pour l’eau."
+        },
+        {
+          "t0": 12.4,
+          "t1": 18.48,
+          "text": "Les deux paliers doivent tenir la vis sur une même droite : quelques millimètres de défaut font frotter les pales."
+        },
+        {
+          "t0": 18.48,
+          "t1": 21.52,
+          "text": "Une graisse laiteuse, c’est de la graisse qui a pris l’eau."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-inlet-sill",
+      "scope": "part:inlet-sill",
+      "title": "Seuil d’entrée",
+      "scene": "screw",
+      "file": "part-inlet-sill.mp3",
+      "duration": 21.2,
+      "chars": 378,
+      "hash": "952225360c49534d",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.92,
+          "text": "Une vis ne fixe pas son débit : elle avale ce qui arrive."
+        },
+        {
+          "t0": 3.92,
+          "t1": 7.68,
+          "text": "L’eau du canal déborde le seuil d’entrée et tombe dans les premières poches."
+        },
+        {
+          "t0": 7.68,
+          "t1": 8.83,
+          "text": "Il en arrive moins ?"
+        },
+        {
+          "t0": 8.83,
+          "t1": 14,
+          "text": "Le niveau amont baisse un peu, mais la vis garde son rendement, même à un tiers du débit."
+        },
+        {
+          "t0": 14,
+          "t1": 16.93,
+          "text": "Quel atout, pour une rivière qui change toute l’année !"
+        },
+        {
+          "t0": 16.93,
+          "t1": 21.2,
+          "text": "À la première mise en eau, montez le niveau peu à peu, génératrice branchée."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 21.2,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-outlet-pool",
+      "scope": "part:outlet-pool",
+      "title": "Bassin de sortie",
+      "scene": "screw",
+      "file": "part-outlet-pool.mp3",
+      "duration": 22.4,
+      "chars": 388,
+      "hash": "8b8a7f929668c884",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.52,
+          "text": "Ici, notre poche se vide, et c’est la hauteur où l’eau atterrit qui compte."
+        },
+        {
+          "t0": 4.52,
+          "t1": 6.36,
+          "text": "Le bassin de sortie la reçoit."
+        },
+        {
+          "t0": 6.36,
+          "t1": 12.08,
+          "text": "Trop haut, il noie les dernières poches ; trop bas, elles se vident trop tôt, et l’eau tombe pour rien."
+        },
+        {
+          "t0": 12.08,
+          "t1": 17.36,
+          "text": "Si l’eau aval monte d’un demi-mètre, la machine perd un bon tiers de son électricité !"
+        },
+        {
+          "t0": 17.36,
+          "t1": 22.4,
+          "text": "Notez le niveau le jour du réglage : un repère peint sur le mur vaut mieux que la mémoire."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 22.4,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-trapped-water",
+      "scope": "part:trapped-water",
+      "title": "Poche d’eau",
+      "scene": "screw",
+      "file": "part-trapped-water.mp3",
+      "duration": 27.92,
+      "chars": 489,
+      "hash": "d7ce51916394c76b",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.92,
+          "text": "Une vis comme celle-ci ne pousse pas l’eau : elle la laisse descendre."
+        },
+        {
+          "t0": 3.92,
+          "t1": 8.88,
+          "text": "Voici enfin notre poche : l’eau entre par le haut, et reste prise entre deux filets."
+        },
+        {
+          "t0": 8.88,
+          "t1": 10.48,
+          "text": "Une soixantaine de litres."
+        },
+        {
+          "t0": 10.48,
+          "t1": 16.29,
+          "text": "Chaque poche est onze centimètres plus haute que celle du dessous : un escalier d’eau de seize marches !"
+        },
+        {
+          "t0": 16.29,
+          "t1": 21.12,
+          "text": "Elle pèse sur la pale, la vis tourne, et la poche descend en six secondes environ."
+        },
+        {
+          "t0": 21.12,
+          "t1": 25.68,
+          "text": "Un poisson qui entre reste dedans, dit la vidéo, et fait le trajet avec elle."
+        },
+        {
+          "t0": 25.68,
+          "t1": 27.92,
+          "text": "Regardez la surface : elle reste à plat."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 3.92,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 27.92,
+          "do": {
+            "flows": false
+          }
+        },
+        {
+          "t": 27.92,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-drive-sprocket",
+      "scope": "part:drive-sprocket",
+      "title": "Pignon de la vis",
+      "scene": "screw",
+      "file": "part-drive-sprocket.mp3",
+      "duration": 18.88,
+      "chars": 348,
+      "hash": "45812bf0e7e14d4b",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.2,
+          "text": "C’est par ce grand pignon que la puissance sort de la vis."
+        },
+        {
+          "t0": 3.2,
+          "t1": 6.96,
+          "text": "Il est fixé sur l’arbre, au bout haut, et la chaîne s’y engrène."
+        },
+        {
+          "t0": 6.96,
+          "t1": 11.16,
+          "text": "Il est grand parce qu’il est sur l’arbre lent, là où le couple est le plus fort."
+        },
+        {
+          "t0": 11.16,
+          "t1": 16.24,
+          "text": "Face à lui, un petit pignon fait tourner l’arbre intermédiaire trois virgule trois fois plus vite."
+        },
+        {
+          "t0": 16.24,
+          "t1": 18.88,
+          "text": "Changez toujours pignons et chaîne ensemble."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-chain",
+      "scope": "part:chain",
+      "title": "Chaîne",
+      "scene": "screw",
+      "file": "part-chain.mp3",
+      "duration": 24.08,
+      "chars": 402,
+      "hash": "64cdbb225b4772ea",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.32,
+          "text": "Elle ne glisse jamais : chaque rouleau tombe dans un creux de denture."
+        },
+        {
+          "t0": 4.32,
+          "t1": 7.2,
+          "text": "Voilà ce qu’il faut au couple énorme de l’arbre lent."
+        },
+        {
+          "t0": 7.2,
+          "t1": 13.52,
+          "text": "Mais ses articulations frottent à chaque passage : elle s’allonge, et réclame graisse et tension juste."
+        },
+        {
+          "t0": 13.52,
+          "t1": 20,
+          "text": "À l’arrêt, mesurez la flèche au milieu du brin : trop lâche, elle bat ; trop tendue, elle use les paliers."
+        },
+        {
+          "t0": 20,
+          "t1": 24.08,
+          "text": "Et gardez un carter : une chaîne happe doigts, manches et cheveux."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-counter-sprocket",
+      "scope": "part:counter-sprocket",
+      "title": "Pignon de renvoi",
+      "scene": "screw",
+      "file": "part-counter-sprocket.mp3",
+      "duration": 19.68,
+      "chars": 372,
+      "hash": "9c8e0bbc4e5a7a1d",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.76,
+          "text": "Le petit pignon tourne trois virgule trois fois plus vite que la vis."
+        },
+        {
+          "t0": 3.76,
+          "t1": 6.88,
+          "text": "Cent quatre-vingt-deux tours par minute, contre cinquante-cinq."
+        },
+        {
+          "t0": 6.88,
+          "t1": 8.8,
+          "text": "Avec autant de couple en moins."
+        },
+        {
+          "t0": 8.8,
+          "t1": 14,
+          "text": "On ne gagne pas de puissance en multipliant la vitesse : on échange du couple contre de la vitesse."
+        },
+        {
+          "t0": 14,
+          "t1": 16.8,
+          "text": "Comme il engrène moins de dents, il s’use le premier."
+        },
+        {
+          "t0": 16.8,
+          "t1": 19.68,
+          "text": "Ne montez jamais une chaîne neuve sur un pignon usé."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-countershaft",
+      "scope": "part:countershaft",
+      "title": "Arbre intermédiaire",
+      "scene": "screw",
+      "file": "part-countershaft.mp3",
+      "duration": 20.96,
+      "chars": 363,
+      "hash": "64e84564d71f40da",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.24,
+          "text": "Pourquoi deux étages plutôt qu’un ?"
+        },
+        {
+          "t0": 2.24,
+          "t1": 8.48,
+          "text": "Le rapport total, dix virgule neuf, est le produit des deux : trois virgule trois fois trois virgule trois."
+        },
+        {
+          "t0": 8.48,
+          "t1": 12.6,
+          "text": "Un seul étage demanderait une grande poulie dix fois plus grande que la petite."
+        },
+        {
+          "t0": 12.6,
+          "t1": 16.96,
+          "text": "Cet arbre fait le lien : la chaîne d’un côté, la courroie de l’autre."
+        },
+        {
+          "t0": 16.96,
+          "t1": 20.96,
+          "text": "Une roue de moulin, bien plus lente, en exigerait trente à soixante !"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-pulley-large",
+      "scope": "part:pulley-large",
+      "title": "Grande poulie",
+      "scene": "screw",
+      "file": "part-pulley-large.mp3",
+      "duration": 19.2,
+      "chars": 351,
+      "hash": "9a3f3c1615434f55",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.92,
+          "text": "Voici le second étage."
+        },
+        {
+          "t0": 1.92,
+          "t1": 5.76,
+          "text": "La grande poulie est trois virgule trois fois plus grande que la petite."
+        },
+        {
+          "t0": 5.76,
+          "t1": 11.04,
+          "text": "Ce quotient de diamètres fait passer la vitesse de cent quatre-vingt-deux à six cents tours par minute."
+        },
+        {
+          "t0": 11.04,
+          "t1": 15.36,
+          "text": "Sur un grand diamètre, la courroie fléchit peu : elle s’use lentement."
+        },
+        {
+          "t0": 15.36,
+          "t1": 19.2,
+          "text": "Avant de changer une poulie, refaites le compte de la vitesse de la génératrice."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-belt",
+      "scope": "part:belt",
+      "title": "Courroie",
+      "scene": "screw",
+      "file": "part-belt.mp3",
+      "duration": 20.08,
+      "chars": 373,
+      "hash": "de469961f032cd99",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.76,
+          "text": "Elle glisse avant de casser."
+        },
+        {
+          "t0": 1.76,
+          "t1": 6.64,
+          "text": "Si la génératrice se bloquait, la courroie patinerait, ce qui protège un peu la machine."
+        },
+        {
+          "t0": 6.64,
+          "t1": 8.56,
+          "text": "Un mauvais rapport se paie vite."
+        },
+        {
+          "t0": 8.56,
+          "t1": 13.68,
+          "text": "Trop petit, la vis tourne à cent dix-huit tours par minute et ne donne qu’un virgule trois kilowatt."
+        },
+        {
+          "t0": 13.68,
+          "t1": 17.6,
+          "text": "Trop grand, elle est freinée à vingt-huit tours, et donne un virgule deux."
+        },
+        {
+          "t0": 17.6,
+          "t1": 20.08,
+          "text": "Une courroie qui siffle à vide est trop lâche."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-pulley-small",
+      "scope": "part:pulley-small",
+      "title": "Petite poulie",
+      "scene": "screw",
+      "file": "part-pulley-small.mp3",
+      "duration": 21.76,
+      "chars": 379,
+      "hash": "f668226a9058b8f4",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.52,
+          "text": "La plus rapide et la plus légère de toute la chaîne mécanique."
+        },
+        {
+          "t0": 3.52,
+          "t1": 8.08,
+          "text": "Elle relie l’eau, lente et lourde, à l’électricité, rapide et légère."
+        },
+        {
+          "t0": 8.08,
+          "t1": 12.8,
+          "text": "Elle tourne à six cents tours par minute, avec plus de dix fois moins de couple que la vis."
+        },
+        {
+          "t0": 12.8,
+          "t1": 16.56,
+          "text": "La même puissance, sous un couple que la génératrice sait prendre."
+        },
+        {
+          "t0": 16.56,
+          "t1": 21.76,
+          "text": "Un défaut d’équilibre, invisible sur la vis, se sentirait ici : elle doit tourner rond."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-generator",
+      "scope": "part:generator",
+      "title": "Génératrice",
+      "scene": "screw",
+      "file": "part-generator.mp3",
+      "duration": 29.28,
+      "chars": 527,
+      "hash": "cb8676d0dee4b7ca",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.67,
+          "text": "Au bout de la courroie, l’énergie de notre poche devient enfin électricité !"
+        },
+        {
+          "t0": 4.67,
+          "t1": 9.72,
+          "text": "La vidéo en parle : une génératrice d’éolienne, achetée plutôt que faite sur place."
+        },
+        {
+          "t0": 9.72,
+          "t1": 12.64,
+          "text": "Elle est choisie lente, pour simplifier la transmission."
+        },
+        {
+          "t0": 12.64,
+          "t1": 17.28,
+          "text": "Elle ne charge qu’au-dessus d’une certaine vitesse, quand sa tension dépasse celle de la batterie."
+        },
+        {
+          "t0": 17.28,
+          "t1": 21.16,
+          "text": "Alors le courant la freine : c’est lui qui fixe la vitesse de la vis."
+        },
+        {
+          "t0": 21.16,
+          "t1": 25.64,
+          "text": "Ne débranchez jamais la batterie vis en marche : sans charge, la vis s’emballe."
+        },
+        {
+          "t0": 25.64,
+          "t1": 27.24,
+          "text": "Fermez d’abord la vanne."
+        },
+        {
+          "t0": 27.24,
+          "t1": 29.28,
+          "text": "Cliquez pour ouvrir la génératrice."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-gen-frame",
+      "scope": "part:gen-frame",
+      "title": "Carcasse",
+      "scene": "generator",
+      "file": "part-gen-frame.mp3",
+      "duration": 20.64,
+      "chars": 382,
+      "hash": "5e8e912b048c9562",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.36,
+          "text": "Un simple boîtier rond, qui compte plus qu’il n’y paraît."
+        },
+        {
+          "t0": 3.36,
+          "t1": 5.76,
+          "text": "Il tient le stator et porte les roulements."
+        },
+        {
+          "t0": 5.76,
+          "t1": 11.8,
+          "text": "Il garde tout bien centré : si l’entrefer n’est pas régulier, les aimants tirent le rotor d’un seul côté."
+        },
+        {
+          "t0": 11.8,
+          "t1": 16.92,
+          "text": "Il encaisse aussi la réaction : quand l’arbre est entraîné, la carcasse est poussée en sens inverse."
+        },
+        {
+          "t0": 16.92,
+          "t1": 18.48,
+          "text": "Ses pattes la retiennent."
+        },
+        {
+          "t0": 18.48,
+          "t1": 20.64,
+          "text": "Serrez ses boulons une fois la courroie tendue."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 20.64,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-gen-stator",
+      "scope": "part:gen-stator",
+      "title": "Stator",
+      "scene": "generator",
+      "file": "part-gen-stator.mp3",
+      "duration": 23.6,
+      "chars": 431,
+      "hash": "e219e6add3470ee0",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.04,
+          "text": "La partie qui ne bouge jamais : des tôles d’acier minces, empilées et isolées,"
+        },
+        {
+          "t0": 5.12,
+          "t1": 7.16,
+          "text": "creusées de vingt-quatre encoches."
+        },
+        {
+          "t0": 7.16,
+          "t1": 11.12,
+          "text": "Entre deux encoches, une dent guide le flux des aimants vers la bobine."
+        },
+        {
+          "t0": 11.12,
+          "t1": 12.83,
+          "text": "Pourquoi des tôles minces ?"
+        },
+        {
+          "t0": 12.83,
+          "t1": 16.72,
+          "text": "Dans un bloc plein, le flux qui varie ferait circuler des courants parasites,"
+        },
+        {
+          "t0": 16.76,
+          "t1": 18.64,
+          "text": "qui chaufferaient le fer pour rien."
+        },
+        {
+          "t0": 18.64,
+          "t1": 23.6,
+          "text": "Les crans qu’on sent en tournant l’arbre à la main sont normaux : les aimants s’alignent sur les dents."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 23.6,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-gen-coils",
+      "scope": "part:gen-coils",
+      "title": "Bobines",
+      "scene": "generator",
+      "file": "part-gen-coils.mp3",
+      "duration": 19.84,
+      "chars": 348,
+      "hash": "9a83379f54c4b3fd",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.84,
+          "text": "Du fil de cuivre enroulé autour de chaque dent."
+        },
+        {
+          "t0": 2.84,
+          "t1": 8.96,
+          "text": "Quand un aimant passe, le flux varie dans la bobine, et une tension naît dans le fil : c’est l’induction !"
+        },
+        {
+          "t0": 8.96,
+          "t1": 13.08,
+          "text": "Vingt-quatre bobines, en trois phases de huit : trois fils de sortie."
+        },
+        {
+          "t0": 13.08,
+          "t1": 19.84,
+          "text": "Mesurez, machine à l’arrêt, la résistance entre les trois paires de fils : trois valeurs égales disent trois phases saines."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 19.84,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-gen-rotor",
+      "scope": "part:gen-rotor",
+      "title": "Rotor",
+      "scene": "generator",
+      "file": "part-gen-rotor.mp3",
+      "duration": 22.56,
+      "chars": 400,
+      "hash": "eba21823b1ac031d",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.68,
+          "text": "Le rotor tourne au centre : un cylindre d’acier, calé sur l’arbre, qui porte les aimants."
+        },
+        {
+          "t0": 5.68,
+          "t1": 9.08,
+          "text": "Il fait six cents tours par minute, soit dix par seconde."
+        },
+        {
+          "t0": 9.08,
+          "t1": 12.92,
+          "text": "Ses seize pôles font osciller la tension quatre-vingts fois par seconde."
+        },
+        {
+          "t0": 12.92,
+          "t1": 16.52,
+          "text": "Beaucoup de pôles, c’est la façon d’avoir de la tension à basse vitesse."
+        },
+        {
+          "t0": 16.52,
+          "t1": 22.56,
+          "text": "Si la vis s’emballe, la force sur le rotor est multipliée par onze, car elle suit le carré de la vitesse !"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-gen-magnets",
+      "scope": "part:gen-magnets",
+      "title": "Aimants",
+      "scene": "generator",
+      "file": "part-gen-magnets.mp3",
+      "duration": 21.76,
+      "chars": 383,
+      "hash": "12b89e4803509559",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.64,
+          "text": "Seize aimants, nord et sud en alternance,"
+        },
+        {
+          "t0": 2.72,
+          "t1": 7.04,
+          "text": "collés sur le rotor : ils créent le champ sans consommer le moindre courant."
+        },
+        {
+          "t0": 7.04,
+          "t1": 12.8,
+          "text": "Plus le rotor tourne vite, plus la tension monte ; plus la batterie tire de courant, plus il faut de couple."
+        },
+        {
+          "t0": 12.8,
+          "t1": 15.6,
+          "text": "Le prix à payer : on ne peut pas les éteindre."
+        },
+        {
+          "t0": 15.6,
+          "t1": 21.76,
+          "text": "Un aimant puissant pince la peau et peut éclater : un à la fois, gants, lunettes, loin des cartes bancaires."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "xray": true
+          }
+        },
+        {
+          "t": 21.76,
+          "do": {
+            "xray": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-gen-shaft",
+      "scope": "part:gen-shaft",
+      "title": "Arbre",
+      "scene": "generator",
+      "file": "part-gen-shaft.mp3",
+      "duration": 23.2,
+      "chars": 390,
+      "hash": "2151bcd0e8e3788e",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.92,
+          "text": "Le couple entre par ici."
+        },
+        {
+          "t0": 1.92,
+          "t1": 7.52,
+          "text": "Devant la carcasse, un bout d’arbre dépasse et reçoit la petite poulie, calée par une clavette."
+        },
+        {
+          "t0": 7.52,
+          "t1": 12.16,
+          "text": "À l’intérieur, l’arbre porte le rotor et repose sur deux roulements."
+        },
+        {
+          "t0": 12.16,
+          "t1": 17.84,
+          "text": "Il a deux efforts à tenir : le couple qui le tord, et la traction de la courroie qui le plie."
+        },
+        {
+          "t0": 17.84,
+          "t1": 23.2,
+          "text": "Tracez un trait de peinture en travers de la poulie et du bout d’arbre : s’il se décale, la poulie glisse."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-gen-bearings",
+      "scope": "part:gen-bearings",
+      "title": "Roulements",
+      "scene": "generator",
+      "file": "part-gen-bearings.mp3",
+      "duration": 20.64,
+      "chars": 374,
+      "hash": "c65190da7b8a1fa7",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.12,
+          "text": "Un entrefer d’un millimètre ou deux ne pardonne rien."
+        },
+        {
+          "t0": 3.12,
+          "t1": 8,
+          "text": "Deux roulements à billes, un dans chaque flasque, gardent le rotor exactement centré."
+        },
+        {
+          "t0": 8,
+          "t1": 10.4,
+          "text": "S’ils prennent du jeu, il frotte sur les dents."
+        },
+        {
+          "t0": 10.4,
+          "t1": 13.2,
+          "text": "Côté poulie, ils portent aussi la traction de la courroie."
+        },
+        {
+          "t0": 13.2,
+          "t1": 15.52,
+          "text": "Ce sont en général les premiers à s’user."
+        },
+        {
+          "t0": 15.52,
+          "t1": 20.64,
+          "text": "Un grondement qui grandit, de la chaleur : changez les deux ensemble, avant la panne."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-gen-terminals",
+      "scope": "part:gen-terminals",
+      "title": "Boîte à bornes",
+      "scene": "generator",
+      "file": "part-gen-terminals.mp3",
+      "duration": 23.2,
+      "chars": 423,
+      "hash": "d4cbae0ade5feee0",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.32,
+          "text": "Ce qui sort n’est pas du continu."
+        },
+        {
+          "t0": 2.32,
+          "t1": 6.88,
+          "text": "Dans la boîte, les trois fils du bobinage finissent chacun sur une cosse repérée."
+        },
+        {
+          "t0": 6.88,
+          "t1": 11.56,
+          "text": "Une borne de terre, et un presse-étoupe qui tient le câble et empêche l’eau d’entrer."
+        },
+        {
+          "t0": 11.56,
+          "t1": 13.36,
+          "text": "Ce sont trois phases d’alternatif,"
+        },
+        {
+          "t0": 13.44,
+          "t1": 18,
+          "text": "environ quarante volts entre deux phases : le redresseur en fera du continu."
+        },
+        {
+          "t0": 18,
+          "t1": 23.2,
+          "text": "Et comme les aimants ne s’éteignent pas, ces bornes sont sous tension dès que l’arbre tourne, même à la main."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-dc-breaker",
+      "scope": "part:dc-breaker",
+      "title": "Disjoncteur continu",
+      "scene": "powerroom",
+      "file": "part-dc-breaker.mp3",
+      "duration": 24.56,
+      "chars": 429,
+      "hash": "fca2d45eafb0dc66",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.84,
+          "text": "Le gros interrupteur du local : on l’ouvre pour travailler, et il s’ouvre seul sur une surcharge."
+        },
+        {
+          "t0": 5.84,
+          "t1": 8.48,
+          "text": "Il est fait pour le continu, et cela change tout."
+        },
+        {
+          "t0": 8.48,
+          "t1": 15.36,
+          "text": "En alternatif, le courant repasse par zéro des dizaines de fois par seconde : l’arc d’une coupure s’éteint de lui-même."
+        },
+        {
+          "t0": 15.36,
+          "t1": 19.95,
+          "text": "En continu, l’arc ne s’éteint pas : il faut l’étirer et le souffler !"
+        },
+        {
+          "t0": 19.95,
+          "t1": 24.56,
+          "text": "Un disjoncteur qui a déclenché n’est pas un bouton de remise en marche : cherchez pourquoi."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-fuse-box",
+      "scope": "part:fuse-box",
+      "title": "Boîte à fusibles",
+      "scene": "powerroom",
+      "file": "part-fuse-box.mp3",
+      "duration": 22.72,
+      "chars": 397,
+      "hash": "2fed0da5ca9b9252",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.72,
+          "text": "Un fil calibré qui fond : la plus simple des protections, et la plus rapide."
+        },
+        {
+          "t0": 4.72,
+          "t1": 5.92,
+          "text": "Pourquoi en faut-il ?"
+        },
+        {
+          "t0": 5.92,
+          "t1": 10.16,
+          "text": "Une batterie en court-circuit peut débiter bien plus que ce qu’un disjoncteur sait couper."
+        },
+        {
+          "t0": 10.16,
+          "t1": 13.04,
+          "text": "Et un câble en surcharge chauffe jusqu’à brûler."
+        },
+        {
+          "t0": 13.04,
+          "t1": 14.96,
+          "text": "Le fusible protège le câble."
+        },
+        {
+          "t0": 14.96,
+          "t1": 18.48,
+          "text": "On en met un par branche, le premier tout contre la batterie."
+        },
+        {
+          "t0": 18.48,
+          "t1": 22.72,
+          "text": "Une règle d’or : jamais de fusible plus gros, ni de fil à la place."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-rectifier",
+      "scope": "part:rectifier",
+      "title": "Redresseur",
+      "scene": "powerroom",
+      "file": "part-rectifier.mp3",
+      "duration": 21.28,
+      "chars": 373,
+      "hash": "b856233878436c81",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.68,
+          "text": "La génératrice parle en alternatif, à trois phases ; la batterie ne comprend que le continu."
+        },
+        {
+          "t0": 5.68,
+          "t1": 10.88,
+          "text": "Le redresseur est un pont de six diodes, des clapets qui ne laissent passer le courant que dans un sens."
+        },
+        {
+          "t0": 10.88,
+          "t1": 13.32,
+          "text": "Rien ne bouge, rien ne se règle."
+        },
+        {
+          "t0": 13.32,
+          "t1": 17.68,
+          "text": "Le prix : un volt et demi de chute, soit soixante-neuf watts de chaleur."
+        },
+        {
+          "t0": 17.68,
+          "t1": 21.28,
+          "text": "Ne l’enfermez pas dans une boîte étanche : cette chaleur doit partir."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 21.28,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-charge-controller",
+      "scope": "part:charge-controller",
+      "title": "Régulateur de charge",
+      "scene": "powerroom",
+      "file": "part-charge-controller.mp3",
+      "duration": 21.84,
+      "chars": 400,
+      "hash": "aa2148da7e5bd1f8",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.32,
+          "text": "Que se passe-t-il quand la batterie est pleine ?"
+        },
+        {
+          "t0": 2.32,
+          "t1": 4.48,
+          "text": "L’eau, elle, continue de couler."
+        },
+        {
+          "t0": 4.48,
+          "t1": 10.08,
+          "text": "Sans frein électrique, la vis monterait à cent quatre-vingts tours par minute, trois fois sa vitesse normale."
+        },
+        {
+          "t0": 10.08,
+          "t1": 12.24,
+          "text": "Le régulateur surveille la batterie."
+        },
+        {
+          "t0": 12.24,
+          "t1": 17.76,
+          "text": "Quand elle est pleine, il envoie le surplus à la charge voisine : la génératrice garde un frein."
+        },
+        {
+          "t0": 17.76,
+          "t1": 21.84,
+          "text": "La vanne de sécurité est la seconde protection : deux valent mieux qu’une."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 21.84,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-battery",
+      "scope": "part:battery",
+      "title": "Batterie",
+      "scene": "powerroom",
+      "file": "part-battery.mp3",
+      "duration": 28.24,
+      "chars": 491,
+      "hash": "976cf52a1f4b2157",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.12,
+          "text": "La batterie, le réservoir de la maison : l’énergie de notre poche y attend la nuit."
+        },
+        {
+          "t0": 5.12,
+          "t1": 8.76,
+          "text": "Elle la garde quand la vis s’arrête, et la rend en basses eaux."
+        },
+        {
+          "t0": 8.76,
+          "t1": 13.28,
+          "text": "La vis tourne presque sans arrêt tout l’hiver : des charges douces, sans à-coups,"
+        },
+        {
+          "t0": 13.36,
+          "t1": 15.76,
+          "text": "qui ménagent la batterie, dit la vidéo."
+        },
+        {
+          "t0": 15.76,
+          "t1": 22.08,
+          "text": "C’est pourtant le composant le plus dangereux du site : des centaines d’ampères en court-circuit, du gaz ou du feu."
+        },
+        {
+          "t0": 22.08,
+          "t1": 28.24,
+          "text": "Pas un outil, pas une chaîne de bijou sur ses bornes, même une seconde : elles projettent du métal fondu."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 28.24,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-dump-load",
+      "scope": "part:dump-load",
+      "title": "Charge de délestage",
+      "scene": "powerroom",
+      "file": "part-dump-load.mp3",
+      "duration": 23.92,
+      "chars": 444,
+      "hash": "dba3bb7f69e9b07c",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.87,
+          "text": "La batterie est pleine, l’eau coule toujours : où va l’énergie ?"
+        },
+        {
+          "t0": 3.87,
+          "t1": 7.76,
+          "text": "Dans une grosse résistance, à l’air, ou plongée dans l’eau d’un ballon."
+        },
+        {
+          "t0": 7.76,
+          "t1": 12.59,
+          "text": "Le régulateur y envoie ce que la batterie n’accepte plus, et la génératrice garde un frein."
+        },
+        {
+          "t0": 12.59,
+          "t1": 15.6,
+          "text": "Elle doit pouvoir avaler toute l’électricité de la centrale."
+        },
+        {
+          "t0": 15.6,
+          "t1": 19.36,
+          "text": "Le labo ne la simule pas : sa batterie est idéale et prend tout."
+        },
+        {
+          "t0": 19.36,
+          "t1": 21.08,
+          "text": "Les centrales réelles en ont une."
+        },
+        {
+          "t0": 21.08,
+          "t1": 23.92,
+          "text": "Si elle ne chauffe plus, rien ne l’annonce : testez-la."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 23.92,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-inverter",
+      "scope": "part:inverter",
+      "title": "Onduleur",
+      "scene": "powerroom",
+      "file": "part-inverter.mp3",
+      "duration": 24.64,
+      "chars": 443,
+      "hash": "745b07912f198e09",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.08,
+          "text": "La batterie donne du continu ; la maison veut du courant du secteur."
+        },
+        {
+          "t0": 4.08,
+          "t1": 9.12,
+          "text": "L’onduleur le fabrique : il découpe le continu très vite, pour en faire une onde alternative."
+        },
+        {
+          "t0": 9.12,
+          "t1": 12,
+          "text": "C’est lui qui fait de la batterie une prise de courant."
+        },
+        {
+          "t0": 12,
+          "t1": 17.12,
+          "text": "À pleine puissance, un onduleur de trois kilowatts tirerait environ soixante-trois ampères."
+        },
+        {
+          "t0": 17.12,
+          "t1": 18.8,
+          "text": "Sa sortie est mortelle."
+        },
+        {
+          "t0": 18.8,
+          "t1": 24.64,
+          "text": "Choisissez-le d’après ce qu’il doit alimenter : un moteur appelle, au démarrage, bien plus que sa puissance."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 24.64,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-energy-meter",
+      "scope": "part:energy-meter",
+      "title": "Compteur d’énergie",
+      "scene": "powerroom",
+      "file": "part-energy-meter.mp3",
+      "duration": 24.8,
+      "chars": 438,
+      "hash": "5855d5f0b614a249",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.11,
+          "text": "Combien a-t-on produit, au juste ?"
+        },
+        {
+          "t0": 2.11,
+          "t1": 6.08,
+          "text": "Une puissance est un débit ; le compteur compte ce qui a coulé."
+        },
+        {
+          "t0": 6.08,
+          "t1": 10.52,
+          "text": "Une petite résistance de précision, sur le fil de la batterie, mesure le courant."
+        },
+        {
+          "t0": 10.52,
+          "t1": 15.12,
+          "text": "Le compteur y ajoute la tension, multiplie, et additionne au fil du temps."
+        },
+        {
+          "t0": 15.12,
+          "t1": 19.8,
+          "text": "Sur le bief du labo, l’année tirée donne environ neuf mille huit cents kilowattheures."
+        },
+        {
+          "t0": 19.8,
+          "t1": 24.8,
+          "text": "Notez la lecture à date fixe, chaque mois : en un an, vous aurez la vraie courbe de votre site."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-switchboard",
+      "scope": "part:switchboard",
+      "title": "Tableau électrique",
+      "scene": "powerroom",
+      "file": "part-switchboard.mp3",
+      "duration": 21.2,
+      "chars": 386,
+      "hash": "0276b4c58e0ee46c",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.16,
+          "text": "Sans lui, un mur de fils."
+        },
+        {
+          "t0": 2.16,
+          "t1": 6.24,
+          "text": "Le tableau est le coffret qui porte les appareils : rails pour les protections,"
+        },
+        {
+          "t0": 6.32,
+          "t1": 8.4,
+          "text": "barres de cuivre pour les forts courants."
+        },
+        {
+          "t0": 8.4,
+          "t1": 14.16,
+          "text": "Il sépare les circuits : d’un côté le continu de la batterie, de l’autre l’alternatif de l’onduleur."
+        },
+        {
+          "t0": 14.16,
+          "t1": 17.4,
+          "text": "Une étiquette sur chaque circuit, un schéma sur la porte."
+        },
+        {
+          "t0": 17.4,
+          "t1": 21.2,
+          "text": "Le jour d’une panne, ce n’est pas forcément celui qui a câblé qui interviendra."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-earthing",
+      "scope": "part:earthing",
+      "title": "Mise à la terre",
+      "scene": "powerroom",
+      "file": "part-earthing.mp3",
+      "duration": 24.8,
+      "chars": 442,
+      "hash": "31e879cd328ade7d",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.88,
+          "text": "La seule protection qu’on ne voit jamais travailler."
+        },
+        {
+          "t0": 2.88,
+          "t1": 5.36,
+          "text": "Un piquet planté dans le sol, dehors."
+        },
+        {
+          "t0": 5.36,
+          "t1": 9.2,
+          "text": "Un conducteur vert et jaune, qui relie toutes les carcasses de métal."
+        },
+        {
+          "t0": 9.2,
+          "t1": 12.48,
+          "text": "Des parafoudres, à l’arrivée du câble de la génératrice."
+        },
+        {
+          "t0": 12.48,
+          "t1": 17.36,
+          "text": "Elle donne à un courant de défaut un chemin facile vers le sol, pour que la protection déclenche."
+        },
+        {
+          "t0": 17.36,
+          "t1": 19.2,
+          "text": "Elle écoule aussi la foudre."
+        },
+        {
+          "t0": 19.2,
+          "t1": 24.8,
+          "text": "Seule une mesure dit qu’elle existe : un électricien qualifié la mesure, et vous notez la valeur."
+        }
+      ],
+      "cues": []
+    }
+  ]
+}

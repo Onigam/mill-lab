@@ -1,0 +1,3224 @@
+{
+  "lang": "en",
+  "model": "eleven_v4",
+  "generatedAt": "2026-10-31T06:43:01.854Z",
+  "voiceLabel": {
+    "fr": "Voix de synthèse",
+    "en": "Synthetic voice"
+  },
+  "totalSeconds": 1392.24,
+  "segments": [
+    {
+      "id": "intro",
+      "scope": "intro",
+      "title": "Presentation of the lab",
+      "scene": "site",
+      "file": "intro.mp3",
+      "duration": 119.76,
+      "chars": 1790,
+      "hash": "db8500520e29dfd2",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.2,
+          "text": "Picture an old stone mill beside a river."
+        },
+        {
+          "t0": 3.2,
+          "t1": 5.28,
+          "text": "Its wheel left long ago…"
+        },
+        {
+          "t0": 5.28,
+          "t1": 7.6,
+          "text": "but the water still goes by."
+        },
+        {
+          "t0": 7.6,
+          "t1": 9.68,
+          "text": "Let’s follow a pocket of water."
+        },
+        {
+          "t0": 9.68,
+          "t1": 15.36,
+          "text": "For now, it is just a little river, arriving at a weir and turning aside into a canal."
+        },
+        {
+          "t0": 15.36,
+          "t1": 20.96,
+          "text": "It meets a rack of heavy bars: a log stops there, a leaf slips through."
+        },
+        {
+          "t0": 20.96,
+          "t1": 23.52,
+          "text": "Then comes the water chamber, under the mill."
+        },
+        {
+          "t0": 23.52,
+          "t1": 24.88,
+          "text": "Let’s go in!"
+        },
+        {
+          "t0": 24.88,
+          "t1": 29.2,
+          "text": "This is an Archimedes screw: the water does not drop all at once,"
+        },
+        {
+          "t0": 29.28,
+          "t1": 34,
+          "text": "it slips between two wooden blades, and now it is trapped in a pocket."
+        },
+        {
+          "t0": 34,
+          "t1": 36.76,
+          "text": "It leans on the blade, the screw turns…"
+        },
+        {
+          "t0": 36.76,
+          "t1": 40.28,
+          "text": "and the pocket slides down, like a playground slide."
+        },
+        {
+          "t0": 40.28,
+          "t1": 44.12,
+          "text": "Almost one turn a second: far too slow for a generator."
+        },
+        {
+          "t0": 44.12,
+          "t1": 49,
+          "text": "So a chain, then a belt, speed it up, ten times over by the end."
+        },
+        {
+          "t0": 49,
+          "t1": 54.64,
+          "text": "In the generator, magnets sweep past copper coils: the rotation becomes current!"
+        },
+        {
+          "t0": 54.64,
+          "t1": 59.92,
+          "text": "The current runs to the powerhouse, past its protections, and goes off to sleep in the battery."
+        },
+        {
+          "t0": 59.92,
+          "t1": 63.44,
+          "text": "Back on the site, look at the house: a lamp comes on."
+        },
+        {
+          "t0": 63.44,
+          "t1": 70.56,
+          "text": "That is the whole story: a pocket of water turning its way down, and, by evening, light."
+        },
+        {
+          "t0": 70.56,
+          "t1": 72.64,
+          "text": "To begin, a few landmarks."
+        },
+        {
+          "t0": 72.64,
+          "t1": 78.4,
+          "text": "There are four views: the site, the screw, the opened generator and the powerhouse."
+        },
+        {
+          "t0": 78.4,
+          "t1": 82.8,
+          "text": "Click any part: its sheet opens, and you can listen to its story."
+        },
+        {
+          "t0": 82.8,
+          "t1": 86.72,
+          "text": "The assembly guide builds the screw like a kit, piece by piece."
+        },
+        {
+          "t0": 86.72,
+          "t1": 90.48,
+          "text": "The installation guide goes from the river to the first start-up."
+        },
+        {
+          "t0": 90.48,
+          "t1": 96,
+          "text": "The simulation lets you change the flow, the head, the clearance, and sit through a flood."
+        },
+        {
+          "t0": 96,
+          "t1": 98.88,
+          "text": "Lessons, with quizzes, explain the physics."
+        },
+        {
+          "t0": 98.88,
+          "t1": 101.6,
+          "text": "The plans gather the technical drawings."
+        },
+        {
+          "t0": 101.6,
+          "t1": 108.08,
+          "text": "One last thing: this lab is an independent educational reconstruction, inspired by a public video."
+        },
+        {
+          "t0": 108.08,
+          "t1": 111.44,
+          "text": "It is not a construction plan: the screw is generic,"
+        },
+        {
+          "t0": 111.52,
+          "t1": 115.2,
+          "text": "because the association in the video publishes no dimensions."
+        },
+        {
+          "t0": 115.2,
+          "t1": 118.88,
+          "text": "Unless I quote the video, the figures come from the simulation."
+        },
+        {
+          "t0": 118.88,
+          "t1": 119.76,
+          "text": "Over to you!"
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 7.6,
+          "do": {
+            "frame": [
+              "river"
+            ]
+          }
+        },
+        {
+          "t": 12.28,
+          "do": {
+            "frame": [
+              "weir"
+            ]
+          }
+        },
+        {
+          "t": 15.36,
+          "do": {
+            "frame": [
+              "headrace",
+              "trash-rack"
+            ]
+          }
+        },
+        {
+          "t": 20.96,
+          "do": {
+            "frame": [
+              "water-chamber"
+            ]
+          }
+        },
+        {
+          "t": 23.52,
+          "do": {
+            "scene": "screw"
+          }
+        },
+        {
+          "t": 34,
+          "do": {
+            "frame": [
+              "trapped-water"
+            ]
+          }
+        },
+        {
+          "t": 40.28,
+          "do": {
+            "frame": [
+              "chain"
+            ]
+          }
+        },
+        {
+          "t": 45.28,
+          "do": {
+            "frame": [
+              "belt"
+            ]
+          }
+        },
+        {
+          "t": 49,
+          "do": {
+            "scene": "generator"
+          }
+        },
+        {
+          "t": 54.64,
+          "do": {
+            "scene": "powerroom"
+          }
+        },
+        {
+          "t": 57.76,
+          "do": {
+            "frame": [
+              "battery"
+            ]
+          }
+        },
+        {
+          "t": 59.92,
+          "do": {
+            "scene": "site"
+          }
+        },
+        {
+          "t": 61.96,
+          "do": {
+            "frame": [
+              "house-load"
+            ]
+          }
+        },
+        {
+          "t": 70.56,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 82.8,
+          "do": {
+            "mode": "assembly"
+          }
+        },
+        {
+          "t": 86.72,
+          "do": {
+            "mode": "install"
+          }
+        },
+        {
+          "t": 90.48,
+          "do": {
+            "mode": "sim"
+          }
+        },
+        {
+          "t": 96,
+          "do": {
+            "mode": "lessons"
+          }
+        },
+        {
+          "t": 98.88,
+          "do": {
+            "mode": "plans"
+          }
+        },
+        {
+          "t": 101.6,
+          "do": {
+            "mode": "explore"
+          }
+        },
+        {
+          "t": 108.08,
+          "do": {
+            "scene": "site"
+          }
+        },
+        {
+          "t": 118.88,
+          "do": {
+            "select": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-site",
+      "scope": "scene:site",
+      "title": "The site: from weir to house",
+      "scene": "site",
+      "file": "scene-site.mp3",
+      "duration": 38.08,
+      "chars": 618,
+      "hash": "5e9112f42f2ba449",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.96,
+          "text": "Here is the site, to scale: a river, an old mill, a house."
+        },
+        {
+          "t0": 4.96,
+          "t1": 9.84,
+          "text": "Our pocket of water leaves the river, runs into the weir, then takes the headrace."
+        },
+        {
+          "t0": 9.84,
+          "t1": 13.04,
+          "text": "An almost flat canal that keeps the whole drop."
+        },
+        {
+          "t0": 13.04,
+          "t1": 19.04,
+          "text": "A rack of heavy bars, a gate that shuts the door, and here it is in the water chamber, under the mill."
+        },
+        {
+          "t0": 19.04,
+          "t1": 24.8,
+          "text": "Then it flows out by the tailrace canal, while the river keeps its share, with a pass for the fish."
+        },
+        {
+          "t0": 24.8,
+          "t1": 29.6,
+          "text": "The electricity runs to the powerhouse, then to the house, where a lamp is waiting."
+        },
+        {
+          "t0": 29.6,
+          "t1": 35.68,
+          "text": "One precaution: taking water from a river needs a legal right, and a share must always stay in it."
+        },
+        {
+          "t0": 35.68,
+          "t1": 38.08,
+          "text": "Check your local rules before any project."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 4.96,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 4.96,
+          "do": {
+            "frame": [
+              "river"
+            ]
+          }
+        },
+        {
+          "t": 7.12,
+          "do": {
+            "frame": [
+              "weir"
+            ]
+          }
+        },
+        {
+          "t": 9.84,
+          "do": {
+            "frame": [
+              "headrace"
+            ]
+          }
+        },
+        {
+          "t": 13.04,
+          "do": {
+            "frame": [
+              "trash-rack",
+              "intake-gate"
+            ]
+          }
+        },
+        {
+          "t": 16.12,
+          "do": {
+            "frame": [
+              "water-chamber"
+            ]
+          }
+        },
+        {
+          "t": 19.04,
+          "do": {
+            "frame": [
+              "tailrace"
+            ]
+          }
+        },
+        {
+          "t": 21.44,
+          "do": {
+            "frame": [
+              "reserved-flow-notch",
+              "fish-pass"
+            ]
+          }
+        },
+        {
+          "t": 24.8,
+          "do": {
+            "frame": [
+              "powerhouse"
+            ]
+          }
+        },
+        {
+          "t": 26.96,
+          "do": {
+            "frame": [
+              "house-load"
+            ]
+          }
+        },
+        {
+          "t": 29.6,
+          "do": {
+            "flows": false
+          }
+        },
+        {
+          "t": 29.6,
+          "do": {
+            "home": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-screw",
+      "scope": "scene:screw",
+      "title": "The screw in its chamber",
+      "scene": "screw",
+      "file": "scene-screw.mp3",
+      "duration": 43.04,
+      "chars": 687,
+      "hash": "1c9059de9cb14326",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.36,
+          "text": "Here is the screw in its chamber, with its water."
+        },
+        {
+          "t0": 3.36,
+          "t1": 8.4,
+          "text": "The water comes in over the inlet sill, settles into pockets between the blades."
+        },
+        {
+          "t0": 8.4,
+          "t1": 11.6,
+          "text": "Then it runs down the trough, turning the screw."
+        },
+        {
+          "t0": 11.6,
+          "t1": 17.76,
+          "text": "Three wooden threads on a central core, carried by two bearings, one at the top, one at the bottom."
+        },
+        {
+          "t0": 17.76,
+          "t1": 21.48,
+          "text": "At the foot of the slope, the water leaves by the outlet pool."
+        },
+        {
+          "t0": 21.48,
+          "t1": 27.08,
+          "text": "That slow rotation is picked up by a chain, then sped up once more by a quiet belt."
+        },
+        {
+          "t0": 27.08,
+          "t1": 30.64,
+          "text": "It reaches the generator at last, which makes current of it."
+        },
+        {
+          "t0": 30.64,
+          "t1": 35.12,
+          "text": "In section, you can see the pockets of water going down like a staircase."
+        },
+        {
+          "t0": 35.12,
+          "t1": 38.88,
+          "text": "Now let’s pull the layers apart, from the tube to the bolts."
+        },
+        {
+          "t0": 38.88,
+          "t1": 43.04,
+          "text": "Follow one pocket, from top to bottom: that is the whole secret!"
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 3.36,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 3.36,
+          "do": {
+            "frame": [
+              "inlet-sill"
+            ]
+          }
+        },
+        {
+          "t": 5.84,
+          "do": {
+            "frame": [
+              "trapped-water"
+            ]
+          }
+        },
+        {
+          "t": 8.4,
+          "do": {
+            "frame": [
+              "trough"
+            ]
+          }
+        },
+        {
+          "t": 11.6,
+          "do": {
+            "frame": [
+              "blade-module",
+              "screw-core"
+            ]
+          }
+        },
+        {
+          "t": 14.08,
+          "do": {
+            "frame": [
+              "upper-bearing",
+              "lower-bearing"
+            ]
+          }
+        },
+        {
+          "t": 17.76,
+          "do": {
+            "frame": [
+              "outlet-pool"
+            ]
+          }
+        },
+        {
+          "t": 21.48,
+          "do": {
+            "frame": [
+              "chain"
+            ]
+          }
+        },
+        {
+          "t": 24.28,
+          "do": {
+            "frame": [
+              "belt"
+            ]
+          }
+        },
+        {
+          "t": 27.08,
+          "do": {
+            "frame": [
+              "generator"
+            ]
+          }
+        },
+        {
+          "t": 30.64,
+          "do": {
+            "flows": false
+          }
+        },
+        {
+          "t": 30.64,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 30.64,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 35.12,
+          "do": {
+            "cutaway": false
+          }
+        },
+        {
+          "t": 35.12,
+          "do": {
+            "explode": 0.6
+          }
+        },
+        {
+          "t": 38.88,
+          "do": {
+            "explode": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-generator",
+      "scope": "scene:generator",
+      "title": "The generator, opened",
+      "scene": "generator",
+      "file": "scene-generator.mp3",
+      "duration": 38.88,
+      "chars": 615,
+      "hash": "1d4fd9809df966f8",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.32,
+          "text": "Here is the generator, opened."
+        },
+        {
+          "t0": 2.32,
+          "t1": 7.68,
+          "text": "The video shows one from the shelf, without opening it: this inside is a generic picture."
+        },
+        {
+          "t0": 7.68,
+          "t1": 14.48,
+          "text": "The frame, round and closed, holds the stator: toothed steel plates, with a copper coil on every tooth."
+        },
+        {
+          "t0": 14.48,
+          "t1": 18.88,
+          "text": "At the centre, the rotor and its magnets, north and south alternating."
+        },
+        {
+          "t0": 18.88,
+          "t1": 21.6,
+          "text": "It turns with the shaft, on two bearings."
+        },
+        {
+          "t0": 21.6,
+          "t1": 24.16,
+          "text": "And the current leaves by the terminal box."
+        },
+        {
+          "t0": 24.16,
+          "t1": 29.28,
+          "text": "In section, almost nothing between the magnets and the coils: a tiny air gap."
+        },
+        {
+          "t0": 29.28,
+          "t1": 32.32,
+          "text": "In X-ray, you see everything the frame hides."
+        },
+        {
+          "t0": 32.32,
+          "t1": 34.64,
+          "text": "Follow the current of the three phases."
+        },
+        {
+          "t0": 34.64,
+          "t1": 38.88,
+          "text": "Then let’s pull the parts apart, one by one, like a construction set."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 7.68,
+          "do": {
+            "frame": [
+              "gen-frame"
+            ]
+          }
+        },
+        {
+          "t": 11,
+          "do": {
+            "frame": [
+              "gen-stator",
+              "gen-coils"
+            ]
+          }
+        },
+        {
+          "t": 14.48,
+          "do": {
+            "frame": [
+              "gen-rotor",
+              "gen-magnets"
+            ]
+          }
+        },
+        {
+          "t": 18.88,
+          "do": {
+            "frame": [
+              "gen-shaft",
+              "gen-bearings"
+            ]
+          }
+        },
+        {
+          "t": 21.6,
+          "do": {
+            "frame": [
+              "gen-terminals"
+            ]
+          }
+        },
+        {
+          "t": 24.16,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 24.16,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 29.28,
+          "do": {
+            "cutaway": false
+          }
+        },
+        {
+          "t": 29.28,
+          "do": {
+            "xray": true
+          }
+        },
+        {
+          "t": 32.32,
+          "do": {
+            "xray": false
+          }
+        },
+        {
+          "t": 32.32,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 34.64,
+          "do": {
+            "flows": false
+          }
+        },
+        {
+          "t": 34.64,
+          "do": {
+            "explode": 0.6
+          }
+        },
+        {
+          "t": 38.88,
+          "do": {
+            "explode": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-powerroom",
+      "scope": "scene:powerroom",
+      "title": "Inside the powerhouse",
+      "scene": "powerroom",
+      "file": "scene-powerroom.mp3",
+      "duration": 41.92,
+      "chars": 710,
+      "hash": "986d196dde8b8962",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.72,
+          "text": "Here is the wall of the powerhouse, read in the order the current goes."
+        },
+        {
+          "t0": 4.72,
+          "t1": 7.84,
+          "text": "First the protections, which let you cut everything."
+        },
+        {
+          "t0": 7.84,
+          "t1": 11.76,
+          "text": "The rectifier turns alternating current into direct current."
+        },
+        {
+          "t0": 11.76,
+          "t1": 17.36,
+          "text": "The controller decides what the battery receives, which keeps the energy for the days without water."
+        },
+        {
+          "t0": 17.36,
+          "t1": 19.8,
+          "text": "The surplus runs to the dump load."
+        },
+        {
+          "t0": 19.8,
+          "t1": 25.24,
+          "text": "The inverter makes the alternating current of the house, and the meter counts the kilowatt hours."
+        },
+        {
+          "t0": 25.24,
+          "t1": 29.44,
+          "text": "The switchboard carries the whole, and the earthing protects people."
+        },
+        {
+          "t0": 29.44,
+          "t1": 33.36,
+          "text": "Let’s lift the devices off the wall, one by one, to see them better."
+        },
+        {
+          "t0": 33.36,
+          "t1": 38.28,
+          "text": "One remark: the lab puts the protections at the head of the wall, so that you find them."
+        },
+        {
+          "t0": 38.28,
+          "t1": 41.92,
+          "text": "In a real installation, their place is an electrician’s choice."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 4.72,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 4.72,
+          "do": {
+            "frame": [
+              "dc-breaker",
+              "fuse-box"
+            ]
+          }
+        },
+        {
+          "t": 7.84,
+          "do": {
+            "frame": [
+              "rectifier"
+            ]
+          }
+        },
+        {
+          "t": 11.76,
+          "do": {
+            "frame": [
+              "charge-controller"
+            ]
+          }
+        },
+        {
+          "t": 14.56,
+          "do": {
+            "frame": [
+              "battery"
+            ]
+          }
+        },
+        {
+          "t": 17.36,
+          "do": {
+            "frame": [
+              "dump-load"
+            ]
+          }
+        },
+        {
+          "t": 19.8,
+          "do": {
+            "frame": [
+              "inverter"
+            ]
+          }
+        },
+        {
+          "t": 22.72,
+          "do": {
+            "frame": [
+              "energy-meter"
+            ]
+          }
+        },
+        {
+          "t": 25.24,
+          "do": {
+            "frame": [
+              "switchboard",
+              "earthing"
+            ]
+          }
+        },
+        {
+          "t": 29.44,
+          "do": {
+            "flows": false
+          }
+        },
+        {
+          "t": 29.44,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 29.44,
+          "do": {
+            "explode": 0.6
+          }
+        },
+        {
+          "t": 33.36,
+          "do": {
+            "explode": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-river",
+      "scope": "part:river",
+      "title": "River",
+      "scene": "site",
+      "file": "part-river.mp3",
+      "duration": 22.32,
+      "chars": 367,
+      "hash": "f991122042a8206e",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.12,
+          "text": "Our pocket of water begins here, in the river."
+        },
+        {
+          "t0": 3.12,
+          "t1": 8.96,
+          "text": "A power plant does not use up the water: it borrows it, then hands it back downstream."
+        },
+        {
+          "t0": 8.96,
+          "t1": 15.04,
+          "text": "Between the intake and the return, the bed gets only its reserved share, plus the surplus of floods."
+        },
+        {
+          "t0": 15.04,
+          "t1": 18.96,
+          "text": "Plant a graduated gauge in the bed, and note the level with the date."
+        },
+        {
+          "t0": 18.96,
+          "t1": 22.32,
+          "text": "Within a few seasons, you will know the true year of the site."
+        }
+      ],
+      "cues": [
+        {
+          "t": 3.12,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 22.32,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-weir",
+      "scope": "part:weir",
+      "title": "Weir",
+      "scene": "site",
+      "file": "part-weir.mp3",
+      "duration": 22.24,
+      "chars": 336,
+      "hash": "e8334ca33ba57b33",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.44,
+          "text": "A little wall across the river: what is it for?"
+        },
+        {
+          "t0": 3.44,
+          "t1": 5.84,
+          "text": "Well, the water climbs a notch."
+        },
+        {
+          "t0": 5.84,
+          "t1": 10.96,
+          "text": "That notch makes up part of the drop, and pushes the water towards the canal intake."
+        },
+        {
+          "t0": 10.96,
+          "t1": 13.52,
+          "text": "The surplus spills over the crest."
+        },
+        {
+          "t0": 13.52,
+          "t1": 18.88,
+          "text": "But the weir also blocks the way for fish and gravel: hence the notch and the pass."
+        },
+        {
+          "t0": 18.88,
+          "t1": 22.24,
+          "text": "Its height sets the head: never change it on a whim."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-headrace",
+      "scope": "part:headrace",
+      "title": "Headrace",
+      "scene": "site",
+      "file": "part-headrace.mp3",
+      "duration": 20.96,
+      "chars": 340,
+      "hash": "72c3aca51e03f969",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.44,
+          "text": "A canal that hardly slopes at all: what is that for?"
+        },
+        {
+          "t0": 3.44,
+          "t1": 6.32,
+          "text": "Precisely, it is its virtue!"
+        },
+        {
+          "t0": 6.32,
+          "t1": 10.72,
+          "text": "It brings the water to the chamber without losing the drop kept for the screw."
+        },
+        {
+          "t0": 10.72,
+          "t1": 15.04,
+          "text": "Every centimetre lost on the way costs about eighteen watts of water power."
+        },
+        {
+          "t0": 15.04,
+          "t1": 20.96,
+          "text": "In the video, it ends as a watertight wooden channel, slid into the old duct without breaking anything."
+        }
+      ],
+      "cues": [
+        {
+          "t": 6.32,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 20.96,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-trash-rack",
+      "scope": "part:trash-rack",
+      "title": "Coarse rack",
+      "scene": "site",
+      "file": "part-trash-rack.mp3",
+      "duration": 25.04,
+      "chars": 380,
+      "hash": "d37444630cb92575",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.84,
+          "text": "A rack, but not just any rack: heavy bars!"
+        },
+        {
+          "t0": 3.84,
+          "t1": 8.24,
+          "text": "A fast turbine wants a close rack, which must be raked all the time."
+        },
+        {
+          "t0": 8.24,
+          "t1": 13.84,
+          "text": "And a clogging rack eats the head: blocked at ninety per cent, it takes more than the whole drop."
+        },
+        {
+          "t0": 13.84,
+          "t1": 17.12,
+          "text": "The screw lets leaves, gravel and fish go through."
+        },
+        {
+          "t0": 17.12,
+          "t1": 19.04,
+          "text": "Only logs stop here."
+        },
+        {
+          "t0": 19.04,
+          "t1": 25.04,
+          "text": "Do not mix them up: a rack in the water protects the screw, a guard rail above it protects people."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-intake-gate",
+      "scope": "part:intake-gate",
+      "title": "Head gate",
+      "scene": "site",
+      "file": "part-intake-gate.mp3",
+      "duration": 27.36,
+      "chars": 381,
+      "hash": "2af69d4cf20ce420",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.32,
+          "text": "The door of the machine: our pocket of water waits behind it."
+        },
+        {
+          "t0": 4.32,
+          "t1": 9.2,
+          "text": "Open, the water runs down the canal; shut, the screw stops."
+        },
+        {
+          "t0": 9.2,
+          "t1": 12.96,
+          "text": "It is closed for work, in a flood, and at low water."
+        },
+        {
+          "t0": 12.96,
+          "t1": 19.04,
+          "text": "The video shows two: a small safety gate, and a motorised control gate, home-made."
+        },
+        {
+          "t0": 19.04,
+          "t1": 25.24,
+          "text": "Before any work in the canal or on the screw: shut it, and fit a padlock whose key you keep."
+        },
+        {
+          "t0": 25.24,
+          "t1": 27.36,
+          "text": "Then wait for a complete stop."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-reserved-flow-notch",
+      "scope": "part:reserved-flow-notch",
+      "title": "Reserved-flow notch",
+      "scene": "site",
+      "file": "part-reserved-flow-notch.mp3",
+      "duration": 25.52,
+      "chars": 383,
+      "hash": "ec1cfa98187e0e5a",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.52,
+          "text": "Even when the machine takes almost everything, a share of the water must stay in the river."
+        },
+        {
+          "t0": 5.52,
+          "t1": 8.96,
+          "text": "The trick: a simple calibrated cut in the crest."
+        },
+        {
+          "t0": 8.96,
+          "t1": 13.52,
+          "text": "No moving part, no operator: no breakdown, no forgetting."
+        },
+        {
+          "t0": 13.52,
+          "t1": 18.16,
+          "text": "In summer, says the video, the machine stops rather than take this water."
+        },
+        {
+          "t0": 18.16,
+          "t1": 22.88,
+          "text": "Here, the lab assumes a tenth of the mean flow: thirty litres a second."
+        },
+        {
+          "t0": 22.88,
+          "t1": 25.52,
+          "text": "Three ten-litre buckets, every second!"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-fish-pass",
+      "scope": "part:fish-pass",
+      "title": "Fish pass",
+      "scene": "site",
+      "file": "part-fish-pass.mp3",
+      "duration": 20.8,
+      "chars": 338,
+      "hash": "c51e8b74d71d8850",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.64,
+          "text": "A fish must go down the river, but also back up it!"
+        },
+        {
+          "t0": 3.64,
+          "t1": 7.92,
+          "text": "The screw helps on the way down: the video describes it as a slide,"
+        },
+        {
+          "t0": 7.96,
+          "t1": 11.16,
+          "text": "where the fish stays in its pocket and goes down with it."
+        },
+        {
+          "t0": 11.16,
+          "t1": 15.32,
+          "text": "For the way up, you need a pass: little pools in a staircase."
+        },
+        {
+          "t0": 15.32,
+          "t1": 20.8,
+          "text": "The video’s builders are preparing a wooden one, and want to measure its effect, before and after."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-water-chamber",
+      "scope": "part:water-chamber",
+      "title": "Water chamber",
+      "scene": "site",
+      "file": "part-water-chamber.mp3",
+      "duration": 23.52,
+      "chars": 371,
+      "hash": "3d08387a9dbb27a5",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.68,
+          "text": "Here is where our pocket of water arrives: the water chamber, the stone room under the mill."
+        },
+        {
+          "t0": 5.68,
+          "t1": 11.28,
+          "text": "The water once fell there on the wheel; the screw sits there instead, without breaking anything."
+        },
+        {
+          "t0": 11.28,
+          "t1": 16.32,
+          "text": "You often reach it by a ladder, with no lifting gear: so the machine arrives as a kit."
+        },
+        {
+          "t0": 16.32,
+          "t1": 17.76,
+          "text": "Click to go in."
+        },
+        {
+          "t0": 17.76,
+          "t1": 23.52,
+          "text": "In a real chamber, never go down alone: confined space, water, slippery stone."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-tailrace",
+      "scope": "part:tailrace",
+      "title": "Tailrace",
+      "scene": "site",
+      "file": "part-tailrace.mp3",
+      "duration": 17.84,
+      "chars": 310,
+      "hash": "7a59908247258a13",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.36,
+          "text": "We think of the height the water falls from, and forget the one it lands at."
+        },
+        {
+          "t0": 4.36,
+          "t1": 10.44,
+          "text": "Our pocket, for its part, heads back to the river by the tailrace: about a hundred metres in the video’s mill."
+        },
+        {
+          "t0": 10.44,
+          "t1": 14,
+          "text": "When the river rises, it fills, and the head melts."
+        },
+        {
+          "t0": 14,
+          "t1": 17.84,
+          "text": "When the gate shuts in a flood, only fifty-eight centimetres are left!"
+        }
+      ],
+      "cues": [
+        {
+          "t": 4.36,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 17.84,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-mill-building",
+      "scope": "part:mill-building",
+      "title": "Mill",
+      "scene": "site",
+      "file": "part-mill-building.mp3",
+      "duration": 18.96,
+      "chars": 310,
+      "hash": "4e8f87cc67224eb6",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.28,
+          "text": "You do not rebuild a mill to put a machine in it: you put the machine in the mill."
+        },
+        {
+          "t0": 5.28,
+          "t1": 9.2,
+          "text": "Here is the stone building, centuries old, above the chamber."
+        },
+        {
+          "t0": 9.2,
+          "t1": 11.6,
+          "text": "The video takes care to break nothing."
+        },
+        {
+          "t0": 11.6,
+          "t1": 14.88,
+          "text": "Its height under the floor limits the length of the screw."
+        },
+        {
+          "t0": 14.88,
+          "t1": 18.96,
+          "text": "With the screw running, lay a hand on the floor: it must not shake."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-powerhouse",
+      "scope": "part:powerhouse",
+      "title": "Powerhouse",
+      "scene": "site",
+      "file": "part-powerhouse.mp3",
+      "duration": 20.24,
+      "chars": 314,
+      "hash": "35be80086f1db16f",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.56,
+          "text": "A single piece on the site, and yet a whole wall of devices: the powerhouse."
+        },
+        {
+          "t0": 5.56,
+          "t1": 9,
+          "text": "It is dry, above the floods, and close to the house."
+        },
+        {
+          "t0": 9,
+          "t1": 15.64,
+          "text": "At low voltage the current is strong and cable losses grow with its square: so the cable must be short."
+        },
+        {
+          "t0": 15.64,
+          "t1": 20.24,
+          "text": "Click the powerhouse to go in: you will follow the current, device after device."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-house-load",
+      "scope": "part:house-load",
+      "title": "House",
+      "scene": "site",
+      "file": "part-house-load.mp3",
+      "duration": 29.04,
+      "chars": 457,
+      "hash": "cb49bd47c7921d79",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 6.8,
+          "text": "At the end of the wire, the house: the journey of our pocket of water ends here, in front of a lamp."
+        },
+        {
+          "t0": 6.8,
+          "t1": 12.72,
+          "text": "The video aims at self-consumption: every kilowatt hour produced is one you do not buy."
+        },
+        {
+          "t0": 12.72,
+          "t1": 17.12,
+          "text": "What counts is the number of hours in the year, not the power of a moment."
+        },
+        {
+          "t0": 17.12,
+          "t1": 20.96,
+          "text": "The screw turns in winter and at night, when solar is resting."
+        },
+        {
+          "t0": 20.96,
+          "t1": 24.48,
+          "text": "The video’s prototype is announced at about two hundred watts."
+        },
+        {
+          "t0": 24.48,
+          "t1": 29.04,
+          "text": "The full size aims at about two kilowatts: hopes, not measurements."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-trough",
+      "scope": "part:trough",
+      "title": "Trough",
+      "scene": "screw",
+      "file": "part-trough.mp3",
+      "duration": 21.52,
+      "chars": 340,
+      "hash": "9e8682043556f9f7",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.4,
+          "text": "The screw is the easy part: the hard part is the tube around it."
+        },
+        {
+          "t0": 4.4,
+          "t1": 10.44,
+          "text": "It must be perfectly round, with a tiny gap around the blades: about four millimetres here."
+        },
+        {
+          "t0": 10.44,
+          "t1": 15.72,
+          "text": "Through that gap, water leaks from one pocket to the one below without producing anything."
+        },
+        {
+          "t0": 15.72,
+          "t1": 18.44,
+          "text": "In the video, it is the great difficulty."
+        },
+        {
+          "t0": 18.44,
+          "t1": 21.52,
+          "text": "While the screw turns, never step into the trough."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 21.52,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-screw-core",
+      "scope": "part:screw-core",
+      "title": "Screw core",
+      "scene": "screw",
+      "file": "part-screw-core.mp3",
+      "duration": 22,
+      "chars": 334,
+      "hash": "4171c58d02f546ec",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.69,
+          "text": "Three threads wind round it, like the three threads of a giant screw: the core."
+        },
+        {
+          "t0": 4.69,
+          "t1": 7.12,
+          "text": "The blade modules are screwed on top."
+        },
+        {
+          "t0": 7.12,
+          "t1": 11.95,
+          "text": "Its diameter follows a published rule: a little more than half that of the screw."
+        },
+        {
+          "t0": 11.95,
+          "t1": 16.18,
+          "text": "Too big, it takes the water’s place; too slim, it bends."
+        },
+        {
+          "t0": 16.18,
+          "t1": 22,
+          "text": "Keep its timber in the water or fully dry, not alternately one and the other."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 22,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-blade-module",
+      "scope": "part:blade-module",
+      "title": "Blade module",
+      "scene": "screw",
+      "file": "part-blade-module.mp3",
+      "duration": 24.24,
+      "chars": 371,
+      "hash": "41b3a9a7f673fbde",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.52,
+          "text": "A wooden screw…"
+        },
+        {
+          "t0": 1.52,
+          "t1": 2.56,
+          "text": "as a kit!"
+        },
+        {
+          "t0": 2.56,
+          "t1": 9.52,
+          "text": "The video cuts it into pieces: long pieces on the core, then modules of three blades, which screw on top."
+        },
+        {
+          "t0": 9.52,
+          "t1": 12.92,
+          "text": "So the machine is built in the chamber, and repaired at home."
+        },
+        {
+          "t0": 12.92,
+          "t1": 14.08,
+          "text": "A blade breaks?"
+        },
+        {
+          "t0": 14.08,
+          "t1": 16.2,
+          "text": "Unscrew the module, change it."
+        },
+        {
+          "t0": 16.2,
+          "t1": 20.72,
+          "text": "Each blade is a helix, advancing eighty-six centimetres per turn."
+        },
+        {
+          "t0": 20.72,
+          "t1": 24.24,
+          "text": "Change one module at a time, and keep the three threads in step."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "explode": 0.6
+          }
+        },
+        {
+          "t": 24.24,
+          "do": {
+            "explode": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-blade-fastener",
+      "scope": "part:blade-fastener",
+      "title": "Blade fasteners",
+      "scene": "screw",
+      "file": "part-blade-fastener.mp3",
+      "duration": 22.72,
+      "chars": 346,
+      "hash": "76910af6c4439613",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.48,
+          "text": "No glue: screws and bolts."
+        },
+        {
+          "t0": 2.48,
+          "t1": 6.32,
+          "text": "The video insists, you can unscrew and screw back."
+        },
+        {
+          "t0": 6.32,
+          "t1": 11.04,
+          "text": "Each fastener passes through the timber of the module and clamps it on the core."
+        },
+        {
+          "t0": 11.04,
+          "t1": 13.6,
+          "text": "Through it goes all the push of the water."
+        },
+        {
+          "t0": 13.6,
+          "t1": 17.92,
+          "text": "They are drawn in stainless steel, because bare steel would soon rust."
+        },
+        {
+          "t0": 17.92,
+          "t1": 22.72,
+          "text": "Tighten crosswise after the first weeks, then every season: timber moves."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "explode": 0.6
+          }
+        },
+        {
+          "t": 22.72,
+          "do": {
+            "explode": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-upper-bearing",
+      "scope": "part:upper-bearing",
+      "title": "Upper bearing",
+      "scene": "screw",
+      "file": "part-upper-bearing.mp3",
+      "duration": 18,
+      "chars": 286,
+      "hash": "5cb6d39d1b78a47a",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.08,
+          "text": "Two bearings, two jobs."
+        },
+        {
+          "t0": 2.08,
+          "t1": 4.96,
+          "text": "The upper one guides the top end of the screw."
+        },
+        {
+          "t0": 4.96,
+          "t1": 10.56,
+          "text": "In this drawing, it also takes the thrust, because a tilted screw tends to slide down."
+        },
+        {
+          "t0": 10.56,
+          "t1": 13.6,
+          "text": "The shaft leaves by this end towards the drive."
+        },
+        {
+          "t0": 13.6,
+          "t1": 18,
+          "text": "Keep an identical spare bearing: you cannot always find one the day you need it."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-lower-bearing",
+      "scope": "part:lower-bearing",
+      "title": "Lower bearing",
+      "scene": "screw",
+      "file": "part-lower-bearing.mp3",
+      "duration": 24.4,
+      "chars": 365,
+      "hash": "f4d67394002159a1",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.96,
+          "text": "Down below, close to the water, here is the most exposed bearing."
+        },
+        {
+          "t0": 4.96,
+          "t1": 8.16,
+          "text": "It guides the lower end without taking the thrust."
+        },
+        {
+          "t0": 8.16,
+          "t1": 14.4,
+          "text": "But it lives splashed, sometimes drowned in a flood: seals and grease are chosen for water."
+        },
+        {
+          "t0": 14.4,
+          "t1": 21.12,
+          "text": "The two bearings must hold the screw on one straight line: a few millimetres of error make the blades rub."
+        },
+        {
+          "t0": 21.12,
+          "t1": 24.4,
+          "text": "A milky grease is grease that has taken in water."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-inlet-sill",
+      "scope": "part:inlet-sill",
+      "title": "Inlet sill",
+      "scene": "screw",
+      "file": "part-inlet-sill.mp3",
+      "duration": 23.76,
+      "chars": 378,
+      "hash": "b77a7574088ba961",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.64,
+          "text": "A screw does not set its own flow: it swallows what arrives."
+        },
+        {
+          "t0": 4.64,
+          "t1": 9.2,
+          "text": "The water from the canal spills over the inlet sill into the first pockets."
+        },
+        {
+          "t0": 9.2,
+          "t1": 10.32,
+          "text": "Less arrives?"
+        },
+        {
+          "t0": 10.32,
+          "t1": 16.16,
+          "text": "The upstream level drops a little, but the screw keeps its efficiency, even at a third of the flow."
+        },
+        {
+          "t0": 16.16,
+          "t1": 19.52,
+          "text": "What an asset for a river that changes all year!"
+        },
+        {
+          "t0": 19.52,
+          "t1": 23.76,
+          "text": "At the first filling, raise the level gradually, with the generator connected."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 23.76,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-outlet-pool",
+      "scope": "part:outlet-pool",
+      "title": "Outlet pool",
+      "scene": "screw",
+      "file": "part-outlet-pool.mp3",
+      "duration": 23.76,
+      "chars": 381,
+      "hash": "ea4f62d1f3e33225",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.92,
+          "text": "Here our pocket empties, and it is the height the water lands at that counts."
+        },
+        {
+          "t0": 4.92,
+          "t1": 6.88,
+          "text": "The outlet pool receives it."
+        },
+        {
+          "t0": 6.88,
+          "t1": 13.48,
+          "text": "Too high, it drowns the last pockets; too low, they empty too early, and the water falls for nothing."
+        },
+        {
+          "t0": 13.48,
+          "t1": 19.28,
+          "text": "If the downstream water rises by half a metre, the machine loses a good third of its electricity!"
+        },
+        {
+          "t0": 19.28,
+          "t1": 23.76,
+          "text": "Note the level on setting-up day: a mark painted on the wall beats memory."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 23.76,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-trapped-water",
+      "scope": "part:trapped-water",
+      "title": "Water pocket",
+      "scene": "screw",
+      "file": "part-trapped-water.mp3",
+      "duration": 32.08,
+      "chars": 467,
+      "hash": "0b723a9428d9c698",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.72,
+          "text": "A screw like this one does not push the water: it lets it go down."
+        },
+        {
+          "t0": 4.72,
+          "t1": 11.12,
+          "text": "Here at last is our pocket: the water enters at the top, and stays trapped between two threads."
+        },
+        {
+          "t0": 11.12,
+          "t1": 12.8,
+          "text": "About sixty litres."
+        },
+        {
+          "t0": 12.8,
+          "t1": 19.6,
+          "text": "Each pocket is eleven centimetres higher than the one below: a staircase of water, sixteen steps!"
+        },
+        {
+          "t0": 19.6,
+          "t1": 25.04,
+          "text": "It leans on the blade, the screw turns, and the pocket goes down in about six seconds."
+        },
+        {
+          "t0": 25.04,
+          "t1": 29.72,
+          "text": "A fish that enters stays inside, says the video, and rides along."
+        },
+        {
+          "t0": 29.72,
+          "t1": 32.08,
+          "text": "Watch the surface: it stays flat."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 4.72,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 32.08,
+          "do": {
+            "flows": false
+          }
+        },
+        {
+          "t": 32.08,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-drive-sprocket",
+      "scope": "part:drive-sprocket",
+      "title": "Drive sprocket",
+      "scene": "screw",
+      "file": "part-drive-sprocket.mp3",
+      "duration": 20.32,
+      "chars": 326,
+      "hash": "3210c15883794e3e",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.28,
+          "text": "This big sprocket is where the power leaves the screw."
+        },
+        {
+          "t0": 3.28,
+          "t1": 7.6,
+          "text": "It is fixed on the shaft, at the top end, and the chain meshes on it."
+        },
+        {
+          "t0": 7.6,
+          "t1": 12.16,
+          "text": "It is big because it sits on the slow shaft, where the torque is greatest."
+        },
+        {
+          "t0": 12.16,
+          "t1": 17.6,
+          "text": "Facing it, a small sprocket turns the countershaft three point three times faster."
+        },
+        {
+          "t0": 17.6,
+          "t1": 20.32,
+          "text": "Always change sprockets and chain together."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-chain",
+      "scope": "part:chain",
+      "title": "Chain",
+      "scene": "screw",
+      "file": "part-chain.mp3",
+      "duration": 25.12,
+      "chars": 371,
+      "hash": "f10930094a161d24",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.24,
+          "text": "It never slips: each roller drops into a tooth gap."
+        },
+        {
+          "t0": 4.24,
+          "t1": 7.76,
+          "text": "That is what the enormous torque of the slow shaft needs."
+        },
+        {
+          "t0": 7.76,
+          "t1": 13.76,
+          "text": "But its joints rub at every pass: it stretches, and asks for grease and the right tension."
+        },
+        {
+          "t0": 13.76,
+          "t1": 20.8,
+          "text": "At rest, measure the sag in the middle of the run: too slack, it flaps; too tight, it wears the bearings."
+        },
+        {
+          "t0": 20.8,
+          "t1": 25.12,
+          "text": "And keep a guard on: a chain snatches fingers, sleeves and hair."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-counter-sprocket",
+      "scope": "part:counter-sprocket",
+      "title": "Counter sprocket",
+      "scene": "screw",
+      "file": "part-counter-sprocket.mp3",
+      "duration": 20.64,
+      "chars": 329,
+      "hash": "263d6362ed096383",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.56,
+          "text": "The small sprocket turns three point three times faster than the screw."
+        },
+        {
+          "t0": 4.56,
+          "t1": 8.36,
+          "text": "One hundred and eighty-two revolutions per minute, against fifty-five."
+        },
+        {
+          "t0": 8.36,
+          "t1": 10.16,
+          "text": "With as much less torque."
+        },
+        {
+          "t0": 10.16,
+          "t1": 14.8,
+          "text": "You do not gain power by multiplying speed: you trade torque for speed."
+        },
+        {
+          "t0": 14.8,
+          "t1": 18,
+          "text": "Because it meshes fewer teeth, it wears first."
+        },
+        {
+          "t0": 18,
+          "t1": 20.64,
+          "text": "Never fit a new chain on a worn sprocket."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-countershaft",
+      "scope": "part:countershaft",
+      "title": "Countershaft",
+      "scene": "screw",
+      "file": "part-countershaft.mp3",
+      "duration": 21.12,
+      "chars": 336,
+      "hash": "2cd46fdc3c7264ea",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.48,
+          "text": "Why two stages rather than one?"
+        },
+        {
+          "t0": 2.48,
+          "t1": 8.92,
+          "text": "The total ratio, ten point nine, is the product of the two: three point three times three point three."
+        },
+        {
+          "t0": 8.92,
+          "t1": 13.32,
+          "text": "A single stage would need a big pulley ten times bigger than the small one."
+        },
+        {
+          "t0": 13.32,
+          "t1": 17.36,
+          "text": "This shaft links them: the chain on one side, the belt on the other."
+        },
+        {
+          "t0": 17.36,
+          "t1": 21.12,
+          "text": "A mill wheel, much slower, would demand thirty to sixty!"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-pulley-large",
+      "scope": "part:pulley-large",
+      "title": "Large pulley",
+      "scene": "screw",
+      "file": "part-pulley-large.mp3",
+      "duration": 20.24,
+      "chars": 332,
+      "hash": "82402fa3e35001a8",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.76,
+          "text": "This is the second stage."
+        },
+        {
+          "t0": 1.76,
+          "t1": 5.92,
+          "text": "The large pulley is three point three times bigger than the small one."
+        },
+        {
+          "t0": 5.92,
+          "t1": 12.4,
+          "text": "That ratio of diameters takes the speed from one hundred and eighty-two to six hundred revolutions per minute."
+        },
+        {
+          "t0": 12.4,
+          "t1": 16.72,
+          "text": "On a large diameter, the belt bends little: it wears slowly."
+        },
+        {
+          "t0": 16.72,
+          "t1": 20.24,
+          "text": "Before changing a pulley, work out the generator’s speed again."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-belt",
+      "scope": "part:belt",
+      "title": "Belt",
+      "scene": "screw",
+      "file": "part-belt.mp3",
+      "duration": 24.16,
+      "chars": 387,
+      "hash": "1c36f32b32581667",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.16,
+          "text": "It slips before it breaks."
+        },
+        {
+          "t0": 2.16,
+          "t1": 7.04,
+          "text": "If the generator jammed, the belt would slip, which protects the machine a little."
+        },
+        {
+          "t0": 7.04,
+          "t1": 9.44,
+          "text": "A wrong ratio is quickly paid for."
+        },
+        {
+          "t0": 9.44,
+          "t1": 13.96,
+          "text": "Too small, and the screw turns at one hundred and eighteen revolutions per minute."
+        },
+        {
+          "t0": 13.96,
+          "t1": 16.56,
+          "text": "It gives only one point three kilowatts."
+        },
+        {
+          "t0": 16.56,
+          "t1": 21.24,
+          "text": "Too big, and it is braked to twenty-eight turns, and gives one point two."
+        },
+        {
+          "t0": 21.24,
+          "t1": 24.16,
+          "text": "A belt that whistles when idle is too slack."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-pulley-small",
+      "scope": "part:pulley-small",
+      "title": "Small pulley",
+      "scene": "screw",
+      "file": "part-pulley-small.mp3",
+      "duration": 22.88,
+      "chars": 366,
+      "hash": "28cd5b05d4b9aadb",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.92,
+          "text": "The fastest and lightest wheel of the whole mechanical chain."
+        },
+        {
+          "t0": 3.92,
+          "t1": 8.72,
+          "text": "It links the water, slow and heavy, to the electricity, quick and light."
+        },
+        {
+          "t0": 8.72,
+          "t1": 14.24,
+          "text": "It turns at six hundred revolutions per minute, with more than ten times less torque than the screw."
+        },
+        {
+          "t0": 14.24,
+          "t1": 17.84,
+          "text": "The same power, under a torque the generator can take."
+        },
+        {
+          "t0": 17.84,
+          "t1": 22.88,
+          "text": "An imbalance, invisible on the screw, would be felt here: it must run true."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-generator",
+      "scope": "part:generator",
+      "title": "Generator",
+      "scene": "screw",
+      "file": "part-generator.mp3",
+      "duration": 31.52,
+      "chars": 502,
+      "hash": "146ad2c4dafa9c7a",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.04,
+          "text": "At the end of the belt, the energy of our pocket becomes electricity at last!"
+        },
+        {
+          "t0": 5.04,
+          "t1": 10.88,
+          "text": "The video talks about it: a wind-turbine generator, bought rather than made on the spot."
+        },
+        {
+          "t0": 10.88,
+          "t1": 14.24,
+          "text": "It is chosen slow, to keep the transmission simple."
+        },
+        {
+          "t0": 14.24,
+          "t1": 18.96,
+          "text": "It charges only above a certain speed, when its voltage exceeds the battery’s."
+        },
+        {
+          "t0": 18.96,
+          "t1": 23.44,
+          "text": "Then the current brakes it: that is what fixes the speed of the screw."
+        },
+        {
+          "t0": 23.44,
+          "t1": 28.32,
+          "text": "Never disconnect the battery with the screw running: with no load, the screw races."
+        },
+        {
+          "t0": 28.32,
+          "t1": 29.76,
+          "text": "Shut the gate first."
+        },
+        {
+          "t0": 29.76,
+          "t1": 31.52,
+          "text": "Click to open the generator."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-gen-frame",
+      "scope": "part:gen-frame",
+      "title": "Frame",
+      "scene": "generator",
+      "file": "part-gen-frame.mp3",
+      "duration": 20.88,
+      "chars": 349,
+      "hash": "6f1cf345594b6c46",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.6,
+          "text": "A plain round casing, which matters more than it looks."
+        },
+        {
+          "t0": 3.6,
+          "t1": 6.24,
+          "text": "It holds the stator and carries the bearings."
+        },
+        {
+          "t0": 6.24,
+          "t1": 12.08,
+          "text": "It keeps everything centred: if the air gap is uneven, the magnets pull the rotor to one side."
+        },
+        {
+          "t0": 12.08,
+          "t1": 17.04,
+          "text": "It also takes the reaction: when the shaft is driven, the frame is pushed the other way."
+        },
+        {
+          "t0": 17.04,
+          "t1": 18.4,
+          "text": "Its feet hold it."
+        },
+        {
+          "t0": 18.4,
+          "t1": 20.88,
+          "text": "Tighten its bolts once the belt is tensioned."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 20.88,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-gen-stator",
+      "scope": "part:gen-stator",
+      "title": "Stator",
+      "scene": "generator",
+      "file": "part-gen-stator.mp3",
+      "duration": 23.68,
+      "chars": 376,
+      "hash": "76fdfa841a8f6b61",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 6.88,
+          "text": "The part that never moves: thin steel plates, stacked and insulated, cut with twenty-four slots."
+        },
+        {
+          "t0": 6.88,
+          "t1": 11.44,
+          "text": "Between two slots, a tooth guides the magnets’ flux towards the coil."
+        },
+        {
+          "t0": 11.44,
+          "t1": 12.96,
+          "text": "Why thin plates?"
+        },
+        {
+          "t0": 12.96,
+          "t1": 18.4,
+          "text": "In a solid block, the changing flux would drive stray currents that heat the iron for nothing."
+        },
+        {
+          "t0": 18.4,
+          "t1": 23.68,
+          "text": "The notches you feel when turning the shaft by hand are normal: the magnets line up on the teeth."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 23.68,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-gen-coils",
+      "scope": "part:gen-coils",
+      "title": "Coils",
+      "scene": "generator",
+      "file": "part-gen-coils.mp3",
+      "duration": 21.76,
+      "chars": 335,
+      "hash": "68f3012aea841af1",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.8,
+          "text": "Copper wire wound round every tooth."
+        },
+        {
+          "t0": 2.8,
+          "t1": 9.8,
+          "text": "When a magnet passes, the flux changes in the coil, and a voltage is born in the wire: that is induction!"
+        },
+        {
+          "t0": 9.8,
+          "t1": 14.24,
+          "text": "Twenty-four coils, in three phases of eight: three output wires."
+        },
+        {
+          "t0": 14.24,
+          "t1": 18.72,
+          "text": "With the machine stopped, measure the resistance across the three pairs of wires."
+        },
+        {
+          "t0": 18.72,
+          "t1": 21.76,
+          "text": "Three equal values mean three healthy phases."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 21.76,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-gen-rotor",
+      "scope": "part:gen-rotor",
+      "title": "Rotor",
+      "scene": "generator",
+      "file": "part-gen-rotor.mp3",
+      "duration": 22.8,
+      "chars": 380,
+      "hash": "4899c8480aaba1ca",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.92,
+          "text": "The rotor turns at the centre: a steel cylinder, keyed on the shaft, that carries the magnets."
+        },
+        {
+          "t0": 5.92,
+          "t1": 9.56,
+          "text": "It makes six hundred revolutions per minute, ten a second."
+        },
+        {
+          "t0": 9.56,
+          "t1": 13.56,
+          "text": "Its sixteen poles make the voltage swing eighty times a second."
+        },
+        {
+          "t0": 13.56,
+          "t1": 16.56,
+          "text": "Many poles is the way to get voltage at low speed."
+        },
+        {
+          "t0": 16.56,
+          "t1": 20.48,
+          "text": "If the screw races, the force on the rotor is multiplied by eleven,"
+        },
+        {
+          "t0": 20.56,
+          "t1": 22.8,
+          "text": "because it follows the square of the speed!"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-gen-magnets",
+      "scope": "part:gen-magnets",
+      "title": "Magnets",
+      "scene": "generator",
+      "file": "part-gen-magnets.mp3",
+      "duration": 24.64,
+      "chars": 371,
+      "hash": "117b90817199ad3a",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.36,
+          "text": "Sixteen magnets, north and south alternating,"
+        },
+        {
+          "t0": 3.44,
+          "t1": 7.84,
+          "text": "glued on the rotor: they make the field without using a drop of current."
+        },
+        {
+          "t0": 7.84,
+          "t1": 12.96,
+          "text": "The faster the rotor turns, the higher the voltage; the more current the battery draws,"
+        },
+        {
+          "t0": 13,
+          "t1": 14.64,
+          "text": "the more torque it takes."
+        },
+        {
+          "t0": 14.64,
+          "t1": 17.44,
+          "text": "The price: you cannot switch them off."
+        },
+        {
+          "t0": 17.44,
+          "t1": 24.64,
+          "text": "A strong magnet pinches skin and can shatter: one at a time, gloves, goggles, away from bank cards."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "xray": true
+          }
+        },
+        {
+          "t": 24.64,
+          "do": {
+            "xray": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-gen-shaft",
+      "scope": "part:gen-shaft",
+      "title": "Shaft",
+      "scene": "generator",
+      "file": "part-gen-shaft.mp3",
+      "duration": 22.64,
+      "chars": 355,
+      "hash": "befec2c4850e882a",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.84,
+          "text": "The torque comes in here."
+        },
+        {
+          "t0": 1.84,
+          "t1": 7.68,
+          "text": "In front of the frame, a stub of shaft sticks out and takes the small pulley, held by a key."
+        },
+        {
+          "t0": 7.68,
+          "t1": 12,
+          "text": "Inside, the shaft carries the rotor and rests on two bearings."
+        },
+        {
+          "t0": 12,
+          "t1": 17.6,
+          "text": "It has two loads to bear: the torque that twists it, and the belt pull that bends it."
+        },
+        {
+          "t0": 17.6,
+          "t1": 22.64,
+          "text": "Paint a line across the pulley and the shaft end: if it shifts, the pulley is slipping."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-gen-bearings",
+      "scope": "part:gen-bearings",
+      "title": "Bearings",
+      "scene": "generator",
+      "file": "part-gen-bearings.mp3",
+      "duration": 20.24,
+      "chars": 327,
+      "hash": "8d35a37f0120906d",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.36,
+          "text": "An air gap of a millimetre or two forgives nothing."
+        },
+        {
+          "t0": 3.36,
+          "t1": 8,
+          "text": "Two ball bearings, one in each end plate, keep the rotor exactly centred."
+        },
+        {
+          "t0": 8,
+          "t1": 10.68,
+          "text": "If they get play, it rubs on the teeth."
+        },
+        {
+          "t0": 10.68,
+          "t1": 13.56,
+          "text": "On the pulley side, they also carry the belt pull."
+        },
+        {
+          "t0": 13.56,
+          "t1": 15.84,
+          "text": "They are usually the first to wear out."
+        },
+        {
+          "t0": 15.84,
+          "t1": 20.24,
+          "text": "A growing rumble, some heat: change both together, before the failure."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-gen-terminals",
+      "scope": "part:gen-terminals",
+      "title": "Terminal box",
+      "scene": "generator",
+      "file": "part-gen-terminals.mp3",
+      "duration": 25.76,
+      "chars": 423,
+      "hash": "46bd518cf06948cb",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.72,
+          "text": "What comes out is not direct current."
+        },
+        {
+          "t0": 2.72,
+          "t1": 6.88,
+          "text": "In the box, the three wires of the winding each end on a marked lug."
+        },
+        {
+          "t0": 6.88,
+          "t1": 11.76,
+          "text": "An earth terminal, and a cable gland that holds the cable and keeps water out."
+        },
+        {
+          "t0": 11.76,
+          "t1": 16.84,
+          "text": "These are three phases of alternating current, about forty volts between two phases."
+        },
+        {
+          "t0": 16.84,
+          "t1": 19.56,
+          "text": "The rectifier will make direct current of it."
+        },
+        {
+          "t0": 19.56,
+          "t1": 25.76,
+          "text": "And since the magnets never switch off, these terminals are live as soon as the shaft turns, even by hand."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-dc-breaker",
+      "scope": "part:dc-breaker",
+      "title": "DC breaker",
+      "scene": "powerroom",
+      "file": "part-dc-breaker.mp3",
+      "duration": 26,
+      "chars": 407,
+      "hash": "417ab450cc79252c",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.64,
+          "text": "The big switch of the room: you open it to work, and it opens by itself on an overload."
+        },
+        {
+          "t0": 5.64,
+          "t1": 9.44,
+          "text": "It is made for direct current, and that changes everything."
+        },
+        {
+          "t0": 9.44,
+          "t1": 16.76,
+          "text": "With alternating current, the current crosses zero dozens of times a second: the arc of a break dies out by itself."
+        },
+        {
+          "t0": 16.76,
+          "t1": 21.92,
+          "text": "With direct current, the arc does not go out: it must be stretched and blown!"
+        },
+        {
+          "t0": 21.92,
+          "t1": 26,
+          "text": "A breaker that has tripped is not a restart button: find out why."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-fuse-box",
+      "scope": "part:fuse-box",
+      "title": "Fuse box",
+      "scene": "powerroom",
+      "file": "part-fuse-box.mp3",
+      "duration": 24,
+      "chars": 365,
+      "hash": "18054801988e3fa5",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.04,
+          "text": "A calibrated wire that melts: the simplest protection, and the fastest."
+        },
+        {
+          "t0": 5.04,
+          "t1": 6.32,
+          "text": "Why do you need one?"
+        },
+        {
+          "t0": 6.32,
+          "t1": 10.72,
+          "text": "A battery in a short circuit can deliver far more than a breaker can cut."
+        },
+        {
+          "t0": 10.72,
+          "t1": 13.92,
+          "text": "And an overloaded cable heats until it burns."
+        },
+        {
+          "t0": 13.92,
+          "t1": 16.08,
+          "text": "The fuse protects the cable."
+        },
+        {
+          "t0": 16.08,
+          "t1": 19.52,
+          "text": "You fit one per branch, the first right against the battery."
+        },
+        {
+          "t0": 19.52,
+          "t1": 24,
+          "text": "A golden rule: never a bigger fuse, never a wire in its place."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-rectifier",
+      "scope": "part:rectifier",
+      "title": "Rectifier",
+      "scene": "powerroom",
+      "file": "part-rectifier.mp3",
+      "duration": 22.88,
+      "chars": 368,
+      "hash": "38f5982a32baa39b",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 6.4,
+          "text": "The generator speaks alternating current, in three phases; the battery understands only direct current."
+        },
+        {
+          "t0": 6.4,
+          "t1": 12.16,
+          "text": "The rectifier is a bridge of six diodes, valves that let the current through in one direction only."
+        },
+        {
+          "t0": 12.16,
+          "t1": 14.72,
+          "text": "Nothing moves, nothing needs adjusting."
+        },
+        {
+          "t0": 14.72,
+          "t1": 19.36,
+          "text": "The price: a volt and a half of drop, that is sixty-nine watts of heat."
+        },
+        {
+          "t0": 19.36,
+          "t1": 22.88,
+          "text": "Do not shut it in a sealed box: that heat has to go."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 22.88,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-charge-controller",
+      "scope": "part:charge-controller",
+      "title": "Charge controller",
+      "scene": "powerroom",
+      "file": "part-charge-controller.mp3",
+      "duration": 23.92,
+      "chars": 394,
+      "hash": "c14b862b687ed9ae",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.48,
+          "text": "What happens when the battery is full?"
+        },
+        {
+          "t0": 2.48,
+          "t1": 4.72,
+          "text": "The water keeps flowing all the same."
+        },
+        {
+          "t0": 4.72,
+          "t1": 10,
+          "text": "With no electrical brake, the screw would climb to one hundred and eighty revolutions per minute."
+        },
+        {
+          "t0": 10,
+          "t1": 12.64,
+          "text": "That is three times its normal speed."
+        },
+        {
+          "t0": 12.64,
+          "t1": 14.64,
+          "text": "The controller watches the battery."
+        },
+        {
+          "t0": 14.64,
+          "t1": 20.32,
+          "text": "When it is full, it sends the surplus to the load next door: the generator keeps a brake."
+        },
+        {
+          "t0": 20.32,
+          "t1": 23.92,
+          "text": "The safety gate is the second protection: two beat one."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 23.92,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-battery",
+      "scope": "part:battery",
+      "title": "Battery",
+      "scene": "powerroom",
+      "file": "part-battery.mp3",
+      "duration": 30.88,
+      "chars": 469,
+      "hash": "29aeb53b0692f914",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.84,
+          "text": "The battery, the reservoir of the house: the energy of our pocket waits there for the night."
+        },
+        {
+          "t0": 5.84,
+          "t1": 10.08,
+          "text": "It keeps it when the screw stops, and gives it back at low water."
+        },
+        {
+          "t0": 10.08,
+          "t1": 15.36,
+          "text": "The screw turns almost without pause all winter: gentle charges, no jolts,"
+        },
+        {
+          "t0": 15.44,
+          "t1": 18,
+          "text": "which spare the battery, says the video."
+        },
+        {
+          "t0": 18,
+          "t1": 24.72,
+          "text": "Yet it is the most dangerous component on the site: hundreds of amps in a short circuit, gas or fire."
+        },
+        {
+          "t0": 24.72,
+          "t1": 30.88,
+          "text": "No tool, no jewellery chain across its terminals, even for a second: they spit molten metal."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 30.88,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-dump-load",
+      "scope": "part:dump-load",
+      "title": "Dump load",
+      "scene": "powerroom",
+      "file": "part-dump-load.mp3",
+      "duration": 27.68,
+      "chars": 427,
+      "hash": "a9e11ed46eab0dea",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.88,
+          "text": "The battery is full, the water keeps flowing: where does the energy go?"
+        },
+        {
+          "t0": 4.88,
+          "t1": 9.04,
+          "text": "Into a big resistor, in the air, or in the water of a tank."
+        },
+        {
+          "t0": 9.04,
+          "t1": 14.4,
+          "text": "The controller sends it what the battery no longer accepts, and the generator keeps a brake."
+        },
+        {
+          "t0": 14.4,
+          "t1": 17.92,
+          "text": "It must be able to swallow all the plant’s electricity."
+        },
+        {
+          "t0": 17.92,
+          "t1": 22.72,
+          "text": "The lab does not simulate it: its battery is ideal and takes everything."
+        },
+        {
+          "t0": 22.72,
+          "t1": 24.32,
+          "text": "Real plants have one."
+        },
+        {
+          "t0": 24.32,
+          "t1": 27.68,
+          "text": "If it stops heating, nothing announces it: test it."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 27.68,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-inverter",
+      "scope": "part:inverter",
+      "title": "Inverter",
+      "scene": "powerroom",
+      "file": "part-inverter.mp3",
+      "duration": 25.36,
+      "chars": 395,
+      "hash": "af0a49db7583af2c",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.32,
+          "text": "The battery gives direct current; the house wants mains power."
+        },
+        {
+          "t0": 4.32,
+          "t1": 10.24,
+          "text": "The inverter makes it: it chops the direct current very fast, to build an alternating wave."
+        },
+        {
+          "t0": 10.24,
+          "t1": 13.16,
+          "text": "It is what turns a battery into a wall socket."
+        },
+        {
+          "t0": 13.16,
+          "t1": 17.72,
+          "text": "At full power, a three-kilowatt inverter would draw about sixty-three amps."
+        },
+        {
+          "t0": 17.72,
+          "t1": 19.6,
+          "text": "Its output is lethal."
+        },
+        {
+          "t0": 19.6,
+          "t1": 25.36,
+          "text": "Choose it for what it must feed: a motor calls, at start-up, for far more than its rated power."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 25.36,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-energy-meter",
+      "scope": "part:energy-meter",
+      "title": "Energy meter",
+      "scene": "powerroom",
+      "file": "part-energy-meter.mp3",
+      "duration": 26.08,
+      "chars": 415,
+      "hash": "bdadf54c6c4587e6",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.4,
+          "text": "How much have we produced, exactly?"
+        },
+        {
+          "t0": 2.4,
+          "t1": 6.48,
+          "text": "A power is a flow; the meter counts what has flowed."
+        },
+        {
+          "t0": 6.48,
+          "t1": 10.56,
+          "text": "A small precision resistor, on the battery wire, measures the current."
+        },
+        {
+          "t0": 10.56,
+          "t1": 14.88,
+          "text": "The meter adds the voltage, multiplies, and sums over time."
+        },
+        {
+          "t0": 14.88,
+          "t1": 20.4,
+          "text": "On the lab’s mill race, the drawn year gives about nine thousand eight hundred kilowatt hours."
+        },
+        {
+          "t0": 20.4,
+          "t1": 26.08,
+          "text": "Note the reading on a fixed date, every month: in a year, you will have the true curve of your site."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-switchboard",
+      "scope": "part:switchboard",
+      "title": "Switchboard",
+      "scene": "powerroom",
+      "file": "part-switchboard.mp3",
+      "duration": 24.48,
+      "chars": 395,
+      "hash": "85513e7dbaf14625",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.48,
+          "text": "Without it, a wall of wires."
+        },
+        {
+          "t0": 2.48,
+          "t1": 7.04,
+          "text": "The switchboard is the cabinet that carries the devices: rails for the protections,"
+        },
+        {
+          "t0": 7.08,
+          "t1": 9.36,
+          "text": "copper bars for the strong currents."
+        },
+        {
+          "t0": 9.36,
+          "t1": 13.6,
+          "text": "It keeps the circuits apart: on one side the battery’s direct current,"
+        },
+        {
+          "t0": 13.68,
+          "t1": 16.64,
+          "text": "on the other the inverter’s alternating current."
+        },
+        {
+          "t0": 16.64,
+          "t1": 20.16,
+          "text": "A label on every circuit, a diagram on the door."
+        },
+        {
+          "t0": 20.16,
+          "t1": 24.48,
+          "text": "On the day of a fault, the person who wired it may not be the one who comes."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-earthing",
+      "scope": "part:earthing",
+      "title": "Earthing",
+      "scene": "powerroom",
+      "file": "part-earthing.mp3",
+      "duration": 24.56,
+      "chars": 406,
+      "hash": "50f0723dca544e8e",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.72,
+          "text": "The one protection you never see working."
+        },
+        {
+          "t0": 2.72,
+          "t1": 5.28,
+          "text": "A rod driven into the ground outside."
+        },
+        {
+          "t0": 5.28,
+          "t1": 9.12,
+          "text": "A green-and-yellow conductor, bonding every metal casing."
+        },
+        {
+          "t0": 9.12,
+          "t1": 12.16,
+          "text": "Surge arresters, where the generator’s cable arrives."
+        },
+        {
+          "t0": 12.16,
+          "t1": 16.96,
+          "text": "It gives a fault current an easy path to the ground, so that the protection trips."
+        },
+        {
+          "t0": 16.96,
+          "t1": 18.96,
+          "text": "It also carries off lightning."
+        },
+        {
+          "t0": 18.96,
+          "t1": 24.56,
+          "text": "Only a measurement tells you it exists: a qualified electrician measures it, and you note the value."
+        }
+      ],
+      "cues": []
+    }
+  ]
+}

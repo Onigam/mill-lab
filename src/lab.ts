@@ -16,7 +16,6 @@ import { createGeneratorScene, createPowerroomScene, createScrewScene, createSit
 
 // The lab described to the kit. Edit the content here and in src/data, src/three, src/sim, src/drawings;
 // the kit supplies the whole application frame (see BRIEF.md: the frame is locked).
-// The Lessons and Plans modes are not declared yet: the kit hides a mode that has no content (wave 3).
 
 configureDrawings({ project: { fr: 'MILL LAB — moulin', en: 'MILL LAB — mill' } });
 
@@ -211,6 +210,8 @@ export const lab: LabDefinition<MillSim> = {
       'Eight A3 drawings generated from the 3D model’s dimensions and the simulation: the mill race and the choice of turbine, the screw in section and its blade module, the drive, the generator in section, the layout and the wiring of the powerhouse. Educational reconstruction of a generic screw and generator, not a construction plan.',
     ),
   },
+  // spoken guide: audio and subtitles generated from narration/<lang>.json (see narration/README.md)
+  narration: { manifest: 'audio/{lang}/manifest.json' },
   simPanel: (ctx: AppContext<MillSim>) => new SimPanel(ctx),
   strip: { values: stripValues, clock: stripClock, alarms: stripAlarms, speeds: STRIP_SPEEDS },
   about,

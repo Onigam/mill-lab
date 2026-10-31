@@ -204,9 +204,10 @@ export const DRIVE = {
   sprocketThickness: 0.026,
   beltWidth: 0.07,
   beltThickness: 0.006,
-  /** Where the centres lie in the section perpendicular to the axis: the countershaft and the generator, as (y', z) from the screw axis, m. estimate. */
+  /** Where the centres lie in the section perpendicular to the axis: the countershaft and the generator, as (y', z) from the screw axis, m. estimate (the generator's height
+   * puts its body on the bank of the `site` world, which the screw world's machine shares). */
   countershaftAt: [-0.1, 0.78],
-  generatorAt: [-0.12, 1.62],
+  generatorAt: [-0.046, 1.62],
   /** Largest ratio of one stage before a second stage would be needed (sim STAGE_RATIO_MAX). */
   stageRatioMax: STAGE_RATIO_MAX,
 } as const;

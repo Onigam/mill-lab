@@ -294,6 +294,14 @@ describe('the drive train of the site world', () => {
         ),
       ];
       expect(land.some((x) => touches(b('generator'), x, 0.011))).toBe(true);
+      // ... on it, not sunk into it: the body rests on the bank (its cable goes down into the ground), and the small pulley turns clear of the ground
+      const body = new THREE.Box3();
+      drive().roots.generator.traverse((o) => {
+        if ((o as THREE.Mesh).isMesh && o.name === 'generator-merged') body.union(new THREE.Box3().setFromObject(o));
+      });
+      expect(body.min.y).toBeGreaterThanOrEqual(SITE.groundY - 0.002);
+      expect(body.min.y).toBeLessThan(SITE.groundY + 0.012);
+      expect(b('pulley-small').min.y).toBeGreaterThan(SITE.groundY + 0.01);
       // the bearing sits on the plinth of the beam, within the beam in plan
       expect(p.bearingWedge.min.x).toBeGreaterThanOrEqual(p.beam.min.x);
       expect(p.bearingWedge.max.x).toBeLessThanOrEqual(p.beam.max.x);
