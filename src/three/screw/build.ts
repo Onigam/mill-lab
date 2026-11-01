@@ -224,7 +224,7 @@ export function buildScrewParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
     const rot = new THREE.Group();
     rot.name = 'rot-core';
     const core = coreGeometry(shape, l.rj, l.sShaftStart, l.sShaftEnd);
-    rot.add(mesh(core.tube, woodMat(0xa9793f)));
+    rot.add(mesh(core.tube, woodMat(COLOURS.woodCore)));
     rot.add(mesh(core.plates, MAT.steel()));
     rot.add(mesh(core.journals, MAT.steel()));
     tilt.add(rot);
@@ -247,7 +247,7 @@ export function buildScrewParts(l: Layout, ctx: BuildCtx, rig: Rig): void {
         rectCap(l.L - pl, -(ri - wall), l.L, ri - wall),
       ],
       0,
-      0xa9793f,
+      COLOURS.woodCore,
     );
     cut.cap('screw-core', tilt, [rectCap(l.sShaftStart, -l.rj, l.sShaftEnd, l.rj)], 0, 0x8d949b);
   }

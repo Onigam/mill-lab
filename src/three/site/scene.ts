@@ -134,8 +134,9 @@ export function createSiteScene(opts: SiteOptions = {}): SiteScene {
   const tBuild = performance.now();
   const scene = new THREE.Scene();
   scene.name = 'site';
-  // the valley's own tone (kit 0.5 `scene.userData.look`)
-  scene.userData.look = { toneMapping: 'neutral', exposure: 1.2 };
+  // no `userData.look`: the valley keeps the tone it had (ACES at 1). The Neutral curve of the paper studio, at 1.2, warmed it little (it was
+  // already warm and saturated) and raised its shimmer on a phone by a third (390 x 844 at pixel ratio 2: orbit 1.614 -> 2.151 %), AgX
+  // dulled it (docs/picture.md)
   const registry = new PartRegistry();
   const sky = createSky(scene);
   sky.focusShadow(V(-4, 0, -6), 62);

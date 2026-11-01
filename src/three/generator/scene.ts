@@ -105,7 +105,7 @@ export function createGeneratorScene(): GeneratorScene {
   // wear on the parts, and the floor a little darker around the skids
   for (const id of GEN_PARTS) applyWear(roots[id], 60);
   const contact = contactShadow(LEN + 0.12, 0.5, 0.25, 0.4);
-  contact.position.set(LEN / 2, FLOOR_Y + 0.0003, 0);
+  contact.position.set(LEN / 2, FLOOR_Y + 0.002, 0);
   scene.add(contact);
 
   // ---- anchors of the labels (children of the part, so that they follow the explode)

@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 
 // Near detail that keeps a view from feeling empty, without adding shimmer (the picture rule of the lab kit, docs/lab-quality.md
-// §3): wear on the parts and contact shadows on the paper floors. Procedural only (no texture file, no asset). Every pattern drawn
-// in a shader fades out before a cell of it gets under about two pixels (its frequency is compared with the screen derivative of
-// its coordinate): it adds detail close up and nothing that could crawl from afar. The same code as the Pelton and ram pump labs'
+// §3): wear on the parts and contact shadows on the paper floors.
+// Procedural only (no texture file, no asset). Every pattern drawn in a shader fades out before a cell of it gets under a few pixels
+// (its frequency is compared with the screen derivative of its coordinate): it adds detail close up and nothing that could crawl from
+// afar. The same code as the Pelton and ram pump labs'
 // `detail.ts`, without their grass and stones.
 
 /** GLSL: value noise, a 3D blend of it, and the fade of a pattern by its size on screen. */
@@ -15,8 +16,8 @@ const NOISE_GLSL = /* glsl */ `
     return mix( mix( a, b, u.x ), mix( c, d, u.x ), u.y ) * 2.0 - 1.0;
   }
   float dtNoise3( vec3 p ) { return 0.35 * ( dtNoise( p.xy ) + dtNoise( p.yz + 17.3 ) ) + 0.3 * dtNoise( p.zx - 9.1 ); }
-  // 1 while a cell of the pattern spans more than ~3 pixels, 0 once it is under ~1.2
-  float dtKeep( float cellsPerPixel ) { return 1.0 - smoothstep( 0.33, 0.8, cellsPerPixel ); }
+  // 1 while a cell of the pattern spans more than ~6 pixels, 0 once it is under ~2.5 (a pattern of two-pixel cells crawls as the camera moves)
+  float dtKeep( float cellsPerPixel ) { return 1.0 - smoothstep( 0.17, 0.4, cellsPerPixel ); }
 `;
 
 /** Chain a shader edit after a material's own `onBeforeCompile`, and give the program its own cache key. */
@@ -100,10 +101,10 @@ export function contactShadow(w: number, d: number, falloff: number, strength = 
     for (let i = 0; i < N; i++) {
       const dx = Math.max(0, Math.abs(((i + 0.5) / N - 0.5) * W) - w / 2);
       const dz = Math.max(0, Math.abs(((j + 0.5) / N - 0.5) * D) - d / 2);
-      // 0 inside the footprint, rising over the first fifth of the falloff, then fading: no hard dark line at the body's foot,
+      // 0 inside the footprint, rising over the first two fifths of the falloff, then fading: no hard dark line at the body's foot,
       // which would draw a strong edge that crawls as the camera moves
       const t = dx > 0 || dz > 0 ? Math.hypot(dx, dz) / falloff : 0;
-      const rise = Math.min(1, t / 0.2);
+      const rise = Math.min(1, t / 0.4);
       const a = t > 0 ? rise * rise * (3 - 2 * rise) * Math.max(0, 1 - t) : 0;
       const v = strength * a;
       const k = (j * N + i) * 4;
@@ -127,6 +128,13 @@ export function contactShadow(w: number, d: number, falloff: number, strength = 
     premultipliedAlpha: true,
     depthWrite: false,
     toneMapped: false,
+    // not fogged: a fogged plane is no longer white, and multiplied over the floor it draws a hard-edged patch from afar
+    fog: false,
+    // a plane a few millimetres over a floor seen from metres away loses the depth test in bands (the 24-bit buffer): in front by an
+    // offset of the depth too
+    polygonOffset: true,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -2,
   });
   const m = new THREE.Mesh(new THREE.PlaneGeometry(W, D), mat);
   m.rotation.x = -Math.PI / 2;

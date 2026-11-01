@@ -179,8 +179,11 @@ export function createScrewScene(opts: ScrewOptions = {}): ScrewScene {
 
   // ---- the tests of the bounds of the key light follow the world
   const frameLight = () => {
-    contact.position.set((layout.poolX0 + layout.platX1) / 2, FLOOR_Y + 0.0003, 0);
-    contact.scale.set(layout.platX1 - layout.poolX0 + 0.1, 2 * layout.poolHalf + 0.4, 1);
+    // centred on the footprint of the pool and of the platform: they do not span the same depth
+    const zLo = Math.min(-layout.poolHalf, layout.platZ0);
+    const zHi = Math.max(layout.poolHalf, layout.platZ1);
+    contact.position.set((layout.poolX0 + layout.platX1) / 2, FLOOR_Y + 0.006, (zLo + zHi) / 2);
+    contact.scale.set(layout.platX1 - layout.poolX0 + 0.1, zHi - zLo + 0.3, 1);
     const cx = (layout.poolX0 + layout.platX1 + 1) / 2;
     const half = Math.max(9, (layout.platX1 - layout.poolX0) / 2 + 2);
     keyLight.target.position.set(cx, 1.6, 0);

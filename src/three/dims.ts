@@ -296,6 +296,8 @@ export const POOLS = {
 export const COLOURS = {
   woodA: 0xc9b790,
   woodB: 0xbea980,
+  /** The screw's core tube and its section: the same pale pine as the blades, a little darker. */
+  woodCore: 0xad9872,
   concrete: 0x949699,
   concreteDark: 0x7e8083,
   water: 0x4d9fd1,
