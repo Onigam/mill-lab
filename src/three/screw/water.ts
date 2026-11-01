@@ -65,8 +65,13 @@ export class Prism {
     this.set(this.poly, 1);
   }
 
-  /** Set the polygon (counter-clockwise, four points) and the half width. */
-  set(poly: readonly [number, number][], halfWidth: number): void {
+  /**
+   * Set the polygon (counter-clockwise, four points) and the half width. `sink`: the bottom (the first two points) and the right side
+   * (the second and third) of the volume go this far into the floor and the wall that carry it, which hide it: a body whose faces lay
+   * in the planes of the floor and of the wall drew stripes through the glass, the faces fighting for the pixels. The section cap keeps
+   * the polygon as it is.
+   */
+  set(poly: readonly [number, number][], halfWidth: number, sink = 0): void {
     for (let i = 0; i < 4; i++) {
       this.poly[i][0] = poly[i][0];
       this.poly[i][1] = poly[i][1];
@@ -91,13 +96,17 @@ export class Prism {
       v++;
     };
     const h = halfWidth;
+    const vol: [number, number][] = poly.map((q, i) => [
+      i === 1 || i === 2 ? q[0] + sink : q[0],
+      i < 2 ? q[1] - sink : q[1],
+    ]);
     for (const [a, b, c] of [
       [0, 1, 2],
       [0, 2, 3],
     ]) {
-      const A = poly[a];
-      const B = poly[b];
-      const C = poly[c];
+      const A = vol[a];
+      const B = vol[b];
+      const C = vol[c];
       push(A[0], A[1], h, 0, 0, 1);
       push(B[0], B[1], h, 0, 0, 1);
       push(C[0], C[1], h, 0, 0, 1);
@@ -106,8 +115,8 @@ export class Prism {
       push(B[0], B[1], -h, 0, 0, -1);
     }
     for (let i = 0; i < 4; i++) {
-      const A = poly[i];
-      const B = poly[(i + 1) % 4];
+      const A = vol[i];
+      const B = vol[(i + 1) % 4];
       const dx = B[0] - A[0];
       const dy = B[1] - A[1];
       const len = Math.hypot(dx, dy);

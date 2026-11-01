@@ -53,7 +53,7 @@ const plasterMap = (): THREE.DataTexture =>
     const n = fbm(u * 6, w * 6, 4) - 0.5;
     const s = vnoise(u * 90, w * 3) - 0.5;
     const k = 1 + n * 0.16 + s * 0.04;
-    return [206 * k, 198 * k, 184 * k];
+    return [196 * k, 200 * k, 204 * k];
   });
 
 /** Power-floated concrete with the speckle of the aggregate and saw-cut joints. */
@@ -73,7 +73,7 @@ const doorMap = (): THREE.DataTexture =>
     const edge = Math.abs(((u * 4) % 1) - 0.5) > 0.47 ? 0.6 : 1;
     const grain = fbm(u * 6 + plank * 3.1, w * 1.2, 3);
     const k = (0.75 + 0.4 * grain) * edge;
-    return [150 * k, 108 * k, 66 * k];
+    return [138 * k, 112 * k, 86 * k];
   });
 
 const std = (color: number, roughness = 0.7, metalness = 0, map?: THREE.Texture): THREE.MeshStandardMaterial =>

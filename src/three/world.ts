@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { l } from '@onigam/lab-kit/i18n';
-import type { Hotspot } from '@onigam/lab-kit/three';
+import { PAPER_STUDIO, type Hotspot } from '@onigam/lab-kit/three';
 
 // What the two worlds share: the lighting of a workshop world (paper, soft shadows, like the other labs of the series), the
 // hotspot declarations, and the helpers of the tests (positions of anchors).
@@ -24,6 +24,8 @@ export function workshopScene(o: WorkshopOptions): THREE.Scene {
   scene.fog = new THREE.Fog(0xefe6d3, o.fog[0], o.fog[1]);
   // the stage fills scene.environment from a shared PMREM environment
   scene.userData.wantsEnv = true;
+  // the paper studio of kit 0.5: Neutral tone mapping keeps the paper the paper, the warm studio lights the metal
+  scene.userData.look = { ...PAPER_STUDIO };
   scene.add(new THREE.HemisphereLight(0xfff4e0, 0xb6a68c, 1.1));
   const key = new THREE.DirectionalLight(0xfff1dc, 2.4);
   key.position.set(...o.key);

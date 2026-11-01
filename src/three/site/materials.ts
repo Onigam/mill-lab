@@ -120,7 +120,8 @@ function dataTexture(
   t.magFilter = THREE.LinearFilter;
   t.minFilter = THREE.LinearMipmapLinearFilter;
   t.generateMipmaps = true;
-  t.anisotropy = 4;
+  // the ground and the walls are seen at grazing angles: with less than 16 their detail blurs, then shimmers
+  t.anisotropy = 16;
   t.name = name;
   t.needsUpdate = true;
   stats.push({ name, w, h, bytes: Math.round(w * h * 4 * (4 / 3)) });
@@ -881,7 +882,7 @@ ${PERTURB}`;
         '#include <normal_fragment_maps>',
         `#include <normal_fragment_maps>\n  ${
           o.height || o.mix
-            ? 'normal = perturbDetail( - vViewPosition, normal, vec2( dFdx( detailH ), dFdy( detailH ) ) * uBump * ( 1.0 - smoothstep( 20.0, 110.0, length( vViewPosition ) ) ), faceDirection );'
+            ? 'normal = perturbDetail( - vViewPosition, normal, vec2( dFdx( detailH ), dFdy( detailH ) ) * uBump * ( 1.0 - smoothstep( 6.0, 45.0, length( vViewPosition ) ) ), faceDirection );'
             : ''
         }`,
       );

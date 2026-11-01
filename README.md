@@ -71,8 +71,8 @@ Vercel. `npm run kit:bump` moves to a newer lab-kit.
   (including `mech.ts`, the speed multiplier and generator matching); `src/data/` parts, guides, chapters, lessons;
   `src/drawings/` the A3 sheets; `src/panels/` the simulation panel; `src/lab.ts` describes the lab to the kit;
   `src/part-ids.ts` freezes the 47 part ids shared by all of them.
-- `docs/` research notes and sources, physics notes, 3D, data, drawings and lessons notes, requests to the kit; `BRIEF.md` is the
-  brief the agent team works from.
+- `docs/` research notes and sources, physics notes, 3D, data, drawings and lessons notes, the picture's looks and measures
+  (`picture.md`), requests to the kit; `BRIEF.md` is the brief the agent team works from.
 
 Built with Three.js, TypeScript and Vite (MIT). Credits and links to every source are in the app, in _Sources_.
 

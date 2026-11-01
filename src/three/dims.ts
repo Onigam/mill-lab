@@ -294,10 +294,10 @@ export const POOLS = {
 
 /** Wood tones of the screw (blade modules alternate the two, so that the module joints read). */
 export const COLOURS = {
-  woodA: 0xc79a5b,
-  woodB: 0xb98a4a,
-  concrete: 0x9d988c,
-  concreteDark: 0x86817a,
+  woodA: 0xc9b790,
+  woodB: 0xbea980,
+  concrete: 0x949699,
+  concreteDark: 0x7e8083,
   water: 0x4d9fd1,
   waterDeep: 0x2f7fb8,
 } as const;

@@ -134,6 +134,8 @@ export function createSiteScene(opts: SiteOptions = {}): SiteScene {
   const tBuild = performance.now();
   const scene = new THREE.Scene();
   scene.name = 'site';
+  // the valley's own tone (kit 0.5 `scene.userData.look`)
+  scene.userData.look = { toneMapping: 'neutral', exposure: 1.2 };
   const registry = new PartRegistry();
   const sky = createSky(scene);
   sky.focusShadow(V(-4, 0, -6), 62);

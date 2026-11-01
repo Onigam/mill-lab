@@ -5,6 +5,7 @@ import { partIds } from '../../part-ids';
 import { BLADES } from '../../sim/machine';
 import type { MillState } from '../../sim/types';
 import { DESIGN_SHAPE, bladeThickness, defaultDriveRatios, shapeOf, type ScrewShape } from '../dims';
+import { contactShadow } from '../detail';
 import { FlowDots, paperFloor, smoothstep } from '../common';
 import { CutKit } from '../cut';
 import { anchor, hotspots, workshopScene, type HotspotDef } from '../world';
@@ -123,6 +124,9 @@ export function createScrewScene(opts: ScrewOptions = {}): ScrewScene {
   });
   const floor = paperFloor(30, 8, FLOOR_Y);
   scene.add(floor);
+  // the floor a little darker around the pool, the piers and the platform (sized to the layout in `frameLight`)
+  const contact = contactShadow(1, 1, 0.12, 0.5);
+  scene.add(contact);
   const keyLight = scene.children.find(
     (c) => (c as THREE.DirectionalLight).isDirectionalLight && (c as THREE.DirectionalLight).castShadow,
   ) as THREE.DirectionalLight;
@@ -175,6 +179,8 @@ export function createScrewScene(opts: ScrewOptions = {}): ScrewScene {
 
   // ---- the tests of the bounds of the key light follow the world
   const frameLight = () => {
+    contact.position.set((layout.poolX0 + layout.platX1) / 2, FLOOR_Y + 0.0003, 0);
+    contact.scale.set(layout.platX1 - layout.poolX0 + 0.1, 2 * layout.poolHalf + 0.4, 1);
     const cx = (layout.poolX0 + layout.platX1 + 1) / 2;
     const half = Math.max(9, (layout.platX1 - layout.poolX0) / 2 + 2);
     keyLight.target.position.set(cx, 1.6, 0);
@@ -494,6 +500,7 @@ export function createScrewScene(opts: ScrewOptions = {}): ScrewScene {
             [l.poolX0, top],
           ],
           l.poolHalf - 0.01,
+          0.004,
         );
         // depth tint of the pool follows how deep it is (a flooded outlet is murkier)
         (rig.poolWater!.mesh.material as THREE.MeshStandardMaterial).opacity =

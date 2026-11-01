@@ -454,6 +454,25 @@ describe('screw world', () => {
       expect(rig.inletWater!.mesh.visible).toBe(false);
     });
 
+    it("sinks the outlet pool's water into its floor and its wall, so that no face of the water is in the plane of the concrete", () => {
+      go({ fill: 1, tailRise: 0.5 }, {}, 2);
+      const l = mod.drawn.layout;
+      const pos = rig.poolWater!.mesh.geometry.attributes.position as THREE.BufferAttribute;
+      let lowest = Infinity;
+      let rightmost = -Infinity;
+      for (let i = 0; i < pos.count; i++) {
+        lowest = Math.min(lowest, pos.getY(i));
+        rightmost = Math.max(rightmost, pos.getX(i));
+      }
+      expect(lowest, 'the volume starts a few millimetres under the slab').toBeCloseTo(BASE_Y - 0.004, 6);
+      expect(rightmost, 'and ends a few millimetres inside the right wall').toBeCloseTo(l.poolX1 + 0.004, 6);
+      // the section cap keeps the polygon: it lies on the slab's top, not in it
+      const cap = rig.poolWater!.cap.geometry.attributes.position as THREE.BufferAttribute;
+      let capLowest = Infinity;
+      for (let i = 0; i < cap.count; i++) capLowest = Math.min(capLowest, cap.getY(i));
+      expect(capLowest).toBeCloseTo(BASE_Y, 6);
+    });
+
     it('lets a fish ride a pocket: it follows the pockets down the screw, hides without water, and is not a part', () => {
       go({ fill: 1, angle: 0.0 }, {}, 1);
       const fish = mod.fish;

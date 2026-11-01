@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { PartRegistry, clamp } from '@onigam/lab-kit/three';
 import type { SceneModule } from '@onigam/lab-kit/three';
 import type { MillState } from '../../sim/types';
+import { COLOURS } from '../dims';
+import { applyWear, contactShadow } from '../detail';
 import { FlowDots, paperFloor, smoothstep } from '../common';
 import { mergeStatic } from '../merge';
 import { anchor, hotspots, workshopScene, type HotspotDef } from '../world';
@@ -90,7 +92,7 @@ export function createGeneratorScene(): GeneratorScene {
   // ---- the stand: two wooden skids across the base plate (scenery, unregistered)
   const stand = new THREE.Group();
   stand.name = 'stand';
-  const wood = new THREE.MeshStandardMaterial({ color: 0xb98a4a, roughness: 0.85 });
+  const wood = new THREE.MeshStandardMaterial({ color: COLOURS.woodB, roughness: 0.85 });
   for (const x of [0.06, LEN - 0.06]) {
     const skid = new THREE.Mesh(new THREE.BoxGeometry(0.09, D.skid, 0.42), wood);
     skid.position.set(x, FOOT_BOTTOM - D.skid / 2, 0);
@@ -100,6 +102,11 @@ export function createGeneratorScene(): GeneratorScene {
   }
   mergeStatic(stand, { name: 'stand' });
   scene.add(stand);
+  // wear on the parts, and the floor a little darker around the skids
+  for (const id of GEN_PARTS) applyWear(roots[id], 60);
+  const contact = contactShadow(LEN + 0.12, 0.5, 0.25, 0.4);
+  contact.position.set(LEN / 2, FLOOR_Y + 0.0003, 0);
+  scene.add(contact);
 
   // ---- anchors of the labels (children of the part, so that they follow the explode)
   const anchors: Record<string, THREE.Object3D> = {};
