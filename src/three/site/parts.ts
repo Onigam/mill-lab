@@ -583,8 +583,8 @@ export function buildChamber(
   rot.add(mesh(core.plates, MAT.steel()));
   rot.add(mesh(core.journals, MAT.steel()));
   const b = bladeGeometry(shape, 0.7);
-  rot.add(mesh(b.woodA, new THREE.MeshStandardMaterial({ color: COLOURS.woodA, roughness: 0.85 })));
-  rot.add(mesh(b.woodB, new THREE.MeshStandardMaterial({ color: COLOURS.woodB, roughness: 0.85 })));
+  rot.add(mesh(b.woodA, new THREE.MeshStandardMaterial({ color: COLOURS.siteWoodA, roughness: 0.85 })));
+  rot.add(mesh(b.woodB, new THREE.MeshStandardMaterial({ color: COLOURS.siteWoodB, roughness: 0.85 })));
   tilt.add(rot);
   const xTop = sx(l.L * l.cosB);
   mergeStatic(g, { name: 'chamber' });

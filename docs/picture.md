@@ -25,6 +25,7 @@ The three paper worlds share `workshopScene()`, so one line sets all three.
   for the same reason (peach walls, an orange door).
 - **Site**: no look set, so the same tone as before. Tried first: Neutral at 1.2 (390 × 844 at pixel ratio 2, orbit / dolly: 1.614 / 10.063 % with ACES, 2.151 / 12.785 % with Neutral 1.2, 1.876 / 11.602 % at Neutral 1.0), and AgX (0.592 / 4.29 %, but the picture is grey and hazy, the opposite of warmer and fuller).
 - **Core of the screw** (`COLOURS.woodCore`, new): the core tube and its section kept a hard-coded `#a9793f` that came out orange (`#f9b878`) next to the blades; it is now the blades' pale pine, a little darker.
+- **The site's screw** (`COLOURS.siteWoodA`, `siteWoodB`, new): the site is lit with ACES again, so its blades keep the warm pair of kit 0.4.0 (`#c79a5b` / `#b98a4a`); the pale pine is for the paper worlds. With the pale pair they read grey-beige next to the stone and the water (`#b5a783` against `#b28a47`).
 
 ## Near detail (`src/three/detail.ts`)
 

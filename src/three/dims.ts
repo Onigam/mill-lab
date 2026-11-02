@@ -298,6 +298,9 @@ export const COLOURS = {
   woodB: 0xbea980,
   /** The screw's core tube and its section: the same pale pine as the blades, a little darker. */
   woodCore: 0xad9872,
+  /** The site is lit with ACES, as on kit 0.4.0, so its blades keep the original warm pair (the paper worlds' pair is retuned for Neutral). */
+  siteWoodA: 0xc79a5b,
+  siteWoodB: 0xb98a4a,
   concrete: 0x949699,
   concreteDark: 0x7e8083,
   water: 0x4d9fd1,
