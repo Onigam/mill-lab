@@ -17,10 +17,10 @@
   "license": "MIT",
   "dependencies": {
     "@onigam/lab-kit": "github:Onigam/lab-kit#v0.6.0",
-    "three": "^0.186.1"
+    "three": "^0.187.0"
   },
   "devDependencies": {
-    "@types/three": "^0.186.0",
+    "@types/three": "^0.187.0",
     "prettier": "^3.9.10",
     "typescript": "^7.0.2",
     "vite": "^8.3.5",
