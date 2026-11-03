@@ -1,3 +1,4 @@
+import { isDark } from '@onigam/lab-kit/ui';
 import type { UiKey } from '../i18n/ui';
 import { G, RHO } from '../sim/machine';
 import {
@@ -56,17 +57,65 @@ export const TYPE_KEYS: Record<TurbineType, UiKey> = {
   pelton: 'typePelton',
 };
 
-/** Colours of the types in the chooser chart (the kit's series colours, and a few more of the same weight). */
-export const TYPE_COLORS: Record<TurbineType, string> = {
-  undershot: '#6b7280',
-  breastshot: '#c4692c',
-  overshot: '#7a4a1e',
-  screw: '#2a7fb8',
-  kaplan: '#2f8f5b',
-  crossflow: '#6b4fd8',
-  francis: '#b23a48',
-  pelton: '#c99700',
+/**
+ * The colours this panel writes, one list per theme, read on the kit's card by `model.test.ts`: 3:1 at least, for a graphic; no word is coloured, the panel's words are in the kit's inks. A canvas
+ * cannot read `var()`, so a chart and its swatch ask `panelColour` when they draw, and each name keeps its hue in both lists: what a colour says does not change with the theme. Light is what it was, but for the
+ * gold: the kit's `--sun`, 2.5:1 on the light card, gives way to the gold of Piggott, the mass heater and the gravity battery (`docs/kit-requests.md`, 28). Dark takes the kit's token where it has one.
+ */
+export const PALETTE = {
+  light: {
+    water: '#2a7fb8',
+    gold: '#a98000',
+    copper: '#c4692c',
+    violet: '#6b4fd8',
+    green: '#2f8f5b',
+    red: '#b23a48',
+    brown: '#7a4a1e',
+    grey: '#6b7280',
+    khaki: '#8a7a5c',
+    slate: '#5b6878',
+  },
+  dark: {
+    water: '#4fa3d8',
+    gold: '#e0b32a',
+    copper: '#e48a4a',
+    violet: '#9a85f0',
+    green: '#5cb07c',
+    red: '#e8707f',
+    brown: '#b58a5f',
+    grey: '#9aa3b2',
+    khaki: '#a8977a',
+    slate: '#8493a3',
+  },
+} as const;
+
+export type PanelColour = keyof typeof PALETTE.light;
+
+/** A colour of the panel on the theme of now. */
+export const panelColour = (name: PanelColour): string => PALETTE[isDark() ? 'dark' : 'light'][name];
+
+/** The colour of each type, in the chooser chart and its list, and of each machine in the comparison chart. */
+export const TYPE_COLOURS: Record<TurbineType, PanelColour> = {
+  undershot: 'grey',
+  breastshot: 'copper',
+  overshot: 'brown',
+  screw: 'water',
+  kaplan: 'green',
+  crossflow: 'violet',
+  francis: 'red',
+  pelton: 'gold',
 };
+
+/** The colour of each stage in the bar of losses and its legend. */
+export const CHAIN_COLOURS = {
+  chainElectric: 'green',
+  chainGenerator: 'gold',
+  chainDrive: 'copper',
+  chainOutlet: 'violet',
+  chainFriction: 'khaki',
+  chainInlet: 'red',
+  chainLeak: 'water',
+} as const satisfies Partial<Record<UiKey, PanelColour>>;
 
 /** A round upper bound of a chart axis: 1, 2, 2.5 or 5 times a power of ten. */
 export function niceCeil(v: number): number {
@@ -146,13 +195,13 @@ export function lossSegments(s: MillState): Segment[] {
     s.hydraulicPower - (s.shaftPower + s.lossFriction + s.lossBearing + s.lossOutlet + s.lossInlet),
   );
   return [
-    { key: 'chainElectric', watts: s.electricPower, colour: '#2f8f5b' },
-    { key: 'chainGenerator', watts: s.lossGenerator, colour: '#c99700' },
-    { key: 'chainDrive', watts: s.lossDrive, colour: '#c4692c' },
-    { key: 'chainOutlet', watts: s.lossOutlet, colour: '#6b4fd8' },
-    { key: 'chainFriction', watts: s.lossFriction + s.lossBearing, colour: '#8a7a5c' },
-    { key: 'chainInlet', watts: s.lossInlet, colour: '#b23a48' },
-    { key: 'chainLeak', watts: leak, colour: '#2a7fb8' },
+    { key: 'chainElectric', watts: s.electricPower, colour: panelColour(CHAIN_COLOURS.chainElectric) },
+    { key: 'chainGenerator', watts: s.lossGenerator, colour: panelColour(CHAIN_COLOURS.chainGenerator) },
+    { key: 'chainDrive', watts: s.lossDrive, colour: panelColour(CHAIN_COLOURS.chainDrive) },
+    { key: 'chainOutlet', watts: s.lossOutlet, colour: panelColour(CHAIN_COLOURS.chainOutlet) },
+    { key: 'chainFriction', watts: s.lossFriction + s.lossBearing, colour: panelColour(CHAIN_COLOURS.chainFriction) },
+    { key: 'chainInlet', watts: s.lossInlet, colour: panelColour(CHAIN_COLOURS.chainInlet) },
+    { key: 'chainLeak', watts: leak, colour: panelColour(CHAIN_COLOURS.chainLeak) },
   ];
 }
 

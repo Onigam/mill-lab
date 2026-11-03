@@ -142,7 +142,7 @@ export const fakeDocument = {
   createElementNS: (_ns: string, tag: string): FakeElement => new FakeElement(tag),
   createTextNode: (data: string): FakeText => new FakeText(data),
   createDocumentFragment: (): FakeFragment => new FakeFragment(),
-  documentElement: { lang: '' },
+  documentElement: { lang: '', dataset: {} as Record<string, string> },
 };
 
 /** Install the stand-ins on `globalThis`. */

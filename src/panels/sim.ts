@@ -26,7 +26,7 @@ import {
   PRESET_KEYS,
   SCENARIO_KEYS,
   SITE_KEYS,
-  TYPE_COLORS,
+  TYPE_COLOURS,
   TYPE_KEYS,
   chooserChartData,
   compareChartData,
@@ -36,6 +36,7 @@ import {
   mainReadouts,
   moreReadouts,
   niceCeil3,
+  panelColour,
   siteMarker,
   speedChartData,
   statusOf,
@@ -48,6 +49,8 @@ import {
 // everything else folded: the site, the machine, the drive, all the figures, and the charts (the machine against its speed,
 // the torques, which turbine for my site, the same site with a wheel, a year, the last minute). Built only from the kit's
 // widgets and charts.
+
+// A series whose colour is the lab's own has it as a getter: the chart reads `color` each time it draws, and the kit draws again when the theme changes. The other series use the kit's `SERIES_COLORS`, which follow by themselves.
 
 type ChartOpts = ConstructorParameters<typeof LineChart>[0];
 type Cell = (label: string, value: string, small?: string, colour?: string) => HTMLElement;
@@ -69,13 +72,6 @@ const dayLabel = (d: number): string => `${dayOfMonth(d)} ${months()[monthOf(d)]
 const flowText = (q: number): string => (q < 1 ? `${num(q * 1000, q < 0.01 ? 1 : 0)} L/s` : `${num(q, 2)} m³/s`);
 
 const MACHINES: MachineId[] = ['screw', 'overshot', 'breastshot', 'undershot'];
-
-const MACHINE_COLORS: Record<MachineId, string> = {
-  screw: TYPE_COLORS.screw,
-  overshot: TYPE_COLORS.overshot,
-  breastshot: TYPE_COLORS.breastshot,
-  undershot: TYPE_COLORS.undershot,
-};
 
 export class SimPanel implements PanelController {
   readonly el = h('div', { class: 'sim' });
@@ -143,7 +139,14 @@ export class SimPanel implements PanelController {
       height: 110,
       series: [
         { key: 'efficiency', label: () => t('seriesEfficiency'), color: SERIES_COLORS.load, bold: true },
-        { key: 'fill', label: () => t('seriesFill'), color: SERIES_COLORS.pv, dash: true },
+        {
+          key: 'fill',
+          label: () => t('seriesFill'),
+          get color() {
+            return panelColour('gold');
+          },
+          dash: true,
+        },
       ],
       yMin: 0,
       yMax: 120,
@@ -175,12 +178,16 @@ export class SimPanel implements PanelController {
         ...TURBINE_TYPES.map((type) => ({
           key: `zone-${type}`,
           label: () => t(TYPE_KEYS[type]),
-          color: TYPE_COLORS[type],
+          get color() {
+            return panelColour(TYPE_COLOURS[type]);
+          },
         })),
         ...POWER_LINES.map((p, i) => ({
           key: `line-${i}`,
           label: () => `${linePowerLabel(p)} ${t('powerLine')}`,
-          color: '#5b6878',
+          get color() {
+            return panelColour('slate');
+          },
           dash: true,
         })),
       ],
@@ -200,7 +207,9 @@ export class SimPanel implements PanelController {
       series: MACHINES.map((m) => ({
         key: m,
         label: () => t(MACHINE_KEYS[m]),
-        color: MACHINE_COLORS[m],
+        get color() {
+          return panelColour(TYPE_COLOURS[m]);
+        },
         bold: m === 'screw',
       })),
       yFmt: (v) => num(v),
@@ -213,7 +222,14 @@ export class SimPanel implements PanelController {
       series: [
         { key: 'river', label: () => t('seriesRiver'), color: SERIES_COLORS.hydro, bold: true },
         { key: 'taken', label: () => t('seriesMachineFlow'), color: SERIES_COLORS.dump },
-        { key: 'reserved', label: () => t('seriesReservedFlow'), color: SERIES_COLORS.pv, dash: true },
+        {
+          key: 'reserved',
+          label: () => t('seriesReservedFlow'),
+          get color() {
+            return panelColour('gold');
+          },
+          dash: true,
+        },
       ],
       yFmt: (v) => num(v, v < 10 && v !== Math.round(v) ? 1 : 0),
       xFmt: dayLabel,
@@ -678,7 +694,7 @@ export class SimPanel implements PanelController {
           t(TYPE_KEYS[c.type]),
           `${num(c.power / 1000, c.power < 10000 ? 2 : 1)} kW`,
           c.fits ? t('chooserFits') : c.headInRange ? t('chooserHeadOnly') : t('chooserNo'),
-          TYPE_COLORS[c.type],
+          panelColour(TYPE_COLOURS[c.type]),
         ),
       ),
     );
