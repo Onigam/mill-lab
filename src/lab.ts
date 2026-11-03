@@ -133,7 +133,7 @@ function about(ctx: AppContext<MillSim>): HTMLElement[] {
 
 export const lab: LabDefinition<MillSim> = {
   id: 'mill-lab',
-  brand: { title: 'MILL LAB', tagline: strL('labTagline'), icon: './favicon.svg' },
+  brand: { title: 'MILL LAB', tagline: strL('labTagline') },
   sim,
   defaultScene: 'site',
   video: { id: 'hM4cDkSSsrQ' },
