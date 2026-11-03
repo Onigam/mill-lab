@@ -1,10 +1,13 @@
 version: 2
 updates:
-  # lab-kit (a Git dependency pinned to a tag) and the tooling
+  # the tooling; lab-kit is a Git dependency pinned to a tag, moved by kit:bump
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # the kit moves by `npm run kit:bump`, on a release: Dependabot can't order its Git tags (it proposed v0.6.0 -> v0.4.0)
+      - dependency-name: '@onigam/lab-kit'
     groups:
       tooling:
         patterns: ['typescript', 'vite', 'vitest', 'prettier', '@types/*']
